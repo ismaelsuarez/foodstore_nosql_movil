@@ -1,0 +1,37 @@
+# Credenciales y secretos
+.env
+.pgpass
+*.pgpass
+*.key
+*.pem
+
+# Archivos temporales y del sistema
+*.tmp
+*.bak
+*~
+.DS_Store
+Thumbs.db
+
+# Respaldos de bases de datos (nunca versionar dumps de producción)
+*.dump
+*.sql.gz
+*.tar.gz
+
+# Datos locales de los motores (nunca versionar los archivos de datos)
+data/
+mongodb_data/
+postgres_data/
+mongod.log
+mongod.pid
+
+# Salidas de herramientas locales
+*.log
+node_modules/
+__pycache__/
+
+# NO se ignoran todos los .json: los archivos sintéticos de intercambio
+# (por ejemplo, datos de migración generados para el laboratorio) se versionar
+# con nombre explícito. Solo se ignoran los que contengan credenciales o datos
+# de motor local:
+# mongo_keyfile.json
+# mongod_config.json
