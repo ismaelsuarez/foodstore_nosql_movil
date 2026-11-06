@@ -1,0 +1,66 @@
+Food Store U7 — Extracto de ejecución con MongoDB 9.0.4, 2026-11-06 (UTC)
+Procedencia: salidas completas guardadas fuera del repositorio, en el
+directorio privado del laboratorio (evidencias/20261106T154658Z, archivos 00–19).
+Sin credenciales. Los nombres de usuario son sintéticos del seed U6.
+Comandos completos: docs/laboratorio_migracion.md §4–§5.
+Antecedente con 8.0 (fallo de arranque): evidencias/ejecucion_20261106.txt.
+
+== Comprobaciones previas
+rama feat/u7-migracion, HEAD a14066f; cambios previos conservados
+datos/pedidos_origen.json sha256=930562ab8d97a1a8eb7a72e972d7b857dd61e73c5db9c86051676513196bec7a (= informado)
+foodstore-u7-mongo (8.0) sigue exited(1); huella de sus logs 740cf21b… sin cambios
+15:46:58Z extraccion_pedidos.sql de control: exit=0; igual al archivo salvo momento_utc
+
+== Imagen (15:46:46Z–15:48:26Z)
+mongo:9.0.4  id=RepoDigest=sha256:452bdaf2127b8ff851e31410a267809b9829eded219979f2210e7c7efb85a058
+linux/amd64
+Kernel: 7.0.0-42-generic; Ubuntu 7.0.0-42.42-generic 7.0.14
+
+== Arranque foodstore-u7-mongo9 (15:49:15Z)
+red=none ports={} privileged=false tmpfs=/data/configdb restart=no
+volumen foodstore_u7_mongo9_data -> /data/db; /u7 y /run/foodstore-u7-auth en solo lectura
+log: "MongoDB init process complete"; mensajes fatales=0; running, 0 reinicios
+mongod: db version v9.0.4 (gitVersion 64ade602…, distmod ubuntu2604)
+mongosh: 2.14.0
+Nota: la primera espera automática informó "no listo" por un error de mi
+comprobación (pipefail + grep -q); el ping posterior devolvió 1, exit=0.
+
+== Usuarios y autorización
+createUser u7_operador ok=1 roles=[readWrite@foodstore_u7]; u7_admin roles=[root@admin]
+autenticada u7_operador: countDocuments=0            exit=0
+sin autenticación:       "Command aggregate requires authentication"  exit=1
+(tras la carga, sin autenticación: mismo rechazo, exit=1)
+
+== Ajuste mecánico (antes de ejecutar)
+comentario de uso de los 3 .js: foodstore-u7-mongo -> foodstore-u7-mongo9
+
+== 15:51:30Z migracion_pedidos.js
+archivo=/u7/datos/pedidos_origen.json pedidos=5 lineas=7 validacion=OK
+insertMany acknowledged=true insertados=5   exit=0
+
+== validaciones_mongodb.js   exit=0 (13 OK, 0 FALLO)
+5 pedidos; 7 líneas; IDs pedidos 1-5, usuarios 1-3, detalles 1-7, productos 1-3
+tipos $type sin excepciones; correspondencia EJSON canónico: 5/5
+RI-01: 0; RI-02: 0; producto 1: 1:1000.00 3:1050.00 5:1050.00
+sha256 documentos del lote=7a2351dc7db148c5fa53e1524fefe8e261f7dd848a7ffdfb958ab443975033dc
+índices: _id_
+
+== consultas_mongodb.js   exit=0
+C4a | cantidad=5 | pedidos=1,2,3,4,5 (todos TERMINADO)
+C4b | cantidad=5 | pedidos=1,2,3,4,5
+C4c | cantidad=3 | pedidos=1,3,5
+C4d | cantidad=2 | pedidos=3,4 (3150.00, 6200.00)
+
+== consultas_postgresql.sql   exit=0
+C4b | cantidad=5 | pedidos=1,2,3,4,5
+C4c | cantidad=3 | pedidos=1,3,5
+
+== 15:52:08Z repetición de migracion_pedidos.js
+RECHAZADO: ya existen los pedidos 1,2,3,4,5; no se inserta nada.   exit=3
+validaciones posteriores: exit=0; colección=5; sha256 idéntico (7a2351dc…)
+
+== 15:52:26Z control final del origen: exit=0; igual al archivo salvo momento_utc
+
+== Huellas (inicio -> fin)
+JSON y .sql iguales; los 3 .js cambian solo por el ajuste mecánico y no
+varían desde el ajuste hasta el final.

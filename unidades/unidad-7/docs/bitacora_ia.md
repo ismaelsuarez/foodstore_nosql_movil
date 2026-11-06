@@ -128,4 +128,130 @@ No son aprobaciones docentes.
 
 ---
 
+## Entrada 004 — Implementación de la migración (Claude)
+
+**Fecha de la sesión:** 2026-11-06
+
+**Herramienta:** Claude (el Gentleman, en Pi).
+
+**Qué se solicitó:** implementar y ejecutar la extracción, la carga en MongoDB,
+las validaciones, las consultas en ambos motores y la prueba de repetición.
+Todo en la rama `feat/u7-migracion`, sin commits.
+
+**Qué se hizo:**
+- Rama `feat/u7-migracion` creada desde `a14066f`.
+- Laboratorio MongoDB:
+  - Credenciales nuevas en un directorio privado fuera del repositorio; no se
+    mostraron ni se reutilizaron las de U6.
+  - Volumen `foodstore_u7_mongo_data` y contenedor `foodstore-u7-mongo` creados
+    desde `mongo@sha256:b9924c33…fa142`, con red `none` y sin puertos.
+  - `mongod` 8.0.34 terminó con código 1: su comprobación de kernel rechaza
+    `7.0.0-42-generic` aunque el kernel es el upstream 7.0.14
+    (SERVER-121912, SERVER-136848).
+- Scripts escritos y revisados:
+  - `extraccion_pedidos.sql` y `consultas_postgresql.sql`: ejecutados con
+    código 0.
+  - `migracion_pedidos.js`, `validaciones_mongodb.js` y `consultas_mongodb.js`:
+    solo comprobación de sintaxis con `node --check`.
+- Extracción real en `datos/pedidos_origen.json`, con SHA-256 `930562ab…bec7a`.
+- Resultados de PostgreSQL: C4b = 1,2,3,4,5 y C4c = 1,3,5. La reextracción de
+  control confirmó que el origen no cambió.
+- Guía `docs/laboratorio_migracion.md` y extracto
+  `evidencias/ejecucion_20261106.txt`.
+
+**Qué no se ejecutó:**
+- Creación de usuarios MongoDB, versiones efectivas de `mongod` y `mongosh`, y
+  rechazo sin autenticación.
+- Carga, validaciones, C4a–C4d en MongoDB y prueba de repetición.
+- Ninguna escritura en PostgreSQL; ningún cambio en U6, `odd/` ni en otros
+  contenedores.
+- Ningún staging ni commit.
+
+**Decisión pendiente del equipo:** cómo desbloquear MongoDB (laboratorio §8).
+No se cambió de versión. También quedan pendientes el contraste de la IA, la
+conclusión y el PDF.
+
+---
+
+## Entrada 005 — MongoDB 9.0.4 y migración completa (Claude)
+
+**Fecha de la sesión:** 2026-11-06
+
+**Herramienta:** Claude (el Gentleman, en Pi).
+
+**Qué se solicitó:** reemplazar el entorno bloqueado por `mongo:9.0.4`, elegida
+por el equipo, y completar la carga, las validaciones, las consultas y la
+repetición. Sin commits.
+
+**Qué se hizo:**
+- **Comprobaciones previas:** SHA-256 del JSON igual al informado; origen igual
+  a la extracción (excluido `momento_utc`); recursos de 8.0 conservados sin
+  iniciar.
+- **Imagen:** `mongo:9.0.4` descargada, digest `sha256:452bdaf2…a058`, `linux/amd64`.
+- **Contenedor:** volumen `foodstore_u7_mongo9_data` y contenedor
+  `foodstore-u7-mongo9` creados con red `none`, sin puertos, `tmpfs` y montajes
+  de solo lectura.
+- **Credenciales:** nuevas, en un directorio privado. Se usó
+  `MONGO_INITDB_ROOT_PASSWORD_FILE`, con una ACL de lectura solo para el uid
+  999 sobre ese archivo, porque el entrypoint lo lee después de `gosu`.
+- **Versiones:** `mongod` 9.0.4 y `mongosh` 2.14.0.
+- **Usuarios:** `u7_operador` creado con `readWrite` sobre `foodstore_u7`.
+  Lectura autorizada (código 0) y rechazo sin autenticación (código 1), antes y
+  después de la carga.
+- **Ajuste mecánico:** el nombre del contenedor en el comentario de uso de los
+  tres `.js`; la lógica no cambió.
+- **Carga y validaciones:** carga con 5 documentos (código 0) y validaciones con
+  13 comprobaciones OK.
+- **Consultas:** C4a = 1–5, C4b = 1–5, C4c = 1, 3, 5 y C4d = 3, 4. C4b y C4c
+  coinciden con PostgreSQL.
+- **Repetición:** rechazada con código 3; misma huella de documentos.
+- **Documentación:** guía reescrita para 9.0.4, con el antecedente de 8.0;
+  extracto `evidencias/ejecucion_20261106_mongo9.txt`.
+
+**Qué no se hizo:**
+- Ninguna escritura en PostgreSQL ni en U6.
+- Ningún borrado de recursos o evidencias.
+- Ningún staging ni commit.
+- No se probó un fallo parcial de `insertMany`.
+
+**Pendiente:** consulta a IA y contraste de dos afirmaciones, conclusión, informe
+y publicación. Ninguna aprobación docente.
+
+---
+
+## Entrada 006 — Consolidación, contraste de IA y conclusión (Claude)
+
+**Fecha de la sesión:** 2026-11-06
+
+**Herramienta:** Claude Opus 5.5 (`claude-opus-5-5`) como asistente «el
+Gentleman» en Pi.
+
+**Qué se solicitó:** revisar código y evidencias sin conectarse a los motores,
+completar las consignas 6 y 7 y guardar un commit local.
+
+**Qué se hizo:**
+- **Revisión acotada:** las huellas de los scripts y del JSON coinciden con las
+  de la ejecución con 9.0.4, y las salidas registradas respaldan los
+  resultados citados. Se agregaron a la guía los comandos de espera que
+  funcionaron y la advertencia sobre el bucle fallido.
+- **Consigna 6:** prompt registrado y respuesta generada por este asistente en
+  la misma sesión, antes de leer las fuentes. Ver
+  [contraste_ia.md](contraste_ia.md).
+- **Consigna 7:** contraste de dos afirmaciones con documentación oficial de
+  MongoDB y PostgreSQL 17 y con el código U6. A1 necesita matiz; A2 está
+  respaldada.
+- **Conclusión:** propuesta de 183 palabras en
+  [conclusion_u7.md](conclusion_u7.md).
+
+**Límites:** la respuesta de IA no es independiente del laboratorio, porque el
+mismo asistente tenía el contexto del proyecto. Ningún integrante revisó todavía
+el contraste ni la conclusión.
+
+**No se ejecutó:** SQL, `mongosh`, cargas ni pruebas nuevas; no se tocaron
+contenedores, permisos ni U6.
+
+**Pendiente:** revisión del equipo, informe PDF y publicación.
+
+---
+
 *Las entradas siguientes se agregarán cuando se ejecuten las tareas del TP.*

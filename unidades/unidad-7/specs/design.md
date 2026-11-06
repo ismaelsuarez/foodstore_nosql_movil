@@ -287,6 +287,6 @@ consultas ejecutadas en ningún motor): C4b → 5 pedidos (1–5), C4c → 3 ped
 | Destino, `_id`, tipos, bajas lógicas, reglas, repetición y datos del cliente (§1–§8) | Adoptadas por el equipo mediante el encargo del 2026-11-06; sin aprobación docente |
 | IDs del lote, estado, producto y umbral | Fijados tras la lectura del 2026-11-06 (§7) |
 | Pedidos de prueba adicionales | No necesarios: el origen tiene los cinco pedidos |
-| Imagen MongoDB | `mongo:8.0` descargada; la preparación usará el digest registrado en el inventario §5. Servidor no iniciado |
-| Extracción de nombre/apellido y nombres de producto | Pendiente (T2b) |
-| Script de carga, verificación y consultas MongoDB | Pendientes (T3–T5) |
+| Imagen MongoDB | `mongo:9.0.4` por digest `sha256:452bdaf2…a058`, elegida por el equipo. Antecedente: `mongo:8.0` no arranca en el kernel del host (`docs/laboratorio_migracion.md` §3) |
+| Extracción de nombre/apellido y nombres de producto | Hecha (T2b), `datos/pedidos_origen.json` |
+| Script de carga, verificación y consultas MongoDB | Ejecutados el 2026-11-06 con 9.0.4 (T3–T5) |

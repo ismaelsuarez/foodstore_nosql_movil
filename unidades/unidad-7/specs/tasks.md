@@ -1,8 +1,9 @@
 # Tasks — Unidad 7: Lista de implementación
 
-**Estado al 2026-11-06:** T1 y la lectura de T2 completadas; extracción,
-migración, verificación y consultas pendientes. Ningún script de migración ni
-consulta entregable ha sido creado ni ejecutado.
+**Estado al 2026-11-06:** T1–T5 ejecutadas con MongoDB 9.0.4 ([laboratorio](../docs/laboratorio_migracion.md)).
+El primer intento con `mongo:8.0` quedó bloqueado por la comprobación de kernel
+y se conserva como antecedente. T6 está redactada, con la conclusión pendiente de
+revisión del equipo. T7 sigue pendiente.
 
 ---
 
@@ -49,8 +50,11 @@ transacción `REPEATABLE READ, READ ONLY` terminada con `ROLLBACK`. Lote: pedido
 1–5; estado `TERMINADO`; producto 1 (Muzzarella); umbral 3000.00
 ([inventario](../docs/inventario_origen_entorno.md) §3–§4).
 
-**Pendiente (T2b):** extraer nombre y apellido sintéticos de los usuarios 1–3 y
-los nombres de producto para construir los documentos, en una etapa autorizada.
+**Estado de la extracción (T2b):** completada el 2026-11-06 con
+`postgresql/extraccion_pedidos.sql`, código 0. Se obtuvieron 5 pedidos y 7 líneas,
+iguales al inventario. Los usuarios 1–3 se compararon con el seed sintético antes
+de exportarlos. El resultado es `datos/pedidos_origen.json`, con SHA-256
+`930562ab8d97a1a8eb7a72e972d7b857dd61e73c5db9c86051676513196bec7a` ([laboratorio](../docs/laboratorio_migracion.md) §6).
 
 ---
 
@@ -68,7 +72,17 @@ los nombres de producto para construir los documentos, en una etapa autorizada.
 
 **Dependencias:** T2b (datos del cliente y de productos extraídos).
 
-**Pendiente:** ejecución autorizada sobre MongoDB.
+**Estado:** completada el 2026-11-06 con `foodstore-u7-mongo9`.
+
+- Entorno: `mongo:9.0.4` usado por digest `sha256:452bdaf2…a058`; `mongod`
+  9.0.4 y `mongosh` 2.14.0.
+- Usuarios: `u7_operador` con `readWrite` solo sobre `foodstore_u7`. Lectura
+  autorizada (código 0) y rechazo sin autenticación (código 1) comprobados.
+- Carga: `insertMany` reconocido, 5 documentos, código 0.
+- Repetición: rechazada antes de escribir, con código 3.
+
+Antecedente: el primer intento con `mongo:8.0` en `foodstore-u7-mongo` terminó
+con código 1 por la comprobación de kernel (SERVER-136848). Se conserva detenido.
 
 ---
 
@@ -83,7 +97,9 @@ los nombres de producto para construir los documentos, en una etapa autorizada.
 
 **Dependencias:** T3.
 
-**Pendiente:** ejecución autorizada.
+**Estado:** completada el 2026-11-06. `mongodb/validaciones_mongodb.js` terminó con
+código 0 y 13 comprobaciones OK, antes y después de la repetición, con la misma
+huella de documentos (`7a2351dc…`).
 
 ---
 
@@ -100,7 +116,14 @@ los nombres de producto para construir los documentos, en una etapa autorizada.
 
 **Dependencias:** T4.
 
-**Pendiente:** ejecución autorizada.
+**Estado:** completada el 2026-11-06; ambos archivos terminaron con código 0.
+
+| Consulta | PostgreSQL | MongoDB | Coinciden los IDs |
+|---|---|---|---|
+| C4b | 5 (1–5) | 5 (1–5) | Sí |
+| C4c | 3 (1, 3, 5) | 3 (1, 3, 5) | Sí |
+
+En MongoDB, C4a devolvió 1–5 y C4d devolvió 3 y 4 ([laboratorio](../docs/laboratorio_migracion.md) §6).
 
 ---
 
@@ -114,7 +137,16 @@ los nombres de producto para construir los documentos, en una etapa autorizada.
 
 **Dependencias:** T5 (resultados del laboratorio disponibles para el contraste).
 
-**Pendiente:** ejecución de la consulta a IA y contraste.
+**Estado:** redactada el 2026-11-06.
+
+- [Contraste de IA](../docs/contraste_ia.md) con el prompt y la respuesta
+  generada por Claude Opus 5.5 en la sesión del asistente.
+- A1 (atomicidad de `insertMany` y transacciones): necesita matiz.
+- A2 (`CHECK` de PostgreSQL y total del pedido): respaldada.
+
+**Pendiente:** [conclusión](../docs/conclusion_u7.md), de 183 palabras, sujeta a
+revisión del equipo. El prompt quedó en `contraste_ia.md` en lugar de en
+`bitacora_ia.md`, que lo referencia.
 
 ---
 

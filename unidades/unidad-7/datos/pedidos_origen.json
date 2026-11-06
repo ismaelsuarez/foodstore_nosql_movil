@@ -1,0 +1,173 @@
+{
+  "formato": "foodstore-u7-pedidos/1",
+  "origen": {
+    "base": "foodstore",
+    "base_oid": "16384",
+    "servidor": "17.11 (Debian 17.11-1.pgdg13+2)",
+    "rol_conexion": "postgres",
+    "referencia_esquema": "foodstore_baseII u6-cierre 8f7877c8a1ff25c1be28b29c46c38cd7c9663e86 (declarada; SQL no la verifica)"
+  },
+  "extraccion": {
+    "momento_utc": "2026-11-06T15:13:28Z",
+    "aislamiento": "repeatable read",
+    "solo_lectura": "on",
+    "script": "unidades/unidad-7/postgresql/extraccion_pedidos.sql"
+  },
+  "lote": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ],
+  "expectativas_inventario": {
+    "pedidos": 5,
+    "lineas": 7,
+    "fuente": "unidades/unidad-7/docs/inventario_origen_entorno.md"
+  },
+  "conteos_extraidos": {
+    "pedidos": 5,
+    "lineas": 7
+  },
+  "sha256_pedidos": "e61ad7f0795485eae51ceb554baf4445ab1fa80a120d83598cb18455659f3323",
+  "pedidos": [
+    {
+      "pedido_id": "1",
+      "fecha": "2026-03-01",
+      "estado": "TERMINADO",
+      "forma_pago": "EFECTIVO",
+      "total": "2800.00",
+      "eliminado": false,
+      "usuario": {
+        "usuario_id": "1",
+        "nombre": "Ana",
+        "apellido": "Gómez"
+      },
+      "items": [
+        {
+          "detalle_id": "1",
+          "producto_id": "1",
+          "producto_nombre": "Muzzarella",
+          "cantidad": "2",
+          "precio_unitario": "1000.00",
+          "subtotal": "2000.00",
+          "eliminado": false
+        },
+        {
+          "detalle_id": "2",
+          "producto_id": "3",
+          "producto_nombre": "Coca 1.5L",
+          "cantidad": "1",
+          "precio_unitario": "800.00",
+          "subtotal": "800.00",
+          "eliminado": false
+        }
+      ]
+    },
+    {
+      "pedido_id": "2",
+      "fecha": "2026-03-01",
+      "estado": "TERMINADO",
+      "forma_pago": "TARJETA",
+      "total": "1500.00",
+      "eliminado": false,
+      "usuario": {
+        "usuario_id": "2",
+        "nombre": "Luis",
+        "apellido": "Paz"
+      },
+      "items": [
+        {
+          "detalle_id": "3",
+          "producto_id": "2",
+          "producto_nombre": "Napolitana",
+          "cantidad": "1",
+          "precio_unitario": "1500.00",
+          "subtotal": "1500.00",
+          "eliminado": false
+        }
+      ]
+    },
+    {
+      "pedido_id": "3",
+      "fecha": "2026-03-05",
+      "estado": "TERMINADO",
+      "forma_pago": "TRANSFERENCIA",
+      "total": "3150.00",
+      "eliminado": false,
+      "usuario": {
+        "usuario_id": "1",
+        "nombre": "Ana",
+        "apellido": "Gómez"
+      },
+      "items": [
+        {
+          "detalle_id": "4",
+          "producto_id": "1",
+          "producto_nombre": "Muzzarella",
+          "cantidad": "3",
+          "precio_unitario": "1050.00",
+          "subtotal": "3150.00",
+          "eliminado": false
+        }
+      ]
+    },
+    {
+      "pedido_id": "4",
+      "fecha": "2026-03-06",
+      "estado": "TERMINADO",
+      "forma_pago": "EFECTIVO",
+      "total": "6200.00",
+      "eliminado": false,
+      "usuario": {
+        "usuario_id": "3",
+        "nombre": "Marta",
+        "apellido": "Ruiz"
+      },
+      "items": [
+        {
+          "detalle_id": "5",
+          "producto_id": "3",
+          "producto_nombre": "Coca 1.5L",
+          "cantidad": "4",
+          "precio_unitario": "800.00",
+          "subtotal": "3200.00",
+          "eliminado": false
+        },
+        {
+          "detalle_id": "6",
+          "producto_id": "2",
+          "producto_nombre": "Napolitana",
+          "cantidad": "2",
+          "precio_unitario": "1500.00",
+          "subtotal": "3000.00",
+          "eliminado": false
+        }
+      ]
+    },
+    {
+      "pedido_id": "5",
+      "fecha": "2026-03-07",
+      "estado": "TERMINADO",
+      "forma_pago": "TARJETA",
+      "total": "1050.00",
+      "eliminado": false,
+      "usuario": {
+        "usuario_id": "2",
+        "nombre": "Luis",
+        "apellido": "Paz"
+      },
+      "items": [
+        {
+          "detalle_id": "7",
+          "producto_id": "1",
+          "producto_nombre": "Muzzarella",
+          "cantidad": "1",
+          "precio_unitario": "1050.00",
+          "subtotal": "1050.00",
+          "eliminado": false
+        }
+      ]
+    }
+  ]
+}

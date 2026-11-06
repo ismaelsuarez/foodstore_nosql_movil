@@ -19,7 +19,22 @@ No se copia ni se modifica el repositorio relacional.
 
 ## Estado actual
 
-**Diseño cerrado por el equipo y origen leído; migración y consultas pendientes.**
+**Migración y comparación ejecutadas; contraste de IA redactado; conclusión pendiente de revisión del equipo; informe y publicación pendientes.**
+
+El 2026-11-06 se completó el recorrido de migración con MongoDB 9.0.4
+([laboratorio](unidades/unidad-7/docs/laboratorio_migracion.md)):
+
+- La extracción del lote 1–5 generó `datos/pedidos_origen.json`.
+- La carga insertó 5 documentos y las validaciones pasaron.
+- C4b dio 1–5 y C4c dio 1, 3, 5, iguales en PostgreSQL y MongoDB.
+- La carga repetida se rechazó sin cambios.
+- Antecedente: `mongo:8.0` no arrancó en el kernel del host.
+- La consulta a IA y el contraste de dos afirmaciones están en
+  [contraste_ia.md](unidades/unidad-7/docs/contraste_ia.md).
+- La [conclusión](unidades/unidad-7/docs/conclusion_u7.md), de 183 palabras,
+  es una propuesta pendiente de revisión del equipo.
+
+Antecedentes:
 
 El 2026-11-06 se registró el [inventario del origen y del entorno](unidades/unidad-7/docs/inventario_origen_entorno.md):
 
@@ -31,9 +46,7 @@ El 2026-11-06 se registró el [inventario del origen y del entorno](unidades/uni
 - Se descargó la imagen `mongo:8.0` y quedó registrado su digest. El servidor
   MongoDB no se inició.
 
-Las decisiones de modelo son del equipo, no aprobaciones docentes. Ningún
-script de migración ni consulta entregable ha sido creado ni ejecutado.
-Ningún dato ha sido migrado.
+Las decisiones de modelo y de versión son del equipo, no aprobaciones docentes.
 
 ---
 
@@ -41,7 +54,7 @@ Ningún dato ha sido migrado.
 
 | Unidad | Tema | Estado |
 |---|---|---|
-| Unidad 7 | NoSQL — MongoDB: modelado y consultas sobre el subconjunto de pedidos | Diseño cerrado; implementación pendiente |
+| Unidad 7 | NoSQL — MongoDB: modelado y consultas sobre el subconjunto de pedidos | Migración, consultas y contraste de IA hechos; conclusión en revisión; informe pendiente |
 | Unidad 8 | Prevista; tema y consigna pendientes de publicación | No iniciada |
 
 ---
@@ -54,6 +67,9 @@ Ningún dato ha sido migrado.
 | [Diseño](unidades/unidad-7/specs/design.md) | Modelo documental, tipos, reglas de integridad, lote y consultas |
 | [Tareas](unidades/unidad-7/specs/tasks.md) | Lista ordenada para la implementación |
 | [Inventario](unidades/unidad-7/docs/inventario_origen_entorno.md) | Entorno, lectura real del origen, lote elegido e imagen MongoDB |
+| [Laboratorio](unidades/unidad-7/docs/laboratorio_migracion.md) | Versión, preparación, comandos, resultados y antecedente de 8.0 |
+| [Contraste de IA](unidades/unidad-7/docs/contraste_ia.md) | Prompt, respuesta y dos afirmaciones contrastadas (consignas 6 y 7) |
+| [Conclusión](unidades/unidad-7/docs/conclusion_u7.md) | Propuesta de conclusión, pendiente de revisión del equipo |
 | [Bitácora IA](unidades/unidad-7/docs/bitacora_ia.md) | Registro de las intervenciones de IA |
 
 ---
