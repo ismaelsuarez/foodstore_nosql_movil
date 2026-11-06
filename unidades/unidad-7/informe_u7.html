@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Informe U7 — Food Store NoSQL</title>
+<style>
+  @page { size: A4; margin: 12mm 14mm 13mm; }
+  body { font-family: "DejaVu Sans", Arial, sans-serif; font-size: 9pt; line-height: 1.32; color: #111; margin: 0; }
+  h1 { font-size: 13pt; margin: 0 0 2pt; }
+  h2 { font-size: 10.2pt; margin: 8pt 0 3pt; border-bottom: 1px solid #888; padding-bottom: 1pt; }
+  h3 { font-size: 9.2pt; margin: 5pt 0 2pt; }
+  p, ul, ol { margin: 2.5pt 0; }
+  ul, ol { padding-left: 14pt; }
+  li { margin: 0.8pt 0; }
+  table { border-collapse: collapse; width: 100%; margin: 3pt 0; page-break-inside: avoid; }
+  th, td { border: 1px solid #aaa; padding: 1.6pt 3.5pt; text-align: left; vertical-align: top; }
+  th { background: #eee; }
+  code, pre { font-family: "DejaVu Sans Mono", monospace; font-size: 7.9pt; }
+  pre { font-size: 7.6pt; background: #f6f6f6; border: 1px solid #ccc; padding: 3pt 5pt; margin: 3pt 0; white-space: pre-wrap; page-break-inside: avoid; }
+  .meta { color: #222; }
+  .nota { font-size: 8.2pt; color: #333; }
+  .caja { border: 1px solid #999; padding: 4pt 6pt; margin: 4pt 0; page-break-inside: avoid; }
+  .cols { display: flex; gap: 10pt; }
+  .cols > div { flex: 1; min-width: 0; }
+  .ev { white-space: nowrap; }
+  .junto { break-inside: avoid; page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  a { color: #0b3d91; text-decoration: none; }
+  .refs { font-size: 8.2pt; margin: 2pt 0; padding-left: 14pt; }
+  .refs li { margin: 1pt 0; }
+</style>
+</head>
+<body>
+
+<h1>Informe TP7 — NoSQL y nuevas formas de almacenamiento | Food Store</h1>
+<p class="meta"><b>Integrantes:</b> Avalos Pablo, Blangetti Sofia, Suarez Ismael. <b>Materia:</b> Bases de Datos II — UTN.
+<b>Repositorio:</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/tree/u7-cierre">github.com/ismaelsuarez/foodstore_nosql_movil</a>, versión de entrega: etiqueta <code>u7-cierre</code>.
+<b>Estado:</b> informe del 2026-11-06; la revisión del equipo no consta; sin aprobación docente.</p>
+<p class="nota"><b>Evidencias</b> en la etiqueta <code>u7-cierre</code>, bajo <code>unidades/unidad-7/</code>:
+<b>E1</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/evidencias/ejecucion_20261106_mongo9.txt"><code>evidencias/ejecucion_20261106_mongo9.txt</code></a> ·
+<b>E2</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/docs/laboratorio_migracion.md"><code>docs/laboratorio_migracion.md</code></a> ·
+<b>E3</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/docs/inventario_origen_entorno.md"><code>docs/inventario_origen_entorno.md</code></a> ·
+<b>E4</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/datos/pedidos_origen.json"><code>datos/pedidos_origen.json</code></a> ·
+<b>E5</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/evidencias/ejecucion_20261106.txt"><code>evidencias/ejecucion_20261106.txt</code></a> ·
+<b>E6</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/docs/contraste_ia.md"><code>docs/contraste_ia.md</code></a>.
+Las salidas completas se conservan fuera del repositorio; los extractos E1 y E5 indican su procedencia.</p>
+
+<h2>A. Modelo y alcance</h2>
+<p>El trabajo continúa el modelo relacional de <a href="https://github.com/ismaelsuarez/foodstore_baseII/tree/u6-cierre"><code>foodstore_baseII</code>, etiqueta <code>u6-cierre</code></a>, commit
+<code>8f7877c8a1ff25c1be28b29c46c38cd7c9663e86</code>. El modelo de origen tiene cinco tablas: <code>categoria</code>, <code>usuario</code>,
+<code>producto</code>, <code>pedido</code> y <code>detalle_pedido</code>. El subconjunto migrado es «pedidos y detalle de pedidos»: los
+pedidos 1–5 y sus 7 líneas, leídos de la base <code>foodstore</code> (PostgreSQL 17.11) con datos del usuario y del producto. El destino
+es la colección <code>foodstore_u7.pedidos</code>, con un documento por pedido. Las decisiones de modelo son del equipo, no de la consigna (E3).</p>
+
+<table>
+<tr><th>PostgreSQL</th><th>MongoDB</th><th>Tipo BSON</th><th>Regla</th></tr>
+<tr><td><code>pedido.id</code></td><td><code>_id</code></td><td>Long</td><td>ID del origen, construido desde texto</td></tr>
+<tr><td><code>pedido.fecha</code> (DATE)</td><td><code>fecha</code></td><td>string</td><td>Fecha comercial <code>YYYY-MM-DD</code>; no se usa <code>created_at</code></td></tr>
+<tr><td><code>estado</code>, <code>forma_pago</code></td><td>iguales</td><td>string</td><td>Valor exacto del ENUM (<code>TERMINADO</code>, <code>EFECTIVO</code>…)</td></tr>
+<tr><td><code>pedido.total</code></td><td><code>total</code></td><td>Decimal128</td><td>Copiado del origen y verificado (RI-02)</td></tr>
+<tr><td><code>usuario.id</code>, <code>nombre</code>, <code>apellido</code></td><td><code>usuario.{usuario_id, nombre, apellido}</code></td><td>Long, string</td><td>Cliente embebido; solo datos esenciales</td></tr>
+<tr><td><code>detalle_pedido.id</code>, <code>producto_id</code></td><td><code>items[].detalle_id</code>, <code>producto_id</code></td><td>Long</td><td>IDs conservados</td></tr>
+<tr><td><code>producto.nombre</code></td><td><code>items[].producto_nombre</code></td><td>string</td><td>Instantánea descriptiva; los filtros usan <code>producto_id</code></td></tr>
+<tr><td><code>cantidad</code> (INTEGER)</td><td><code>items[].cantidad</code></td><td>Int32</td><td>Entero explícito</td></tr>
+<tr><td><code>precio_unitario</code>, <code>subtotal</code></td><td><code>items[].precio_unitario</code>, <code>subtotal</code></td><td>Decimal128</td><td>Precio <b>histórico</b> de la línea, no <code>producto.precio</code></td></tr>
+<tr><td><code>eliminado</code> (pedido y línea)</td><td><code>eliminado</code>, <code>items[].eliminado</code></td><td>bool</td><td>Bajas lógicas conservadas</td></tr>
+</table>
+
+<p><b>Por qué se embebe.</b> Las cuatro consultas filtran y devuelven pedidos como unidad. C4a lista los pedidos del lote con
+una proyección parcial (<code>_id</code> y <code>estado</code>); C4b filtra por estado; C4c busca un producto dentro de las líneas;
+C4d filtra por total con otra proyección parcial (<code>_id</code> y <code>total</code>). Ninguna de las dos devuelve el pedido
+completo. El embebido responde al acceso frecuente declarado, que es recuperar el pedido completo: con el cliente y las líneas en el
+mismo documento, ese pedido se obtiene en una sola lectura y se escribe de forma atómica <i>por documento</i>. El costo es duplicar
+nombres de cliente y de producto como copia, sin actualización automática.</p>
+<p><b>Bajas lógicas.</b> Se conservan todos los pedidos y todas las líneas con su indicador. C4b, C4c y C4d exigen
+<code>eliminado: false</code> en el pedido, y C4c exige además una línea vigente del producto en el mismo elemento. El total es la suma
+de los subtotales de las líneas no eliminadas. En este lote no hay bajas lógicas (E3, E4).</p>
+<p><b>Datos.</b> Los usuarios 1–3 son sintéticos del seed U6: Ana Gómez, Luis Paz y Marta Ruiz. Se compararon con el seed antes de
+exportarlos. No se trasladan mail, celular, contraseña ni rol (E4).</p>
+
+<p class="nota"><b>Representación del modelo</b>, armada con los valores del pedido 1 de E4. No es una salida de <code>mongosh</code>:</p>
+<pre>{ _id: Long("1"), fecha: "2026-03-01", estado: "TERMINADO", forma_pago: "EFECTIVO",
+  total: Decimal128("2800.00"), eliminado: false,
+  usuario: { usuario_id: Long("1"), nombre: "Ana", apellido: "Gómez" },
+  items: [ { detalle_id: Long("1"), producto_id: Long("1"), producto_nombre: "Muzzarella",
+             cantidad: Int32(2), precio_unitario: Decimal128("1000.00"),
+             subtotal: Decimal128("2000.00"), eliminado: false },
+           { detalle_id: Long("2"), producto_id: Long("3"), producto_nombre: "Coca 1.5L",
+             cantidad: Int32(1), precio_unitario: Decimal128("800.00"),
+             subtotal: Decimal128("800.00"), eliminado: false } ] }</pre>
+
+<div class="junto">
+<h2>B. Migración e integridad</h2>
+<table>
+<tr><th>Componente</th><th>Observado</th><th>Evidencia</th></tr>
+<tr><td>Origen</td><td>PostgreSQL 17.11, base <code>foodstore</code>, contenedor <code>foodstore-u6-evaluacion</code> (red <code>none</code>); solo lectura</td><td class="ev">E3, E5</td></tr>
+<tr><td>Destino</td><td>MongoDB 9.0.4, imagen <code>mongo@sha256:452bdaf2…a058</code>, <code>mongosh</code> 2.14.0; standalone, red <code>none</code>, sin puertos publicados</td><td class="ev">E1, E2</td></tr>
+<tr><td>Acceso</td><td><code>u7_operador</code> con <code>readWrite</code> solo sobre <code>foodstore_u7</code>; carga y consultas en sesiones como <code>u7_operador</code>. La misma lectura sin autenticación se rechazó: <code>requires authentication</code>, código 1</td><td class="ev">E1</td></tr>
+</table>
+</div>
+
+<ol>
+<li><code>postgresql/extraccion_pedidos.sql</code>: transacción <code>REPEATABLE READ, READ ONLY</code> con <code>ROLLBACK</code>. Antes de
+exportar comprueba el lote completo, la ausencia de referencias faltantes, RI-01, RI-02 y que los usuarios sean los del seed sintético.
+Genera <code>datos/pedidos_origen.json</code> con IDs e importes como texto, sin pasar por números de punto flotante: 5 pedidos y 7 líneas,
+SHA-256 <code>930562ab…bec7a</code> (E2, E5). El origen se volvió a leer antes y después de la carga y coincidió con el archivo (E1).</li>
+<li><code>mongodb/migracion_pedidos.js</code>: valida el archivo y el lote, comprueba que ningún <code>_id</code> exista y carga con
+<code>insertMany</code> ordenado (<code>w: 1, j: true</code>). Resultado: <code>acknowledged=true insertados=5</code>, código 0 (E1).</li>
+<li><code>mongodb/validaciones_mongodb.js</code>: consulta los documentos almacenados. Las 12 comprobaciones pasaron (12 OK, 0 FALLO), con código 0 (E1).</li>
+</ol>
+
+<table>
+<tr><th>Comprobación sobre lo almacenado</th><th>Resultado observado</th><th>Evidencia</th></tr>
+<tr><td>Conteos e identificadores</td><td>5 pedidos, 7 líneas; pedidos 1–5, usuarios 1–3, detalles 1–7, productos 1–3</td><td class="ev">E1</td></tr>
+<tr><td>Tipos con <code>$type</code></td><td><code>long</code>, <code>int</code>, <code>decimal</code>, <code>string</code> y <code>bool</code>: 0 documentos con tipos inesperados</td><td class="ev">E1</td></tr>
+<tr><td>Correspondencia con E4</td><td>Los 5 documentos coinciden campo por campo (EJSON canónico, con escala decimal)</td><td class="ev">E1</td></tr>
+<tr><td><b>RI-01</b>: cantidad Int32 &gt; 0 e importes ≥ 0 en todas las líneas, incluidas las eliminadas</td><td>0 documentos con líneas inválidas</td><td class="ev">E1</td></tr>
+<tr><td><b>RI-02</b>: subtotal = cantidad × precio histórico; total = suma de subtotales no eliminados (o 0)</td><td>0 documentos incoherentes</td><td class="ev">E1</td></tr>
+<tr><td>Precios históricos del producto 1</td><td>Pedido 1: 1000.00; pedidos 3 y 5: 1050.00. El precio actual del catálogo es 1050.00 (E3)</td><td class="ev">E1, E3</td></tr>
+</table>
+<p><b>Validación de la carga frente a restricciones permanentes.</b> RI-01 y RI-02 se verificaron con scripts sobre esta carga. La colección
+no tiene validador <code>$jsonSchema</code> ni otras reglas en el servidor, salvo el índice único de <code>_id</code>. Por eso estas
+comprobaciones no impiden escrituras inválidas futuras. Decimal128 representa los importes con exactitud, pero no valida reglas de negocio.</p>
+<p><b>Incidente de entorno.</b> El primer intento usó <code>mongo:8.0</code> (MongoDB 8.0.34), que terminó con código 1 al arrancar.
+Su comprobación de kernel rechazó el kernel Ubuntu <code>7.0.0-42</code>, aunque corresponde al upstream 7.0.14 (SERVER-136848).
+El equipo eligió <code>mongo:9.0.4</code>, que incluye la corrección SERVER-131779 y arrancó sin errores. El contenedor fallido se conserva
+detenido y sin uso (E2, E5).</p>
+
+<div class="junto">
+<h2>C. Consultas y comparación</h2>
+<p class="nota">Líneas 23, 31, 36–39, 45–48 y 53–56 de <code>mongodb/consultas_mongodb.js</code>, copiadas sin cambios:</p>
+<pre>const lote = { _id: { $in: ['1', '2', '3', '4', '5'].map((id) =&gt; NumberLong(id)) } };
+const c4a = pedidos.find(lote, { _id: 1, estado: 1 }).sort({ _id: 1 }).toArray();
+const c4b = pedidos.find(
+  { ...lote, eliminado: false, estado: 'TERMINADO' },
+  { _id: 1 }
+).sort({ _id: 1 }).toArray();
+const c4c = pedidos.find(
+  { ...lote, eliminado: false, items: { $elemMatch: { producto_id: NumberLong('1'), eliminado: false } } },
+  { _id: 1 }
+).sort({ _id: 1 }).toArray();
+const c4d = pedidos.find(
+  { ...lote, eliminado: false, total: { $gt: NumberDecimal('3000.00') } },
+  { _id: 1, total: 1 }
+).sort({ _id: 1 }).toArray();</pre>
+</div>
+<div class="junto">
+<p class="nota">Fragmento de <code>postgresql/consultas_postgresql.sql</code> (C4c; C4b usa el mismo lote y el mismo filtro de baja, con <code>p.estado = 'TERMINADO'</code>):</p>
+<pre>SELECT 'C4c' AS consulta,
+       count(*) AS cantidad,
+       string_agg(p.id::text, ',' ORDER BY p.id) AS pedidos
+FROM pedido p
+WHERE p.id IN (1, 2, 3, 4, 5)
+  AND p.eliminado = FALSE
+  AND EXISTS (
+      SELECT 1
+      FROM detalle_pedido dp
+      WHERE dp.pedido_id = p.id
+        AND dp.producto_id = 1
+        AND dp.eliminado = FALSE);</pre>
+</div>
+<p class="nota">Las consultas PostgreSQL corren en una transacción <code>REPEATABLE READ, READ ONLY</code> con <code>ROLLBACK</code>.
+<code>EXISTS</code> cuenta cada pedido una sola vez; en MongoDB, <code>$elemMatch</code> exige el producto y la línea vigente en el mismo elemento.</p>
+
+<table>
+<tr><th>Consulta en MongoDB</th><th>Cantidad</th><th>Pedidos observados</th></tr>
+<tr><td>C4a: todos los del lote, con ID y estado</td><td>5</td><td>1, 2, 3, 4, 5 (todos <code>TERMINADO</code>)</td></tr>
+<tr><td>C4b: estado <code>TERMINADO</code>, no eliminado</td><td>5</td><td>1, 2, 3, 4, 5</td></tr>
+<tr><td>C4c: producto 1 en una línea vigente</td><td>3</td><td>1, 3, 5</td></tr>
+<tr><td>C4d: <code>total &gt; 3000.00</code>, no eliminado</td><td>2</td><td>3 (3150.00), 4 (6200.00)</td></tr>
+</table>
+<table>
+<tr><th>Comparación</th><th>Cantidad en PostgreSQL</th><th>Cantidad en MongoDB</th><th>IDs</th><th>Coinciden los IDs</th></tr>
+<tr><td>Estado seleccionado (C4b)</td><td>5</td><td>5</td><td>1, 2, 3, 4, 5</td><td>Sí</td></tr>
+<tr><td>Producto seleccionado (C4c)</td><td>3</td><td>3</td><td>1, 3, 5</td><td>Sí</td></tr>
+</table>
+<p class="nota">Ambos archivos de consultas terminaron con código 0 (E1).</p>
+
+<p><b>Umbral de C4d.</b> Los totales del lote son 1050.00, 1500.00, 2800.00, 3150.00 y 6200.00; el promedio es 2940.00 (E3).
+3000.00 es un importe redondo apenas superior al promedio y ningún total es exactamente 3000.00, de modo que no hay ambigüedad
+entre <code>&gt;</code> y <code>≥</code>.</p>
+<p><b>Carga repetida.</b> Una segunda ejecución de <code>migracion_pedidos.js</code> con el mismo archivo se rechazó antes de escribir:
+<code>RECHAZADO: ya existen los pedidos 1,2,3,4,5; no se inserta nada.</code>, código 3. Las validaciones posteriores dieron código 0, la
+colección siguió con 5 documentos y la huella SHA-256 del contenido se mantuvo (<code>7a2351dc…</code>) (E1). No se usan upserts ni
+borrados. <code>insertMany</code> no es atómico para el lote, y el caso de fallo parcial no se probó.</p>
+
+<div class="junto">
+<h2>D. Contraste de IA y conclusión</h2>
+<p><b>Consulta (consigna 6).</b> El prompt pidió comparar PostgreSQL y MongoDB para los pedidos de Food Store. Describía el modelo
+relacional de cinco tablas con claves, restricciones y lógica para subtotales y totales, y la colección con cliente e items embebidos,
+IDs Long, Int32, Decimal128 y precios históricos. Mencionaba el acceso frecuente al pedido completo y la necesidad de cantidades
+positivas, subtotales coherentes y total de líneas vigentes. Pedía ventajas, costos y responsabilidades de integridad, separar las
+capacidades del motor de lo implementado y no afirmar rendimiento no medido ni carencias de transacciones o validación. El texto
+completo y la respuesta están en E6.</p>
+</div>
+<p class="nota">La respuesta la generó Claude Opus 5.5 el 2026-11-06, en la misma sesión del asistente que implementó la migración.
+Por eso no es una consulta independiente. Se guardó antes de leer las fuentes del contraste.</p>
+
+<table>
+<tr><th style="width:31%">Afirmación de la respuesta</th><th style="width:47%">Fuente y qué respalda</th><th>Evaluación</th></tr>
+<tr><td><b>A1.</b> <code>insertMany</code> con varios documentos no es atómico para el lote; la atomicidad entre documentos requiere transacciones en un replica set o un clúster fragmentado; una instancia standalone no las admite.</td>
+<td>F1: cada documento es atómico, pero «the operation as a whole is not atomic». F6, sección <i>Availability</i>: «standalone deployments do not support transactions». F1 no dice literalmente que lo ya insertado permanece.</td>
+<td>Respaldada documentalmente; no ensayada: no se probó un fallo parcial ni una transacción. El primer veredicto fue «necesita matiz», sin F6.</td></tr>
+<tr><td><b>A2.</b> Un <code>CHECK</code> evalúa solo la fila insertada o actualizada; no puede comparar <code>pedido.total</code> con la suma de <code>detalle_pedido</code>, que depende de lógica programable.</td>
+<td>F5: PostgreSQL no admite <code>CHECK</code> que referencien datos distintos de la fila comprobada. Los <code>CHECK</code> de <code>schema.sql</code> cubren reglas de una fila (<code>cantidad &gt; 0</code>, importes ≥ 0). El total agregado lo mantienen las funciones y los disparadores del TPI (<code>tpi/sql/objetos_programables.sql</code>), conservados en <code>u6-cierre</code>, que declaran límites ante DML concurrente directo y escritura directa del total.</td>
+<td>Respaldada. Consecuencia: el diseño copia el total y lo verifica (RI-02), sin recalcularlo.</td></tr>
+</table>
+<p class="nota"><b>Fuentes oficiales</b>, consultadas el 2026-11-06:
+F1 MongoDB Manual, <i>Atomicity and Transactions</i>, sección <i>Details</i>:
+<a href="https://www.mongodb.com/docs/manual/core/write-operations-atomicity/">mongodb.com/docs/manual/core/write-operations-atomicity/</a> ·
+F5 PostgreSQL 17, <i>5.5. Constraints</i>, nota de <i>Check Constraints</i>:
+<a href="https://www.postgresql.org/docs/17/ddl-constraints.html">postgresql.org/docs/17/ddl-constraints.html</a> ·
+F6 MongoDB Manual, <i>Production Considerations</i>, sección <i>Availability</i>:
+<a href="https://www.mongodb.com/docs/manual/core/transactions-production-consideration/">mongodb.com/docs/manual/core/transactions-production-consideration/</a>.
+También se usaron F2 <i>Transactions</i>, F3 <i>Schema Validation</i> y F4 <i>Embedded Data</i> (E6).</p>
+
+<div class="caja">
+<p><b>Conclusión (consigna 7) — propuesta pendiente de revisión del equipo; 186 palabras.</b></p>
+<p>Proponemos mantener PostgreSQL como fuente principal de los pedidos y usar MongoDB solo como copia documental de lectura de este subconjunto, si el acceso al pedido completo lo justifica.</p>
+<p>Integridad: en PostgreSQL, las claves foráneas y las restricciones CHECK rechazan en cada escritura líneas sin producto o cantidades no positivas, y los disparadores del TPI mantienen el total agregado, con límites declarados. En la colección, RI-01 y RI-02 se verificaron con scripts después de la carga; no se instalaron validadores permanentes.</p>
+<p>Forma de acceso: cada documento contiene cliente e items, devuelve el pedido completo en una sola lectura y se escribe de forma atómica por documento, no por lote. Se conservaron IDs Long, cantidades Int32, importes Decimal128 y precios históricos; C4b y C4c devolvieron los mismos pedidos en ambos motores.</p>
+<p>Duplicación: los nombres de cliente y de producto son copias; la coincidencia entre motores se verificó el 2026-11-06 y no implica sincronización.</p>
+<p>El lote tiene cinco pedidos, un solo estado y ninguna baja lógica, y no se midió rendimiento. Ampliar el uso de MongoDB exigiría pruebas con más volumen y una carga reproducible desde el origen.</p>
+</div>
+
+<p><b>Uso de IA y decisiones humanas.</b> Kiro se usó para especificar y Claude para implementar, documentar, generar la respuesta
+contrastada y redactar este informe; ambas herramientas fueron autorizadas por el docente. El equipo decidió, mediante encargos
+explícitos, el modelo, el lote y sus parámetros, el uso de MongoDB 9.0.4 y cada autorización de ejecución. El contraste, la
+conclusión y este informe siguen pendientes de revisión del equipo.</p>
+<p><b>Limitaciones.</b></p>
+<ul>
+<li>Cinco pedidos, un solo estado (<code>TERMINADO</code>) y ninguna baja lógica: C4b devuelve el lote completo y los filtros sobre <code>eliminado</code> no se ponen a prueba.</li>
+<li>Sin mediciones de rendimiento.</li>
+<li>Sin validadores permanentes.</li>
+<li>Sin prueba de fallo parcial de <code>insertMany</code> ni de transacciones.</li>
+<li>La coincidencia entre motores es una verificación puntual, no una sincronización.</li>
+<li>La respuesta de IA no es independiente.</li>
+</ul>
+
+<div class="junto">
+<p><b>Referencias.</b></p>
+<ul class="refs">
+<li><b>Consigna:</b> <code>BDII_Unidad7_TP_FoodStore_NoSQL.pdf</code>, «Trabajo Práctico · Unidad 7 — NoSQL y nuevas formas de almacenamiento | Food Store». Material de la cátedra; no está en el repositorio.</li>
+<li><b>Entrega:</b> repositorio <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil">github.com/ismaelsuarez/foodstore_nosql_movil</a>, etiqueta <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/tree/u7-cierre"><code>u7-cierre</code></a>.</li>
+<li><b>Unidad 7:</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/README.md"><code>README.md</code></a> (consignas, archivos y resultados) y <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/EVALUACION.md"><code>EVALUACION.md</code></a> (revisión y reproducción).</li>
+<li><b>Consultas:</b> <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/mongodb/consultas_mongodb.js"><code>mongodb/consultas_mongodb.js</code></a> y <a href="https://github.com/ismaelsuarez/foodstore_nosql_movil/blob/u7-cierre/unidades/unidad-7/postgresql/consultas_postgresql.sql"><code>postgresql/consultas_postgresql.sql</code></a>; extractos de ejecución E1 y E5.</li>
+<li><b>Origen relacional:</b> <a href="https://github.com/ismaelsuarez/foodstore_baseII/tree/u6-cierre">github.com/ismaelsuarez/foodstore_baseII</a>, etiqueta <code>u6-cierre</code>, commit <code>8f7877c8a1ff25c1be28b29c46c38cd7c9663e86</code>.</li>
+</ul>
+</div>
+
+</body>
+</html>

@@ -8,6 +8,13 @@
 
 **Fecha de la sesión:** 2026-10-25
 
+> **Fecha no comprobada (nota del 2026-11-06).** No hay evidencia de
+> 2026-10-25. Según la fecha de creación del sistema de archivos, los siete
+> documentos de esta entrada se crearon en este repositorio el 2026-11-06,
+> entre las 10:55 y las 11:02 (-03:00), y `.git/` el mismo día a las 10:55:59.
+> La fecha real de la sesión de planificación con Kiro no consta. Se conserva
+> el valor original y no se lo reemplaza por una fecha supuesta.
+
 **Herramienta:** Claude (implementación); Kiro (especificación y planificación).
 Ambas autorizadas por el docente.
 
@@ -201,7 +208,7 @@ repetición. Sin commits.
 - **Ajuste mecánico:** el nombre del contenedor en el comentario de uso de los
   tres `.js`; la lógica no cambió.
 - **Carga y validaciones:** carga con 5 documentos (código 0) y validaciones con
-  13 comprobaciones OK.
+  13 comprobaciones OK. [Corrección: fueron 12; ver la entrada 008.]
 - **Consultas:** C4a = 1–5, C4b = 1–5, C4c = 1, 3, 5 y C4d = 3, 4. C4b y C4c
   coinciden con PostgreSQL.
 - **Repetición:** rechazada con código 3; misma huella de documentos.
@@ -251,6 +258,165 @@ el contraste ni la conclusión.
 contenedores, permisos ni U6.
 
 **Pendiente:** revisión del equipo, informe PDF y publicación.
+
+---
+
+## Entrada 007 — Precisiones del contraste e informe borrador (Claude)
+
+**Fecha de la sesión:** 2026-11-06
+
+**Herramienta:** Claude Opus 5.5 (`claude-opus-5-5`) como asistente «el
+Gentleman» en Pi.
+
+**Qué se solicitó:** completar dos precisiones del contraste, ajustar la
+conclusión y generar el informe del TP7 a partir de lo ya conservado.
+
+**Qué se hizo:**
+- **Contraste, §6:** ampliación con F6 (*Production Considerations*, sección
+  *Availability*), que menciona de forma explícita que los despliegues
+  standalone no admiten transacciones. A1 pasa de «necesita matiz» a
+  «respaldada documentalmente; no ensayada». Se mantienen el matiz sobre la
+  permanencia de lo ya insertado y la aclaración de que no se probaron un fallo
+  parcial ni una transacción.
+- **A2:** se precisó la diferencia entre las reglas de una fila y el total
+  agregado, y se atribuyeron los disparadores al TPI conservado en
+  `u6-cierre`, no al mantenimiento U6. El veredicto se mantiene: respaldada.
+- **Respuesta de IA:** no se modificó.
+- **Conclusión:** ajustada a 186 palabras (`wc -w`). Por error de entrega, no se
+  recibió el texto ajustado que debía acompañar el encargo, así que se usó una
+  redacción equivalente.
+- **Informe:** `informe_u7.html` e `informe_u7.pdf` (4 páginas A4, Chrome
+  headless). Las cuatro páginas se renderizaron como imagen y se revisaron. Se
+  corrigieron tres defectos de maquetación detectados en esa revisión: un
+  título huérfano, una tabla desbordada y código partido. Los fragmentos de
+  código se verificaron como copia literal de los archivos, y la conclusión es
+  idéntica a `conclusion_u7.md`.
+
+**No se ejecutó:** SQL, `mongosh` ni scripts del proyecto. No se tocaron
+contenedores, permisos ni U6, y no se hizo staging ni commit.
+
+**Pendiente:** revisión del equipo del contraste, la conclusión y el informe;
+publicación. Ninguna aprobación docente.
+
+---
+
+## Entrada 008 — Correcciones acotadas de la revisión del ZIP (Claude)
+
+**Fecha de la sesión:** 2026-11-06
+
+**Herramienta:** Claude Opus 5.5 (`claude-opus-5-5`) como asistente «el
+Gentleman» en Pi.
+
+**Qué se solicitó:** corregir puntos concretos de la revisión del ZIP sin
+rehacer la implementación. El archivo `Revision_TP7_FoodStore_2026-11-06.md` no
+estaba disponible en el disco ni dentro del ZIP. Se trabajó con los puntos
+detallados en el encargo.
+
+**Qué se corrigió:**
+- **Conteo de validaciones:** las salidas originales `11_validaciones_1.txt` y
+  `16_validaciones_2.txt` tienen 12 líneas OK, 0 FALLO y 2 líneas `info`, y el
+  script hace 12 comprobaciones en el recorrido normal. El «13» era un error de
+  conteo al resumir. Se corrigió en el informe, la guía y `tasks.md`, con nota
+  trazable en el extracto `ejecucion_20261106_mongo9.txt` y en la entrada 005.
+  El mensaje del commit `235cdbd` también dice «13 validaciones OK»; no se
+  cambia porque requeriría `amend`.
+- **Guía:**
+  - Prerrequisitos y referencia estable a la reproducción U6 (etiqueta, commit
+    y ruta de `EVALUACION.md`).
+  - Guardas de recursos **antes** de generar credenciales.
+  - Preparación nueva separada del laboratorio existente.
+  - Comparación de los datos del lote separada de los metadatos del entorno.
+  - Control de códigos de salida con `paso` y `huella`, incluido el rechazo
+    esperado (código 3) de la repetición.
+  - Las funciones se probaron con comandos inertes y la comparación, con copias
+    en memoria del JSON; no se usaron las bases.
+- **C4a y C4d:** el diseño y el informe decían que devuelven pedidos completos.
+  Sus proyecciones son parciales (`_id`/`estado` y `_id`/`total`). Se corrigió
+  la frase sin cambiar las consultas.
+- **Estados y referencias:**
+  - Cabecera de `design.md` y de la guía.
+  - Nota de documento histórico en el inventario.
+  - En el README, el enlace relativo al repositorio U6 pasa a una cita por
+    etiqueta y commit.
+  - Exclusión de `.git/` y `.atl/` del ZIP documentada.
+  - En `tasks.md`, 186 palabras y el veredicto revisado de A1.
+- **Fecha de la entrada 001:** no se pudo comprobar 2026-10-25. Se conservó el
+  valor y se agregó la evidencia disponible (creación de los archivos el
+  2026-11-06).
+- **Informe:** HTML y PDF regenerados y revisados página por página.
+
+**No se modificó:** los cinco scripts, el JSON, las salidas originales,
+contenedores, permisos ni credenciales. No se hizo staging ni commit.
+
+**Pendiente:** revisión del equipo y publicación. Ninguna aprobación docente.
+
+---
+
+## Entrada 009 — Cierre de observaciones de la revisión (Claude)
+
+**Fecha de la sesión:** 2026-11-06
+
+**Herramienta:** Claude Opus 5.5 (`claude-opus-5-5`) como asistente «el
+Gentleman» en Pi.
+
+**Qué se hizo:**
+- **Revisión leída:** `docs/Revision_TP7_FoodStore_2026-11-06.md`, ya
+  disponible, comparada con las correcciones de la entrada 008.
+  - R1, R3, R4 y R6 y los ajustes menores ya estaban resueltos.
+  - R2 y R5 estaban resueltos en parte.
+- **Ajustes adicionales:**
+  - **Guía §4.2:** creación exclusiva de credenciales con `set -C` y
+    `mkdir` sin `-p`; ningún archivo existente se reemplaza. Se probó con
+    archivos inertes en un directorio temporal.
+  - **Guía §4.1:** enlace al repositorio relacional y a su `EVALUACION.md` en
+    la etiqueta `u6-cierre`. Se comprobó en solo lectura que la etiqueta
+    existe en el remoto y apunta a `8f7877c8`. Se agregó la distinción entre
+    laboratorio existente e instancia descartable, y entre lote registrado y
+    extracción nueva.
+  - **README:** U8 «prevista, no iniciada»; enlace estable a U6. El documento
+    de revisión se declara material de trabajo, fuera de la entrega.
+- **Copia anterior del informe:** `docs/informe_u7.pdf` ya no existía al
+  empezar esta sesión y no se encontró bajo `~/Documentos/utn`, así que no se
+  trasladó nada. Esa versión anterior se conserva dentro de
+  `foodstore_nosql_movil.zip`.
+- **PDF:** no se regeneró, porque estos ajustes no afectan su contenido.
+
+**No se modificó:** los cinco scripts, el JSON, el commit histórico, las
+salidas originales, Docker, las credenciales ni los permisos. No se hizo staging
+ni commit.
+
+**Pendiente:** decisión del equipo sobre la conclusión y el contraste,
+versionado y publicación. Ninguna aprobación docente.
+
+---
+
+## Entrada 010 — Repositorio académico e informe referenciado (Claude)
+
+**Fecha de la sesión:** 2026-11-06
+
+**Herramienta:** Claude Opus 5.5 (`claude-opus-5-5`) como asistente «el
+Gentleman» en Pi.
+
+**Qué se solicitó:** preparar el repositorio como entrega académica,
+referenciar el informe y publicar la versión `u7-cierre` en
+`github.com/ismaelsuarez/foodstore_nosql_movil`.
+
+**Qué se hizo antes del commit:**
+- README raíz como portada académica. Se crearon `unidades/unidad-7/README.md`
+  (matriz de las siete consignas), `EVALUACION.md` (revisión y reproducción,
+  sin duplicar comandos) y `evidencias/README.md` (índice y huellas reales).
+- Ruta de lectura y criterio de revisión independiente en `AGENTS.md`.
+- En `.gitignore`, reglas para `.atl/`, ZIP, archivos de contraseñas y la
+  revisión interna, que no se versiona.
+- Informe con enlaces absolutos a la etiqueta `u7-cierre`, a U6 y a las
+  fuentes oficiales (sección y fecha). Se regeneró en 4 páginas A4 y cada
+  página se revisó. No incluye el hash del commit que lo contiene.
+
+**Estado humano:** no consta una revisión del equipo ni una aprobación docente.
+La publicación no equivale a aprobación.
+
+**No se modificó:** los cinco scripts, el JSON, las salidas originales, U6,
+Docker, las credenciales ni los permisos.
 
 ---
 

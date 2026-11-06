@@ -3,7 +3,8 @@
 **Estado al 2026-11-06:** T1–T5 ejecutadas con MongoDB 9.0.4 ([laboratorio](../docs/laboratorio_migracion.md)).
 El primer intento con `mongo:8.0` quedó bloqueado por la comprobación de kernel
 y se conserva como antecedente. T6 está redactada, con la conclusión pendiente de
-revisión del equipo. T7 sigue pendiente.
+revisión del equipo. T7: informe y repositorio preparados para la versión de
+entrega `u7-cierre`; la revisión del equipo no consta.
 
 ---
 
@@ -98,7 +99,7 @@ con código 1 por la comprobación de kernel (SERVER-136848). Se conserva deteni
 **Dependencias:** T3.
 
 **Estado:** completada el 2026-11-06. `mongodb/validaciones_mongodb.js` terminó con
-código 0 y 13 comprobaciones OK, antes y después de la repetición, con la misma
+código 0 y 12 comprobaciones OK, antes y después de la repetición, con la misma
 huella de documentos (`7a2351dc…`).
 
 ---
@@ -141,11 +142,13 @@ En MongoDB, C4a devolvió 1–5 y C4d devolvió 3 y 4 ([laboratorio](../docs/lab
 
 - [Contraste de IA](../docs/contraste_ia.md) con el prompt y la respuesta
   generada por Claude Opus 5.5 en la sesión del asistente.
-- A1 (atomicidad de `insertMany` y transacciones): necesita matiz.
+- A1 (atomicidad de `insertMany` y transacciones): primero «necesita matiz»;
+  revisada en `contraste_ia.md` §6 como «respaldada documentalmente; no
+  ensayada».
 - A2 (`CHECK` de PostgreSQL y total del pedido): respaldada.
 
-**Pendiente:** [conclusión](../docs/conclusion_u7.md), de 183 palabras, sujeta a
-revisión del equipo. El prompt quedó en `contraste_ia.md` en lugar de en
+**Pendiente:** [conclusión](../docs/conclusion_u7.md), de 186 palabras en su
+versión ajustada, sujeta a revisión del equipo. El prompt quedó en `contraste_ia.md` en lugar de en
 `bitacora_ia.md`, que lo referencia.
 
 ---
@@ -161,4 +164,15 @@ revisión del equipo. El prompt quedó en `contraste_ia.md` en lugar de en
 
 **Dependencias:** T6.
 
-**Pendiente:** no generar el PDF hasta tener las evidencias reales de T5 y T6.
+**Estado:** informe preparado para la versión de entrega `u7-cierre`; la
+revisión del equipo no consta.
+
+- [informe_u7.pdf](../informe_u7.pdf): 4 páginas A4, generado el 2026-11-06
+  con Chrome headless, con referencias enlazadas al repositorio y a la etiqueta.
+- Presentación: [README.md](../README.md) y [EVALUACION.md](../EVALUACION.md).
+- Fuente editable: [informe_u7.html](../informe_u7.html).
+- La guía de reproducción es [laboratorio_migracion.md](../docs/laboratorio_migracion.md).
+
+**Pendiente:** revisión del equipo. La publicación en
+`github.com/ismaelsuarez/foodstore_nosql_movil` se hace con la etiqueta
+`u7-cierre`, sin entrega al campus.

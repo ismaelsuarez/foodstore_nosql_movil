@@ -29,8 +29,9 @@ repositorio `foodstore_baseII` en la etiqueta `u6-cierre`.
    asigna la secuencia de PostgreSQL al instalar el seed; son IDs a comprobar
    mediante lectura del origen existente. Los IDs leídos están registrados en
    `unidades/unidad-7/docs/inventario_origen_entorno.md`. No fijar valores
-   supuestos. Los precios históricos de cada línea provienen de `detalle_pedido.precio_unitario` del
-   origen, no del precio actual de `producto.precio`.
+   supuestos. Los precios históricos de cada línea provienen de
+   `detalle_pedido.precio_unitario` del origen, no del precio actual de
+   `producto.precio`.
 
 6. **No copiar contraseñas, hashes ni datos personales reales.** El campo
    `contrasena` del dataset tiene el marcador académico `SEED_NO_AUTH`; no se
@@ -56,3 +57,27 @@ distinta de `created_at TIMESTAMPTZ`. Precio histórico en
 `detalle_pedido.precio_unitario`. Total físico en `pedido.total`.
 
 Para el detalle completo ver `schema.sql` del repositorio `foodstore_baseII`.
+
+## Ruta de lectura de la Unidad 7
+
+1. `unidades/unidad-7/README.md`: consignas, archivos, evidencias y resultados.
+2. `unidades/unidad-7/informe_u7.pdf`: informe de entrega (fuente en
+   `informe_u7.html`).
+3. `unidades/unidad-7/EVALUACION.md`: cómo revisar sin ejecutar motores y cómo
+   reproducir.
+4. `unidades/unidad-7/specs/design.md`: modelo, tipos, reglas y consultas.
+5. `unidades/unidad-7/postgresql/` y `unidades/unidad-7/mongodb/`: scripts.
+6. `unidades/unidad-7/evidencias/README.md`: extractos de ejecución y huellas.
+7. `unidades/unidad-7/docs/laboratorio_migracion.md`: única guía operativa.
+8. `unidades/unidad-7/docs/contraste_ia.md` y `conclusion_u7.md`: consignas 6
+   y 7.
+
+## Revisión independiente
+
+Quien revise este trabajo, sea una persona o un agente, debe contrastarlo con
+la consigna oficial y con el código y las evidencias del repositorio. Los
+resultados registrados son afirmaciones verificables, no hechos que haya que
+aceptar. Un fallo, una discrepancia o una prueba no realizada se informa como
+tal; no se omite ni se da por resuelta. La revisión de los scripts y del JSON
+no requiere ejecutar las bases. Ejecutarlas es una decisión aparte, que sigue
+`docs/laboratorio_migracion.md`.

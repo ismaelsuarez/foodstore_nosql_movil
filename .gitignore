@@ -4,6 +4,18 @@
 *.pgpass
 *.key
 *.pem
+# Archivos de contraseñas del laboratorio U7 (viven fuera del repositorio)
+*.pwd
+auth/
+
+# Registro local de herramientas del asistente (no es parte de la entrega)
+.atl/
+
+# Paquetes ZIP de trabajo o de entrega (se generan fuera del repositorio)
+*.zip
+
+# Material interno de revisión (no se versiona ni se entrega)
+unidades/unidad-7/docs/Revision_TP7_*.md
 
 # Archivos temporales y del sistema
 *.tmp
@@ -29,9 +41,9 @@ mongod.pid
 node_modules/
 __pycache__/
 
-# NO se ignoran todos los .json: los archivos sintéticos de intercambio
-# (por ejemplo, datos de migración generados para el laboratorio) se versionar
-# con nombre explícito. Solo se ignoran los que contengan credenciales o datos
+# NO se ignoran todos los .json, .txt, .md ni .pdf: el archivo de intercambio,
+# los extractos de evidencia, la documentación y el informe son entregables y se
+# versionan con nombre explícito. Solo se ignoran los que contengan credenciales o datos
 # de motor local:
 # mongo_keyfile.json
 # mongod_config.json
