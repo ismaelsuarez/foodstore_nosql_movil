@@ -165,6 +165,8 @@ hora exacta de cada consulta no se registró.
 - Si el equipo necesitara una carga atómica del lote, tendría que usar un
   replica set con transacciones. Queda fuera del alcance de U7 y no se agregó.
 
+> Veredicto revisado el 2026-11-06 con una fuente adicional: ver §6.1.
+
 ### A2 — `CHECK` en PostgreSQL y coherencia del total
 
 **Afirmación:**
@@ -213,6 +215,8 @@ motor» es una simplificación.
 - Por eso el diseño copia el total del origen y lo **verifica** (RI-02) en
   lugar de recalcularlo o corregirlo.
 
+> Precisiones del 2026-11-06: ver §6.2.
+
 ## 4. Lo que no se afirma
 
 - **Rendimiento.** Leer un documento completo evita uniones, pero no se
@@ -236,3 +240,67 @@ motor» es una simplificación.
 - Solo se contrastaron dos afirmaciones; el resto de la respuesta no se
   verificó con fuentes.
 - Ningún integrante del equipo revisó todavía este contraste.
+
+## 6. Ampliación del contraste (2026-11-06)
+
+Se agregó después de la primera versión de este archivo, a pedido del equipo.
+La respuesta de la IA (§1.2) y las afirmaciones citadas en §3 no se
+modificaron. Las fuentes se consultaron el 2026-11-06, antes de las 17:05:25
+UTC (hora registrada con `date -u`).
+
+| Id | Fuente | URL |
+|---|---|---|
+| F6 | MongoDB Manual — Production Considerations (transacciones) | https://www.mongodb.com/docs/manual/core/transactions-production-consideration/ |
+| F1 | MongoDB Manual — Atomicity and Transactions (consultada de nuevo) | https://www.mongodb.com/docs/manual/core/write-operations-atomicity/ |
+
+### 6.1. A1 frente a la afirmación completa
+
+La afirmación tiene tres partes.
+
+| Parte | Respaldo documental | Ensayado en el laboratorio |
+|---|---|---|
+| a) `insertMany` con varios documentos no es atómico para el lote; si falla a mitad de camino, lo ya insertado permanece | F1: «the modification of each document is atomic, but the operation as a whole is not atomic». F1 no dice literalmente que lo insertado «permanece»; es la consecuencia de que la operación completa no sea atómica | No. No se provocó un fallo parcial |
+| b) La atomicidad entre varios documentos requiere transacciones en un replica set o en un clúster fragmentado | F6, sección *Availability*: «MongoDB supports multi-document transactions on replica sets» y, en clústeres fragmentados, las transacciones distribuidas. F1: «including transactions on replica sets and sharded clusters» | No se ejecutó ninguna transacción |
+| c) Una instancia standalone, como la del laboratorio, no las admite | F6, sección *Availability*: «MongoDB standalone deployments do not support transactions. To use transactions, your deployment must be a multiple node replica set.» | El laboratorio es standalone; no se intentó abrir una transacción |
+
+**Veredicto revisado: respaldada documentalmente; no ensayada.**
+
+- **Antes:** el veredicto de §3 era «necesita matiz», porque F1 y F2 no
+  mencionaban el despliegue standalone.
+- **Ahora:** F6 lo menciona explícitamente, así que b) y c) quedan
+  respaldadas.
+- **Matiz que se mantiene en a):** la permanencia de lo ya insertado se deduce
+  de F1, pero F1 no la expresa con esas palabras.
+- **Ningún ensayo:** el respaldo es solo documental. El laboratorio no probó un
+  fallo parcial ni una transacción.
+
+### 6.2. A2: restricciones de una fila y total agregado
+
+F5 se mantiene como fuente. Hay que distinguir dos clases de reglas:
+
+- **Reglas de una fila.** Por ejemplo, `cantidad > 0`, `precio_unitario >= 0` y
+  `subtotal >= 0`. Las hacen cumplir los `CHECK` de `schema.sql`, porque solo
+  usan valores de la fila que se inserta o actualiza.
+- **Total agregado.** `pedido.total` debe ser igual a la suma de `subtotal` de
+  *otras* filas, las de `detalle_pedido` con `eliminado = FALSE`. F5 indica que
+  PostgreSQL no admite `CHECK` que dependan de datos distintos de la fila
+  comprobada, así que esta regla no se puede declarar con un `CHECK`.
+
+**Atribución de los disparadores.**
+
+- `calcular_total_pedido` y los disparadores `trg_total_detalle_*` pertenecen
+  al TPI (`tpi/sql/objetos_programables.sql`), conservado en el repositorio
+  `foodstore_baseII` con la etiqueta `u6-cierre`.
+- No son lógica creada por el trabajo de mantenimiento de U6.
+- Donde §3 dice «disparadores de U6», debe leerse «disparadores del TPI
+  conservados en el repositorio de U6».
+
+**Límites del código canónico, que se conservan:**
+
+- «DML directo concurrente requiere un protocolo externo: estos triggers no
+  garantizan serialización completa».
+- «Una escritura directa de `pedido.total` queda fuera de estos triggers de
+  detalle».
+
+**Veredicto: respaldada, sin cambios.** No se agregaron código ni pruebas para
+resolver estas notas.

@@ -5,8 +5,11 @@ Base de Datos II — UTN
 **Integrantes:** Avalos Pablo · Blangetti Sofia · Suarez Ismael
 
 > Diseño con decisiones adoptadas por el equipo mediante el encargo del
-> 2026-11-06. No es una aprobación docente. Ningún script de migración ni
-> consulta MongoDB se creó ni se ejecutó.
+> 2026-11-06. No es una aprobación docente.
+> **Estado vigente:** los scripts de extracción, carga, validación y consultas se
+> implementaron y se ejecutaron el 2026-11-06 con MongoDB 9.0.4; los resultados
+> están en [laboratorio_migracion.md](../docs/laboratorio_migracion.md) §6.
+> Cuando este diseño se redactó, ninguno existía todavía.
 > Los IDs y los parámetros de §7 provienen de la lectura real del origen del
 > 2026-11-06, registrada en el
 > [inventario del origen y del entorno](../docs/inventario_origen_entorno.md).
@@ -26,12 +29,20 @@ Las tres primeras filas son decisiones del equipo, no requisitos de la consigna.
 
 ### Justificación del modelo
 
-Las cuatro consultas de la consigna acceden a un pedido completo
-(C4a, C4d) o filtran por estado (C4b) y por producto dentro de las
-líneas (C4c). En todos los casos, la unidad de lectura es el pedido
-con sus líneas. Embeber el arreglo de líneas y los datos mínimos del
-cliente evita consultas a otras colecciones para las operaciones
-requeridas. Los identificadores de usuario, detalle y producto se conservan
+Las cuatro consultas de la consigna filtran y devuelven pedidos como
+unidad:
+
+- C4a lista los pedidos del lote con una proyección parcial (`_id` y
+  `estado`).
+- C4b filtra por estado.
+- C4c busca un producto dentro de las líneas.
+- C4d filtra por total con una proyección parcial (`_id` y `total`).
+
+Ni C4a ni C4d devuelven el pedido completo. El embebido responde al acceso
+frecuente declarado, que es recuperar el pedido completo: con el arreglo de
+líneas y los datos mínimos del cliente en el mismo documento, ese pedido se
+obtiene en una sola lectura, y las cuatro consultas se resuelven sin consultar
+otras colecciones. Los identificadores de usuario, detalle y producto se conservan
 para mantener trazabilidad con el modelo relacional.
 
 Usar el ID del pedido como `_id` aprovecha el índice único que MongoDB crea
@@ -75,7 +86,7 @@ No se diseñan sharding, replica sets ni sincronización automática.
 Solo se trasladan `usuario_id`, `nombre` y `apellido`, sintéticos del seed
 autorizado. No se trasladan `mail` (aunque termine en `.test`), `celular`,
 `contrasena`, `rol`, `eliminado` ni `created_at` del usuario. La extracción
-de nombre y apellido corresponde a la tarea T2b y aún no se hizo.
+de nombre y apellido se hizo en la tarea T2b (`datos/pedidos_origen.json`).
 
 ---
 
@@ -121,7 +132,8 @@ las consultas, no del resultado esperado.
 ## 5. Estructura de documento
 
 Ejemplo con los valores del pedido 1 leídos el 2026-11-06. Nombre y apellido
-quedan sin valor porque no se consultaron:
+quedaron sin valor porque al redactar este diseño todavía no se habían
+consultado; los valores extraídos están en `datos/pedidos_origen.json`:
 
 ```javascript
 {
@@ -163,7 +175,8 @@ para que los resultados coincidan: una diferencia se informa.
 Corresponde a `chk_detalle_pedido_cantidad`, `chk_detalle_pedido_precio_unitario`
 y `chk_detalle_pedido_subtotal` del origen.
 
-Verificación prevista en MongoDB (borrador, no ejecutado):
+Verificación prevista en MongoDB (borrador de diseño; la versión ejecutada, limitada
+al lote, está en `mongodb/validaciones_mongodb.js`):
 
 ```javascript
 db.pedidos.countDocuments({
@@ -193,7 +206,8 @@ FROM detalle_pedido;
 pedido, `total` es la suma de `subtotal` de las líneas no eliminadas, o cero si
 no hay ninguna.
 
-Verificación prevista en MongoDB (borrador, no ejecutado):
+Verificación prevista en MongoDB (borrador de diseño; la versión ejecutada, limitada
+al lote, está en `mongodb/validaciones_mongodb.js`):
 
 ```javascript
 db.pedidos.aggregate([
@@ -260,15 +274,16 @@ Las consultas comparativas cuentan **pedidos distintos**, no líneas.
 | Producto (C4c) | `producto_id = 1` (Muzzarella) | Es el producto presente en más pedidos (1, 3 y 5) y el único con dos precios históricos (1000.00 y 1050.00), así que pone a prueba el uso de `precio_unitario` |
 | Umbral (C4d) | `total > 3000.00` | Totales: 1050.00, 1500.00, 2800.00, 3150.00 y 6200.00; promedio 2940.00, mediana 2800.00. 3000.00 es un importe redondo apenas superior al promedio. Ningún total es igual a 3000.00, así que `>` y `>=` no se confunden |
 
-Resultados esperados según la lectura del origen (todavía no son resultados de
-consultas ejecutadas en ningún motor): C4b → 5 pedidos (1–5), C4c → 3 pedidos
-(1, 3, 5), C4d → 2 pedidos (3, 4).
+Resultados esperados según la lectura del origen, registrados antes de ejecutar
+las consultas: C4b → 5 pedidos (1–5), C4c → 3 pedidos (1, 3, 5), C4d → 2
+pedidos (3, 4). Los resultados observados el 2026-11-06 coinciden; ver
+`docs/laboratorio_migracion.md` §6.
 
 ---
 
 ## 8. Repetición de la carga
 
-- Antes de insertar, el futuro script cuenta los `_id` del lote que ya existen
+- Antes de insertar, `migracion_pedidos.js` cuenta los `_id` del lote que ya existen
   en `pedidos`. Si encuentra alguno, se detiene sin intentar la carga e informa
   los IDs en colisión.
 - El índice único de `_id` sigue siendo la protección del motor ante una

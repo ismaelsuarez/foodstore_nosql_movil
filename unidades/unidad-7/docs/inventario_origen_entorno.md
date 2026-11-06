@@ -5,6 +5,11 @@ solo lectura del origen PostgreSQL y descarga de la imagen MongoDB.
 **No es una extracción ni una migración.** No se escribió en PostgreSQL ni se
 inició MongoDB.
 
+> **Documento histórico.** Registra el estado del 2026-11-06 antes de la
+> migración, y sus secciones §5 y §7 describen ese momento. El estado vigente
+> (MongoDB 9.0.4, carga, validaciones y consultas ejecutadas) está en
+> [laboratorio_migracion.md](laboratorio_migracion.md).
+
 El trabajo se hizo en dos intervenciones del mismo día:
 
 1. **Primera inspección (bloqueada):** se revisaron los documentos y el entorno.
