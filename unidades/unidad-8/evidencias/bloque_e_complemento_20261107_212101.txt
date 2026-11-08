@@ -1,0 +1,290 @@
+Food Store U8 — Complemento puntual de cobertura y evidencia del bloque E
+Fecha real: 2026-11-07T21:21:01.174034-03:00
+Ejecución: writer acotado de Pi (OpenAI); no sesión principal de Claude ni revisión humana.
+Sin motores ni scripts de la cursada; bases leídas únicamente como bytes por sha256sum.
+Bloque E continúa en curso, no aprobado ni completo.
+
+== 1. Huellas históricas del cierre D
+Fuente única de valores esperados: unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt
+Extracción: líneas completas que satisfacen [0-9a-f]{64}  <ruta>.
+48 registros válidos: 46 scripts/CSV/metadatos/instantáneas/evidencias del repositorio + copia inicial de C + base final.
+Se comprueban todos; no se excluyen rutas ni se generan valores esperados desde archivos actuales.
+Base final esperada: cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace.
+Intento previo de extracción: una aserción equivocada esperaba 49 registros y falló antes de crear lista. El shell continuó y sha256sum -c /tmp/gpseBg6u/gaYZmIU8/tmp.XW65AlDbI0/lista falló con rc=1 (lista inexistente), sin comparar archivos; el armado de evidencia posterior falló por exclusiones inexistente. No se modificó ningún archivo protegido. Se corrigió el conteo a partir del registro histórico, no los archivos ni sus huellas.
+
+Lista temporal nueva: /tmp/gpseBg6u/gaYZmIU8/tmp.SUoDMovnUU/lista (mktemp -d)
+Procedencia por ruta y línea:
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:5: 2635767318a7b5369f27496a8d4b5a9f3c585159907811cd25059f4348c3efbd  unidades/unidad-8/movil/semaforo.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:6: fddeeff81783cdbb2bb0a79743a0493d4b001df59ac75252ad48974c02db814d  unidades/unidad-8/movil/crear_borrador.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:7: 108014394fac77869d9035a23db35325137a33040783c5e679cd40ddac5b3b33  unidades/unidad-8/movil/aceptar_precio.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:8: 22306717bf5efd65817a5672f1c8ea7a79b9b4bc22435a7c2d370ae84b0b7083  unidades/unidad-8/movil/insertar_solicitud.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:9: 5a23749d09a683cc42e90a5135f6c894c1d7979a2b1e5d23aee73d69aa164591  unidades/unidad-8/movil/comprobar_caso_d.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:10: c607185e9bccc1cf398c5239e1b3fc9bed96ff52b7299bc31ea5ee0b2bee4780  unidades/unidad-8/movil/estado_bloque_d.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:11: 7c952fc5d8bfd3b54bd2a9477a0342f8b172f84606412652be0947aabe02ea04  unidades/unidad-8/movil/simular_producto_ausente.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:12: b301aa8c97ce0ba32bf7bd6f5fcdacff595d3311f53c4a251b7b787a4b06392b  unidades/unidad-8/movil/bloque_d.sh
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:13: 90f075bd2ccf25c1a6e5087f2768f5ce93a997d3558c9f05749638523629f524  unidades/unidad-8/movil/ejecutar_bloque_d.sh
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:14: 52cdd7a6847538e67f264b1404fdd0dd423caab37f5df86ef89aee6a523f2cbf  unidades/unidad-8/movil/controles_d.sh
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:15: 2693c27a2337a61352b4872f4cd6a450ad3a092d5086c0a49f47af1b9adbf2d8  unidades/unidad-8/postgresql/preparar_c2_precio.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:16: d8b3ba75aad8143533109bc2cd334d6983181fc7605864f907c9785915b883d3  unidades/unidad-8/postgresql/preparar_c3_stock.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:17: 3f89d5538689e11c2359f66b1764ee711f3ec749f1932deff3da29e4e44c4c49  unidades/unidad-8/postgresql/preparar_c4_baja.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:18: 1427f34394a96a92914a34744e3d7c7d57322d881b7b8523158fa47928d7a668  unidades/unidad-8/postgresql/control_invariancia.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:21: cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  unidades/unidad-8/movil/schema_sqlite.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:22: 2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7  unidades/unidad-8/movil/pruebas_sqlite.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:23: cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  unidades/unidad-8/movil/verificar_bloque_b.sh
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:24: 523f31b84af57ecc73cbc14ee1fa851096759c35f62af92a623e32d43570c0b7  unidades/unidad-8/movil/snapshot_servidor.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:25: 1273c01344352d0e7f624da99aaaa2327d252e46e059737a814c2c0a210e0b86  unidades/unidad-8/movil/renovar_snapshot.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:26: be699c02dd35f1399c22a45ebf08470b0241750ac62352dc320d6bfa3324444b  unidades/unidad-8/movil/consultas_bloque_c.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:27: d806311f1cb4832e3c6370ff697d2bc727e654bdf36546757a0baa029d6744c4  unidades/unidad-8/movil/preparar_foodstore_movil.sh
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:28: b063dec075798eb7cf322c3859be829b822902425cebdeab941b3a33047eb10e  unidades/unidad-8/movil/verificar_bloque_c.sh
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:29: 46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc  unidades/unidad-8/movil/servidor_snapshot.csv
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:30: 8451dcdff04efbe78960f96ed36cb86013345fb5db9fe8db2f8b78d24c92052d  unidades/unidad-8/movil/servidor_snapshot_meta.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:31: a2fbec88c044bc51d7755660ad83d6923c70c145712ed8252df1b421360654b8  unidades/unidad-8/postgresql/laboratorio_u8.sh
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:32: 97afca557a47f438f134009983233b7502c8c42d7e506d3c428254bd4a12d610  unidades/unidad-8/postgresql/datos_auxiliares_u8.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:33: b5aceb77cc63dd7ff5536b049eb9859141a7675ba44f539471b0dc57548a0ae9  unidades/unidad-8/postgresql/snapshot_movil.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:34: 6bb56060f2c7315773740665465f2446dad99a6576f4e29e411e8bf7457c06dc  unidades/unidad-8/postgresql/exportar_snapshot.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:35: e9e0f37c79fc491bece64cf0c5c4a82a460b7915f36515cb2df0dd6bf175f120  unidades/unidad-8/postgresql/verificar_instalacion_u8.sql
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:38: f489d5d3b19e98ee49ed7c2e8665f9bbcf943c197275f8d0111f6fdee8de3821  unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:39: f9c0be2987bf3a710b4b058d272f82505bb76a2c30160a34ec0a916942c7a225  unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:40: d8526133b3646e53e7f5ca515deae9f6f6fab6f990dc86b9f074ee19666942a9  unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:41: e42c3243e468b60fe92d93f842d3910647d667a5e9b2911eedb34b46d25bc6a5  unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:42: 6f3ea4350019c04871b35fc1e94415e88355f8faba68513e84cda00d733496a6  unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:43: 259ab3fb124ecb7b4d81dc46eaa430d072031a3ec5f6c40f6f279ed4190c8c01  unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:46: ff2acc1de7379ebbbb40c3a77fa8cf0ae4454408ef7fe64f7100e3faf9ddf2cf  unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:47: dd743f377996df9e1b881611457e433b5b603ca794219288108d73d5382064f3  unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:48: ebc7cf6a98ea4bc33bae7634b2d69b5cb01bd0603720a471d2c62f0fac9f9396  unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:49: 9576617527f61577088fb91f361d4fc05a21e32260575be499c52bef6d5c47c7  unidades/unidad-8/evidencias/bloque_b_verificacion_registro_20261107_121806.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:50: aa49c58d7a5567d3f258604cea91fe1f13ceeb530c2461ef80d8b4debaab991d  unidades/unidad-8/evidencias/bloque_c_cierre_20261107_130545.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:51: 97ee9f9b3557a86bb6fe57d60f3a8f502bef4292da9c48c3d3d30f7e400c0b41  unidades/unidad-8/evidencias/bloque_c_cierre_complemento_20261107_130601.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:52: 60be4e10dd2ea3903a22b37b8bca31a72537df4e3e2bf97cceb1ef5606fcc814  unidades/unidad-8/evidencias/bloque_c_postgresql_20261107_125121.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:53: 186a868e7a8efcd5a11a591346e8326e386af41e116fdb50a810a5279bcef182  unidades/unidad-8/evidencias/bloque_c_sqlite_20261107_130343.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:54: b377f1d43534c0856f71d1d3612779b002ad29ea97b2fb1e0ef0c37deef95a93  unidades/unidad-8/evidencias/bloque_d_entregable_20261107_195358.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:55: 52f94d6aa73aedfd6a5d21769dc2ccbb271d46015bedec4321a219c6b750155a  unidades/unidad-8/evidencias/bloque_d_entregable_continuacion_c6_20261107_195500.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:56: 290421d1aeef0fd9e8fda006c7b67d39022cc13ac6394ddf62e38a6044132352  unidades/unidad-8/evidencias/bloque_d_controles_copias_20261107_195510.txt
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:60: 81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  /tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db
+unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt:65: cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace  unidades/unidad-8/movil/foodstore_movil.db
+
+Lista exacta suministrada a sha256sum:
+2635767318a7b5369f27496a8d4b5a9f3c585159907811cd25059f4348c3efbd  unidades/unidad-8/movil/semaforo.sql
+fddeeff81783cdbb2bb0a79743a0493d4b001df59ac75252ad48974c02db814d  unidades/unidad-8/movil/crear_borrador.sql
+108014394fac77869d9035a23db35325137a33040783c5e679cd40ddac5b3b33  unidades/unidad-8/movil/aceptar_precio.sql
+22306717bf5efd65817a5672f1c8ea7a79b9b4bc22435a7c2d370ae84b0b7083  unidades/unidad-8/movil/insertar_solicitud.sql
+5a23749d09a683cc42e90a5135f6c894c1d7979a2b1e5d23aee73d69aa164591  unidades/unidad-8/movil/comprobar_caso_d.sql
+c607185e9bccc1cf398c5239e1b3fc9bed96ff52b7299bc31ea5ee0b2bee4780  unidades/unidad-8/movil/estado_bloque_d.sql
+7c952fc5d8bfd3b54bd2a9477a0342f8b172f84606412652be0947aabe02ea04  unidades/unidad-8/movil/simular_producto_ausente.sql
+b301aa8c97ce0ba32bf7bd6f5fcdacff595d3311f53c4a251b7b787a4b06392b  unidades/unidad-8/movil/bloque_d.sh
+90f075bd2ccf25c1a6e5087f2768f5ce93a997d3558c9f05749638523629f524  unidades/unidad-8/movil/ejecutar_bloque_d.sh
+52cdd7a6847538e67f264b1404fdd0dd423caab37f5df86ef89aee6a523f2cbf  unidades/unidad-8/movil/controles_d.sh
+2693c27a2337a61352b4872f4cd6a450ad3a092d5086c0a49f47af1b9adbf2d8  unidades/unidad-8/postgresql/preparar_c2_precio.sql
+d8b3ba75aad8143533109bc2cd334d6983181fc7605864f907c9785915b883d3  unidades/unidad-8/postgresql/preparar_c3_stock.sql
+3f89d5538689e11c2359f66b1764ee711f3ec749f1932deff3da29e4e44c4c49  unidades/unidad-8/postgresql/preparar_c4_baja.sql
+1427f34394a96a92914a34744e3d7c7d57322d881b7b8523158fa47928d7a668  unidades/unidad-8/postgresql/control_invariancia.sql
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  unidades/unidad-8/movil/schema_sqlite.sql
+2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7  unidades/unidad-8/movil/pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  unidades/unidad-8/movil/verificar_bloque_b.sh
+523f31b84af57ecc73cbc14ee1fa851096759c35f62af92a623e32d43570c0b7  unidades/unidad-8/movil/snapshot_servidor.sql
+1273c01344352d0e7f624da99aaaa2327d252e46e059737a814c2c0a210e0b86  unidades/unidad-8/movil/renovar_snapshot.sql
+be699c02dd35f1399c22a45ebf08470b0241750ac62352dc320d6bfa3324444b  unidades/unidad-8/movil/consultas_bloque_c.sql
+d806311f1cb4832e3c6370ff697d2bc727e654bdf36546757a0baa029d6744c4  unidades/unidad-8/movil/preparar_foodstore_movil.sh
+b063dec075798eb7cf322c3859be829b822902425cebdeab941b3a33047eb10e  unidades/unidad-8/movil/verificar_bloque_c.sh
+46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc  unidades/unidad-8/movil/servidor_snapshot.csv
+8451dcdff04efbe78960f96ed36cb86013345fb5db9fe8db2f8b78d24c92052d  unidades/unidad-8/movil/servidor_snapshot_meta.txt
+a2fbec88c044bc51d7755660ad83d6923c70c145712ed8252df1b421360654b8  unidades/unidad-8/postgresql/laboratorio_u8.sh
+97afca557a47f438f134009983233b7502c8c42d7e506d3c428254bd4a12d610  unidades/unidad-8/postgresql/datos_auxiliares_u8.sql
+b5aceb77cc63dd7ff5536b049eb9859141a7675ba44f539471b0dc57548a0ae9  unidades/unidad-8/postgresql/snapshot_movil.sql
+6bb56060f2c7315773740665465f2446dad99a6576f4e29e411e8bf7457c06dc  unidades/unidad-8/postgresql/exportar_snapshot.sql
+e9e0f37c79fc491bece64cf0c5c4a82a460b7915f36515cb2df0dd6bf175f120  unidades/unidad-8/postgresql/verificar_instalacion_u8.sql
+f489d5d3b19e98ee49ed7c2e8665f9bbcf943c197275f8d0111f6fdee8de3821  unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv
+f9c0be2987bf3a710b4b058d272f82505bb76a2c30160a34ec0a916942c7a225  unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt
+d8526133b3646e53e7f5ca515deae9f6f6fab6f990dc86b9f074ee19666942a9  unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv
+e42c3243e468b60fe92d93f842d3910647d667a5e9b2911eedb34b46d25bc6a5  unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt
+6f3ea4350019c04871b35fc1e94415e88355f8faba68513e84cda00d733496a6  unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv
+259ab3fb124ecb7b4d81dc46eaa430d072031a3ec5f6c40f6f279ed4190c8c01  unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt
+ff2acc1de7379ebbbb40c3a77fa8cf0ae4454408ef7fe64f7100e3faf9ddf2cf  unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt
+dd743f377996df9e1b881611457e433b5b603ca794219288108d73d5382064f3  unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+ebc7cf6a98ea4bc33bae7634b2d69b5cb01bd0603720a471d2c62f0fac9f9396  unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt
+9576617527f61577088fb91f361d4fc05a21e32260575be499c52bef6d5c47c7  unidades/unidad-8/evidencias/bloque_b_verificacion_registro_20261107_121806.txt
+aa49c58d7a5567d3f258604cea91fe1f13ceeb530c2461ef80d8b4debaab991d  unidades/unidad-8/evidencias/bloque_c_cierre_20261107_130545.txt
+97ee9f9b3557a86bb6fe57d60f3a8f502bef4292da9c48c3d3d30f7e400c0b41  unidades/unidad-8/evidencias/bloque_c_cierre_complemento_20261107_130601.txt
+60be4e10dd2ea3903a22b37b8bca31a72537df4e3e2bf97cceb1ef5606fcc814  unidades/unidad-8/evidencias/bloque_c_postgresql_20261107_125121.txt
+186a868e7a8efcd5a11a591346e8326e386af41e116fdb50a810a5279bcef182  unidades/unidad-8/evidencias/bloque_c_sqlite_20261107_130343.txt
+b377f1d43534c0856f71d1d3612779b002ad29ea97b2fb1e0ef0c37deef95a93  unidades/unidad-8/evidencias/bloque_d_entregable_20261107_195358.txt
+52f94d6aa73aedfd6a5d21769dc2ccbb271d46015bedec4321a219c6b750155a  unidades/unidad-8/evidencias/bloque_d_entregable_continuacion_c6_20261107_195500.txt
+290421d1aeef0fd9e8fda006c7b67d39022cc13ac6394ddf62e38a6044132352  unidades/unidad-8/evidencias/bloque_d_controles_copias_20261107_195510.txt
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  /tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db
+cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace  unidades/unidad-8/movil/foodstore_movil.db
+
+Comandos exactos (rc=$? es la primera operación tras sha256sum, sin wc ni tubería):
+work=/tmp/gpseBg6u/gaYZmIU8/tmp.SUoDMovnUU
+sha256sum -c "$work/lista" >"$work/out" 2>"$work/err"; rc=$?
+printf '%s\n' "$rc" >"$work/rc"
+--- stdout ---
+unidades/unidad-8/movil/semaforo.sql: La suma coincide
+unidades/unidad-8/movil/crear_borrador.sql: La suma coincide
+unidades/unidad-8/movil/aceptar_precio.sql: La suma coincide
+unidades/unidad-8/movil/insertar_solicitud.sql: La suma coincide
+unidades/unidad-8/movil/comprobar_caso_d.sql: La suma coincide
+unidades/unidad-8/movil/estado_bloque_d.sql: La suma coincide
+unidades/unidad-8/movil/simular_producto_ausente.sql: La suma coincide
+unidades/unidad-8/movil/bloque_d.sh: La suma coincide
+unidades/unidad-8/movil/ejecutar_bloque_d.sh: La suma coincide
+unidades/unidad-8/movil/controles_d.sh: La suma coincide
+unidades/unidad-8/postgresql/preparar_c2_precio.sql: La suma coincide
+unidades/unidad-8/postgresql/preparar_c3_stock.sql: La suma coincide
+unidades/unidad-8/postgresql/preparar_c4_baja.sql: La suma coincide
+unidades/unidad-8/postgresql/control_invariancia.sql: La suma coincide
+unidades/unidad-8/movil/schema_sqlite.sql: La suma coincide
+unidades/unidad-8/movil/pruebas_sqlite.sql: La suma coincide
+unidades/unidad-8/movil/verificar_bloque_b.sh: La suma coincide
+unidades/unidad-8/movil/snapshot_servidor.sql: La suma coincide
+unidades/unidad-8/movil/renovar_snapshot.sql: La suma coincide
+unidades/unidad-8/movil/consultas_bloque_c.sql: La suma coincide
+unidades/unidad-8/movil/preparar_foodstore_movil.sh: La suma coincide
+unidades/unidad-8/movil/verificar_bloque_c.sh: La suma coincide
+unidades/unidad-8/movil/servidor_snapshot.csv: La suma coincide
+unidades/unidad-8/movil/servidor_snapshot_meta.txt: La suma coincide
+unidades/unidad-8/postgresql/laboratorio_u8.sh: La suma coincide
+unidades/unidad-8/postgresql/datos_auxiliares_u8.sql: La suma coincide
+unidades/unidad-8/postgresql/snapshot_movil.sql: La suma coincide
+unidades/unidad-8/postgresql/exportar_snapshot.sql: La suma coincide
+unidades/unidad-8/postgresql/verificar_instalacion_u8.sql: La suma coincide
+unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv: La suma coincide
+unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt: La suma coincide
+unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv: La suma coincide
+unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt: La suma coincide
+unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv: La suma coincide
+unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_b_verificacion_registro_20261107_121806.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_c_cierre_20261107_130545.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_c_cierre_complemento_20261107_130601.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_c_postgresql_20261107_125121.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_c_sqlite_20261107_130343.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_d_entregable_20261107_195358.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_d_entregable_continuacion_c6_20261107_195500.txt: La suma coincide
+unidades/unidad-8/evidencias/bloque_d_controles_copias_20261107_195510.txt: La suma coincide
+/tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db: La suma coincide
+unidades/unidad-8/movil/foodstore_movil.db: La suma coincide
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código sha256sum -c: 0
+Cantidad efectivamente comprobada: 48; coincidentes (stdout «La suma coincide»): 48; FAILED: 0; faltantes: 0. La salida usa la configuración regional en español, no el literal «OK».
+El registro bloque_e_resguardo_revision_20261107_210348.txt, §3, mostró por error el código de wc, no el de sha256sum (procedencia: encargo comunicado en esta conversación). No se modifica ni se le atribuye retroactivamente otro código. Este complemento conserva el código observado ahora.
+
+== 2. Conservación C6
+Fecha real: 2026-11-07T21:21:46.008991-03:00
+Destino NUEVO creado con mkdir (sin exist_ok): /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146
+Enumeración: find /tmp/foodstore_u8_d_puntos_20261107_195358 -maxdepth 1 -type f \( -name 'c6_*.txt' -o -name 'c6_*.txt.completo' \)
+Archivos regulares encontrados: 9; no se siguen enlaces, no se copian .db ni se mueven originales.
+Huellas históricas buscadas en evidencias/*.txt: solo c6_1_antes.txt y c6_1_despues.txt tienen valores archivados (continuación C6, líneas 5–6). Los demás se validan solo como copia actual.
+Faltantes respecto de las ocho capturas de estado y c6_simulacion.txt: ninguno
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_1_antes.txt /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_1_antes.txt
+c6_1_antes.txt | origen=fcb37e3a92bf32fd67b5b83663344d8668f5e59a5d7aa363ccab1e0e58989040 | destino=fcb37e3a92bf32fd67b5b83663344d8668f5e59a5d7aa363ccab1e0e58989040 | coincide histórica unidades/unidad-8/evidencias/bloque_d_entregable_continuacion_c6_20261107_195500.txt:5
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_1_antes.txt.completo /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_1_antes.txt.completo
+c6_1_antes.txt.completo | origen=145f71d0678d4d16ee8e27c7a38f855c3812a59a434723922cd100684a765400 | destino=145f71d0678d4d16ee8e27c7a38f855c3812a59a434723922cd100684a765400 | sin huella histórica: solo coincidencia actual de la copia
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_1_despues.txt /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_1_despues.txt
+c6_1_despues.txt | origen=fcb37e3a92bf32fd67b5b83663344d8668f5e59a5d7aa363ccab1e0e58989040 | destino=fcb37e3a92bf32fd67b5b83663344d8668f5e59a5d7aa363ccab1e0e58989040 | coincide histórica unidades/unidad-8/evidencias/bloque_d_entregable_continuacion_c6_20261107_195500.txt:6
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_1_despues.txt.completo /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_1_despues.txt.completo
+c6_1_despues.txt.completo | origen=a10e6eb5c4c2d713ada9f3425dd6d5b1cddbb5ce1d8eae9b4e4fe8762f017809 | destino=a10e6eb5c4c2d713ada9f3425dd6d5b1cddbb5ce1d8eae9b4e4fe8762f017809 | sin huella histórica: solo coincidencia actual de la copia
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_2_antes.txt /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_2_antes.txt
+c6_2_antes.txt | origen=fcb37e3a92bf32fd67b5b83663344d8668f5e59a5d7aa363ccab1e0e58989040 | destino=fcb37e3a92bf32fd67b5b83663344d8668f5e59a5d7aa363ccab1e0e58989040 | sin huella histórica: solo coincidencia actual de la copia
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_2_antes.txt.completo /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_2_antes.txt.completo
+c6_2_antes.txt.completo | origen=988ac98336edab9add0426391044ae22a1623638f5ba25ea5b0dc048510d55a8 | destino=988ac98336edab9add0426391044ae22a1623638f5ba25ea5b0dc048510d55a8 | sin huella histórica: solo coincidencia actual de la copia
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_2_despues.txt /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_2_despues.txt
+c6_2_despues.txt | origen=fcb37e3a92bf32fd67b5b83663344d8668f5e59a5d7aa363ccab1e0e58989040 | destino=fcb37e3a92bf32fd67b5b83663344d8668f5e59a5d7aa363ccab1e0e58989040 | sin huella histórica: solo coincidencia actual de la copia
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_2_despues.txt.completo /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_2_despues.txt.completo
+c6_2_despues.txt.completo | origen=95af49ce98909ecaced8b31a05c4e09103061923f74f5e03bfbf9aa208df6571 | destino=95af49ce98909ecaced8b31a05c4e09103061923f74f5e03bfbf9aa208df6571 | sin huella histórica: solo coincidencia actual de la copia
+Comando: cp --no-dereference --preserve=timestamps /tmp/foodstore_u8_d_puntos_20261107_195358/c6_simulacion.txt /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/complemento_20261107_212146/c6_simulacion.txt
+c6_simulacion.txt | origen=0cc3cf5c4c1733b83a7a3d8de2159caeaa44df1f7dbca5c79341bef348c8feca | destino=0cc3cf5c4c1733b83a7a3d8de2159caeaa44df1f7dbca5c79341bef348c8feca | sin huella histórica: solo coincidencia actual de la copia
+No se reconstruyó ninguna captura ni se ejecutó ningún caso. Los resguardos anteriores quedan intactos.
+
+== 3. Cobertura y referencias (lectura, no ensayos nuevos)
+Fecha real: 2026-11-07T21:24:26.465850-03:00
+Tabla del inventario comprobada antes de editar: raíz/TPI=4, tpi/pruebas=8, U1=1, U2=8, U3=5, U4=6, U5=51, U6=5, U7=5, U8=27.
+84 = 8+1+8+5+6+51+5; 115 = 4+84+27; 120 = 115+5 históricos U7; pendientes de lectura=0.
+No se volvieron a leer los 84 scripts. Huella igual acredita identidad de versión, no revisión de contenido.
+Lectura faltante comunicada en esta conversación: ChatGPT/Mila, vía conector GitHub fijando commit U6 8f7877c8a1ff25c1be28b29c46c38cd7c9663e86; no sesión principal de Claude ni revisión humana.
+consultas_cobertura_tpi.sql: dos consultas de lectura; agrupación de pedidos no eliminados por usuario con HAVING sin unión multiplicadora al detalle; importes agregados por usuario antes de RANK, empates conservados y presentación estable por id; modelo usuario/pedido y advertencia de incompatibilidad automática de U2. Sin inconsistencia estática encontrada respecto del propósito. No ejecutada en PostgreSQL, resultados no comprobados y no todos los enlaces relativos verificados.
+
+Comando: git -C ../foodstore_baseII rev-parse u6-cierre:tpi/sql/consultas_cobertura_tpi.sql
+--- stdout ---
+1c5bb99ef73492e9cff364bcdfdde91c8906b095
+--- stderr ---
+Código: 0
+
+Comando: git -C ../foodstore_baseII diff 451718f u6-cierre -- unidades/unidad-6/restore_test.sh
+--- stdout ---
+diff --git a/unidades/unidad-6/restore_test.sh b/unidades/unidad-6/restore_test.sh
+index c9ea766..95cd0b4 100644
+--- a/unidades/unidad-6/restore_test.sh
++++ b/unidades/unidad-6/restore_test.sh
+@@ -31,7 +31,7 @@
+ # El destino debe ser nuevo y distinto del origen y de las bases protegidas.
+ # Nunca se elimina automáticamente, ni siquiera ante un fallo o interrupción.
+ # No se ejecutan dropdb, DROP, ALTER SYSTEM, CREATE ROLE, pg_dumpall ni --globals.
+-# Solo se registran medidas; las metas RPO/RTO siguen pendientes de aprobación.
++# El script registra las mediciones; su comparación con los objetivos se documenta en el informe y en SPEC_U6.md.
+ # Códigos: 0 restauración validada; 1 fallo desde el intento de creación o durante
+ # restauración/validación; 2 error de uso/entorno antes de escribir en PostgreSQL.
+ # Antes de disponer de un directorio de ejecución propio, el diagnóstico se emite
+@@ -86,7 +86,7 @@ on_exit() {
+       printf 'MODO=%s\nALCANCE=%s\n' "$mode" "$scope_text"
+       printf 'ANTIGUEDAD_RESPALDO_SEGUNDOS=%s\nPG_DUMP_INICIO=%s\n' "$backup_age" "$dump_start"
+       printf 'RESPALDO=%s\nLINEA_BASE=%s\nLOG=%s\n' "$dump_file" "$baseline_file" "$log_file"
+-      printf 'METAS=RPO/RTO pendientes de aprobación; no se evalúa cumplimiento.\n'
++      printf 'METAS=El script registra las mediciones; su comparación con los objetivos se documenta en el informe y en SPEC_U6.md.\n'
+     } >"$run_dir/resumen.txt"
+   fi
+   exit "$status"
+@@ -240,7 +240,7 @@ log INFO "argumentos exactos de restauración: $restore_command; entrada=$dump_f
+ test_start_epoch="$(date +%s)"
+ backup_age=$((test_start_epoch - dump_start_epoch))
+ log INFO "ANTIGUEDAD_RESPALDO_SEGUNDOS=$backup_age PG_DUMP_INICIO=$dump_start"
+-log INFO "metas RPO/RTO pendientes de aprobación; no se evalúa cumplimiento"
++log INFO "El script registra las mediciones; su comparación con los objetivos se documenta en el informe y en SPEC_U6.md."
+ 
+ stage="contenedor"
+ # Se consulta solo State.Running, nunca variables de entorno del contenedor.
+@@ -314,7 +314,7 @@ log INFO "RTO_FIN=$rto_end_iso RTO_OBSERVADO_SEGUNDOS=$rto"
+   printf 'COMANDO_RESTAURACION=%s\n' "$restore_command"
+   printf 'ARCHIVOS=restore_test.log, pg_restore_list.txt, pg_restore_stdout.txt, pg_restore_stderr.txt, validaciones_linea_base.txt, validaciones_destino.txt, comparacion.diff, resumen.txt\n'
+   printf 'DESTINO_CREADO_POR_ESTA_EJECUCION=1\nCONSERVACION=Se conserva el destino.\n'
+-  printf 'METAS=RPO/RTO pendientes de aprobación; no se evalúa cumplimiento.\n'
++  printf 'METAS=El script registra las mediciones; su comparación con los objetivos se documenta en el informe y en SPEC_U6.md.\n'
+ } >"$run_dir/resumen.txt"
+ log INFO "RESULTADO=RESTAURACION_VALIDADA resumen=$run_dir/resumen.txt"
+ completed=1
+--- stderr ---
+Código: 0
+
+Comando: git -C ../foodstore_baseII log -1 --format=%h %s u6-cierre -- unidades/unidad-3/sql/indices.sql
+--- stdout ---
+da5f3e4 fix(tp5): alinear con modelo oficial y validar resultados
+--- stderr ---
+Código: 0
+
+Comando: git -C ../foodstore_baseII log -1 --format=%h %s u6-cierre -- unidades/unidad-3/informes/evidencia_modelo_oficial.md
+--- stdout ---
+da5f3e4 fix(tp5): alinear con modelo oficial y validar resultados
+--- stderr ---
+Código: 0
+
+H1: ../foodstore_baseII/unidades/unidad-6/evidencias/correccion_restauracion_20261105.txt:17 (SHA-256 68031b1f0d5e07048d5547897b7fe81a4185921562524f74449ac76fd42f9938), 122–130 (renombre y origen ausente), 158–172 (restauración sin-propietarios validada, exit=0). git show 451718f:unidades/unidad-6/restore_test.sh | sha256sum dio 68031b1f0d5e07048d5547897b7fe81a4185921562524f74449ac76fd42f9938; git show u6-cierre:unidades/unidad-6/restore_test.sh | sha256sum dio 973223df6fa0321642e8ac545becc6207ecb7fb4ae5b7c63c11e995bf51b8f64. Diff arriba: cuatro líneas de comentario/mensajes, ninguna de conexión, createdb o pg_restore. Descarte limitado al modo, caso y versión ensayados; cierre apoyado por diff, no nueva ejecución.
+H3: ../foodstore_baseII/unidades/unidad-3/informes/evidencia_modelo_oficial.md:18–23 (fecha/entorno), 97–104 (protocolo y límites), 207–208 (lectura 10,8865 → 0,136 ms), 258 (escritura +91,8792 %), 288–302 (INSERT 1000 en BEGIN/ROLLBACK, medias 7,6655 → 14,7085 ms y límites). Cálculo contrastado: (14,7085 − 7,6655) / 7,6655 × 100 = 91,8792 % redondeado. Dos corridas válidas por caso, no costo universal aislado. Ambos archivos provienen de da5f3e4, como muestra el log.
+H5: unidades/unidad-8/evidencias/bloque_c_sqlite_20261107_130343.txt:219–227. e3 rechaza CSV con columna sobrante, código 1, mensaje «no se abre la base», snapshot_servidor y producto_cache idénticos. No hay registro disponible que reproduzca el comportamiento original de .import; e3 no ejecutó esa importación en el motor para renovar. Complemento, no uno de los tres desarrollos principales.
+H6: unidades/unidad-8/movil/semaforo.sql:56,103–109 (solo PENDIENTE),125–129 (evaluadas previas); unidades/unidad-8/evidencias/bloque_d_entregable_continuacion_c6_20261107_195500.txt:147–154 (controles OK, 0 procesadas),177–197 (estado consultado idéntico, CONFLICTO original conservado). Huella de versión 2635767318a7b5369f27496a8d4b5a9f3c585159907811cd25059f4348c3efbd comprobada en §1. No se comparó toda la base; descarte para C6-2 y la versión documentada.
+Selección propuesta: H1 (U6), H3 (U3), H6 (U8); sin aprobación humana. H5 complemento; E-1 opcional y no autorizado.
+
+== 4. Documentos y orden de conservación
+Se actualizan únicamente revision_inventario_scripts.md, revision_scripts_ia.md, bitacora_ia.md, kiro/tasks.md y README.md. Ninguna evidencia histórica se modifica.
+E sigue incompleto: revisión humana, DUIA, informe, ensayo de defensa y preparación de la entrega elegida. Consigna: ZIP O repositorio con etiqueta tp8; modalidad y operaciones Git pendientes de decisión del equipo.
+Después de cerrar este complemento se copian los cinco documentos y esta evidencia a complemento_20261107_212146/ (destino de §2), sin sobrescribir. Sus huellas origen/destino se informan en el handoff final: no se reescribe este archivo después de copiarlo para evitar alterar su huella. No se crea un manifiesto nuevo en los resguardos anteriores.
+
+== 5. Validación estructural antes de copiar
+Fecha real: 2026-11-07T21:25:01.014626-03:00
+Comando de fecha observado: date '+%Y-%m-%dT%H:%M:%S%z' -> 2026-11-07T21:24:26-0300.
+Aserciones Python sobre los cinco documentos y este registro: inventario 115+5=120, pendientes 0, selección H1/H3/H6, H5 complemento, ZIP o repositorio tp8, E incompleto y referencia a la evidencia nueva presente en los cinco documentos. Resultado: OK.
+Conteo del stdout español de sha256sum conservado: 48 «La suma coincide»; rc=0, stderr vacío, faltantes=0. Registro C6: 9 copias, 2 con contraste histórico y 7 con coincidencia actual únicamente. Resultado: OK.
+No se ejecutaron motores ni scripts de la cursada. TDD estricto no activo: documentación y comprobación estructural, sin código que testear. Los diagnósticos automáticos de Markdown no fueron concluyentes para varios archivos (marksman silent); no se los presenta como validación limpia.

@@ -1,0 +1,50 @@
+Food Store U8 — Bloque E — Resguardo local y cierre de la revisión estática
+Ejecución: Claude (sesión principal). Fecha: 2026-11-07T21:03:48-0300. Sin Docker, PostgreSQL ni MongoDB; no se ejecutaron scripts de la cursada.
+
+== 1. Correspondencia ruta original -> resguardo (nota nueva; las evidencias históricas no se modifican)
+Resguardo: /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605 (creado 2026-11-07 20:56, modo 700)
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9 | 81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9 | /tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db -> temporales_laboratorio/foodstore_movil_inicial_c.db | coincide
+a291c4bf5c06b44b1992a8e0edc340dc1a67956b594fbd4bfa66493236bec70d | a291c4bf5c06b44b1992a8e0edc340dc1a67956b594fbd4bfa66493236bec70d | /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_borrador.db -> temporales_laboratorio/punto_c2_borrador.db | coincide
+377933807c4b054fcfd57c2ae7943a7a7a590236b2935ef0c00439321a5841e3 | 377933807c4b054fcfd57c2ae7943a7a7a590236b2935ef0c00439321a5841e3 | /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_conflicto.db -> temporales_laboratorio/punto_c2_conflicto.db | coincide
+Huellas esperadas según evidencias de D: 81ca5120… (bloque_d_cierre_20261107_195631.txt), a291c4bf… y 37793380… (bloque_d_entregable_20261107_195358.txt, función punto).
+unidades/unidad-8/ (61 archivos, estado 20:56) -> /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/unidad-8/ ; manifiesto /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/origen_unidad-8.sha256
+Comprobación del resguardo contra el manifiesto de origen:
+código=0; archivos en resguardo: 61; enlaces: 0
+Base final en resguardo: cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace
+No copiados (fuera de la lista autorizada): /tmp/foodstore_u8_d_puntos_20261107_195358/c6_*.txt
+
+== 2. Documentos de E al cierre de esta intervención -> /home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/docs_cierre/
+39b005e85b86c72db047eed5deedff25098547d380454cb8769d0e639b5499fd unidades/unidad-8/README.md -> docs_cierre/README.md coincide
+04ad01349992ffbdc64b59e3b93bb13db0f4052d0d3c4c823771698eb9f06443 unidades/unidad-8/docs/bitacora_ia.md -> docs_cierre/bitacora_ia.md coincide
+eb88c943f14dcdb5f7cc6326f128489e59b8f7c2673049f63388930eab7a8a77 unidades/unidad-8/docs/DUIA.md -> docs_cierre/DUIA.md coincide
+58764b5552443b7d9c7da51797c4779d1a419116b6f6b522c54ad37732f316fd unidades/unidad-8/docs/guia_defensa.md -> docs_cierre/guia_defensa.md coincide
+f4dcaaf1c11cfb31f46db3a87ca09201ef0667614cd2ec29e3769f1603cc916b unidades/unidad-8/docs/integracion_motores.md -> docs_cierre/integracion_motores.md coincide
+6e5b1c9b8d7427c04b742b9ae84d3197b465a4aa7fe7a1ec80fcbe94b28ed3c0 unidades/unidad-8/docs/laboratorio_u8.md -> docs_cierre/laboratorio_u8.md coincide
+eeebe2b867e535e3db538bee74f2f2fdf9e504d6a7de2d07c9edb9146db6bd7c unidades/unidad-8/docs/mantenimiento_u8.md -> docs_cierre/mantenimiento_u8.md coincide
+cab8ce2629497b9d2cd2da4df46f676223c52d72baa88b9a14b59a52a3bdb6c1 unidades/unidad-8/docs/revision_inventario_scripts.md -> docs_cierre/revision_inventario_scripts.md coincide
+b70b8a4fb1ab30687139bbd8a61063906262461d8c40aa7776b42ce92fd81fa7 unidades/unidad-8/docs/revision_scripts_ia.md -> docs_cierre/revision_scripts_ia.md coincide
+d1e6dc72c2f82019d67c2c06349628685fe5b5a4aa57569e271a4c5d7b8b0074 unidades/unidad-8/docs/kiro/tasks.md -> docs_cierre/kiro_tasks.md coincide
+
+== 3. Archivos protegidos sin cambios (huellas de bloque_d_cierre_20261107_195631.txt)
+comprobados=47 código=0
+4648f222640d3135b78b8152f0602ef2d8da4d4ee83020e1030b11b2cee6dbe1  unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt
+9535169f91cf1588c30be5f375d94457ab48b8a26e49db249ab7bc0ad110e235  unidades/unidad-8/evidencias/bloque_e_cierre_20261107_204519.txt
+931a9400cbd34a4d5117ec93502d5721fd93a22ec13ec60e19c2603ef6969350  unidades/unidad-8/evidencias/bloque_e_lectura_base_final_20261107_203411.txt
+
+== 4. Base final
+cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace  unidades/unidad-8/movil/foodstore_movil.db
+journal/WAL: 0
+
+== 5. Enlaces relativos de los documentos
+enlaces rotos: 0
+
+== 6. Referencias
+703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4
+703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4
+8f7877c8a1ff25c1be28b29c46c38cd7c9663e86
+8f7877c8a1ff25c1be28b29c46c38cd7c9663e86
+
+== 7. Git
+## feat/u7-migracion
+U8 sin seguimiento: 63
+staging: 0

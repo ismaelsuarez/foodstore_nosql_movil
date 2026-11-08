@@ -1,0 +1,872 @@
+Food Store U8 — Bloque D — Secuencia sobre la base entregable
+Ejecución: Claude (sesión principal). Scripts D redactados en la sesión principal. No es una revisión humana.
+Fecha: 2026-11-07T19:53:58-0300; Bash 5.3.9(1)-release; 3.54.1 2026-10-16
+Antecedente (no es resultado de esta base): antes de esta ejecución se probaron los scripts sobre copias descartables de la base inicial de C en /tmp/foodstore_u8_d_proto.*, emulando cambios solo en snapshot_servidor de esas copias. Ese prototipo detectó un error ("parameters are not allowed in views") en crear_borrador.sql y aceptar_precio.sql, corregido usando tablas temporales en lugar de vistas. PostgreSQL solo se leyó en esos ensayos.
+Copia íntegra de la base inicial de C: /tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  /tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db
+Huellas de los scripts D:
+2635767318a7b5369f27496a8d4b5a9f3c585159907811cd25059f4348c3efbd  unidades/unidad-8/movil/semaforo.sql
+fddeeff81783cdbb2bb0a79743a0493d4b001df59ac75252ad48974c02db814d  unidades/unidad-8/movil/crear_borrador.sql
+108014394fac77869d9035a23db35325137a33040783c5e679cd40ddac5b3b33  unidades/unidad-8/movil/aceptar_precio.sql
+22306717bf5efd65817a5672f1c8ea7a79b9b4bc22435a7c2d370ae84b0b7083  unidades/unidad-8/movil/insertar_solicitud.sql
+5a23749d09a683cc42e90a5135f6c894c1d7979a2b1e5d23aee73d69aa164591  unidades/unidad-8/movil/comprobar_caso_d.sql
+c607185e9bccc1cf398c5239e1b3fc9bed96ff52b7299bc31ea5ee0b2bee4780  unidades/unidad-8/movil/estado_bloque_d.sql
+7c952fc5d8bfd3b54bd2a9477a0342f8b172f84606412652be0947aabe02ea04  unidades/unidad-8/movil/simular_producto_ausente.sql
+b301aa8c97ce0ba32bf7bd6f5fcdacff595d3311f53c4a251b7b787a4b06392b  unidades/unidad-8/movil/bloque_d.sh
+f27a3a939ee1b2f4d2ab07526e15b157b4fa709f76668fa6d5f649b195104b22  unidades/unidad-8/movil/ejecutar_bloque_d.sh
+52cdd7a6847538e67f264b1404fdd0dd423caab37f5df86ef89aee6a523f2cbf  unidades/unidad-8/movil/controles_d.sh
+2693c27a2337a61352b4872f4cd6a450ad3a092d5086c0a49f47af1b9adbf2d8  unidades/unidad-8/postgresql/preparar_c2_precio.sql
+d8b3ba75aad8143533109bc2cd334d6983181fc7605864f907c9785915b883d3  unidades/unidad-8/postgresql/preparar_c3_stock.sql
+3f89d5538689e11c2359f66b1764ee711f3ec749f1932deff3da29e4e44c4c49  unidades/unidad-8/postgresql/preparar_c4_baja.sql
+1427f34394a96a92914a34744e3d7c7d57322d881b7b8523158fa47928d7a668  unidades/unidad-8/postgresql/control_invariancia.sql
+Huellas C sin cambios:
+46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc  unidades/unidad-8/movil/servidor_snapshot.csv
+8451dcdff04efbe78960f96ed36cb86013345fb5db9fe8db2f8b78d24c92052d  unidades/unidad-8/movil/servidor_snapshot_meta.txt
+1273c01344352d0e7f624da99aaaa2327d252e46e059737a814c2c0a210e0b86  unidades/unidad-8/movil/renovar_snapshot.sql
+d806311f1cb4832e3c6370ff697d2bc727e654bdf36546757a0baa029d6744c4  unidades/unidad-8/movil/preparar_foodstore_movil.sh
+a2fbec88c044bc51d7755660ad83d6923c70c145712ed8252df1b421360654b8  unidades/unidad-8/postgresql/laboratorio_u8.sh
+Comando: bash unidades/unidad-8/movil/ejecutar_bloque_d.sh 20261107_195358 /tmp/foodstore_u8_d_puntos_20261107_195358
+Ejecución 20261107_195358; base entregable /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db; puntos en /tmp/foodstore_u8_d_puntos_20261107_195358
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db
+
+######## Paso 01 — Estado inicial (fin del bloque C) (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.h6W9Ac
+--- estado de /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db ---
+-- cola_sync: solicitud_uuid | id_local | estado | motivo | creada_en
+-- pedido_borrador: id_local | usuario_id_servidor | forma_pago
+-- item_borrador: id_local | producto_id | cantidad | precio_centavos_visto
+-- producto_cache: id | nombre | centavos | stock_visto | disponible | eliminado | capturado_en
+1 | Muzzarella | 105000 | 50 | 1 | 0 | 2026-11-07 15:51:24.499236+00
+2 | Napolitana | 150000 | 40 | 1 | 0 | 2026-11-07 15:51:24.499236+00
+3 | Coca 1.5L | 80000 | 100 | 1 | 0 | 2026-11-07 15:51:24.499236+00
+4 | [U8 prueba] Base C2 precio | 120000 | 20 | 1 | 0 | 2026-11-07 15:51:24.499236+00
+5 | [U8 prueba] Base C3 stock | 90000 | 10 | 1 | 0 | 2026-11-07 15:51:24.499236+00
+6 | [U8 prueba] Base C4 baja | 70000 | 15 | 1 | 0 | 2026-11-07 15:51:24.499236+00
+7 | [U8 prueba] Base C5 sin cambios | 50000 | 30 | 1 | 0 | 2026-11-07 15:51:24.499236+00
+8 | [U8 prueba] No disponible inicial | 65000 | 8 | 0 | 0 | 2026-11-07 15:51:24.499236+00
+9 | [U8 prueba] Baja inicial | 45000 | 5 | 1 | 1 | 2026-11-07 15:51:24.499236+00
+-- v_catalogo_disponible: producto_id
+1,2,3,4,5,6,7
+-- snapshot_servidor: capturado_en | filas
+2026-11-07 15:51:24.499236+00 | 9
+-- integridad: integrity_check | foreign_key_check
+ok | 0
+--- fin estado de /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0)
+>> Paso 01: código 0
+
+######## Paso 02 — C2 — borrador previo (1 u. a 120000) y solicitud PENDIENTE (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.vQO2im
+Borrador c2: id_local=d2000000-0000-4000-8000-0000000000b1 solicitud=d2000000-0000-4000-8000-0000000000c1 usuario=1 forma_pago=EFECTIVO items=[[4,1,120000]]
+Comando: sqlite3 -batch -cmd .parameter\ set\ @id_local\ \"\'d2000000-0000-4000-8000-0000000000b1\'\" -cmd .parameter\ set\ @solicitud\ \"\'d2000000-0000-4000-8000-0000000000c1\'\" -cmd .parameter\ set\ @usuario\ 1 -cmd .parameter\ set\ @forma_pago\ \"\'EFECTIVO\'\" -cmd .parameter\ set\ @items\ \"\'\[\[4\,1\,120000\]\]\'\" /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < crear_borrador.sql
+--- stdout ---
+control | foreign_keys | OK
+control | items_recibidos | OK
+control | identificadores_nuevos | OK
+control | items_del_catalogo_con_precio_vigente | OK
+control | borrador_items_y_solicitud_pendiente | OK
+borrador | d2000000-0000-4000-8000-0000000000b1 | 1 | EFECTIVO
+item | 4 | 1 | 120000
+solicitud | d2000000-0000-4000-8000-0000000000c1 | PENDIENTE | <NULL>
+BORRADOR CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: BORRADOR CONFIRMADO
+Resultado crear_borrador: OK
+>> Paso 02: código 0
+
+######## Paso 03 — C2 — punto de copia: borrador creado (2026-11-07T19:53:58-0300)
+a291c4bf5c06b44b1992a8e0edc340dc1a67956b594fbd4bfa66493236bec70d  /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_borrador.db
+>> Paso 03: código 0
+
+######## Paso 04 — C2 — preparación en PostgreSQL: precio 1200.00 → 1320.00 (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.ndqd3R
+Preparación del escenario c2 en PostgreSQL de pruebas: preparar_c2_precio.sql
+Comando: docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 < preparar_c2_precio.sql
+--- stdout ---
+BEGIN
+ momento | id |           nombre           | precio  | stock | disponible | eliminado 
+---------+----+----------------------------+---------+-------+------------+-----------
+ antes   |  4 | [U8 prueba] Base C2 precio | 1200.00 |    20 | t          | f
+(1 row)
+
+DO
+ momento | id |           nombre           | precio  | stock | disponible | eliminado 
+---------+----+----------------------------+---------+-------+------------+-----------
+ despues |  4 | [U8 prueba] Base C2 precio | 1320.00 |    20 | t          | f
+(1 row)
+
+COMMIT
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0)
+Resultado preparación c2: OK
+>> Paso 04: código 0
+
+######## Paso 05 — C2 — instantánea c2_precio y renovación (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.dn1zaN
+Exportación: bash postgresql/laboratorio_u8.sh exportar /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt
+Comando: docker exec -i foodstore-u8-postgres psql -X -q -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 < /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/postgresql/exportar_snapshot.sql
+Código de salida (psql exportación): 0
+META filas=9
+META fechas=1
+META capturado_en=2026-11-07 22:53:58.569903+00
+META base=foodstore_u8
+META version_servidor=17.11 (Debian 17.11-1.pgdg13+2)
+CSV publicado: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv
+META publicado: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt
+filas=9
+capturado_en=2026-11-07 22:53:58.569903+00
+sha256_csv=f489d5d3b19e98ee49ed7c2e8665f9bbcf943c197275f8d0111f6fdee8de3821
+Líneas CSV (con encabezado): 10
+Código de salida exportar: 0 (esperado 0)
+Renovación: bash movil/preparar_foodstore_movil.sh renovar /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt
+Renovación: código esperado=0 observado=0
+--- stdout ---
+foreign_keys | OK
+filas_esperadas | OK
+filas_importadas | OK
+sin_nulos | OK
+tipos_enteros | OK
+captura_unica | OK
+correspondencia_cache | OK
+lapidas_conservadas | OK
+items_conservados | OK
+cola_conservada | OK
+RENOVACION CONFIRMADA
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Resultado renovación: OK
+Código de salida renovar: 0 (esperado 0)
+f489d5d3b19e98ee49ed7c2e8665f9bbcf943c197275f8d0111f6fdee8de3821  /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv
+f9c0be2987bf3a710b4b058d272f82505bb76a2c30160a34ec0a916942c7a225  /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt
+>> Paso 05: código 0
+
+######## Paso 06 — C2 — el borrador conserva 120000 tras la renovación (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.JSHmae
+Comprobación c2: solicitud=d2000000-0000-4000-8000-0000000000c1 producto=4 precio_visto=120000 estado=PENDIENTE motivo=<NULL> lapida=0
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 120000 | 120000 | OK
+K-03 | estado de la solicitud | PENDIENTE | PENDIENTE | OK
+K-04 | motivo de la solicitud | <NULL> | <NULL> | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 0 | 0 | OK
+K-07 | visible en v_catalogo_disponible | 1 | 1 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 4 | [U8 prueba] Base C2 precio | 132000 | 20 | 1 | 0 | 2026-11-07 22:53:58.569903+00
+dato | snapshot_servidor | 4 | 132000 | 20 | t | f | 2026-11-07 22:53:58.569903+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c2: OK
+>> Paso 06: código 0
+
+######## Paso 07 — C2 — simulación (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.a3zsHr
+Lectura PostgreSQL (servidor_antes): código 0
+--- lectura servidor_antes ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 10 | t | f
+producto | 6 | 700.00 | 15 | t | f
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_antes ---
+--- diagnóstico servidor_antes ---
+--- fin diagnóstico servidor_antes ---
+>> Simulación únicamente en SQLite (semaforo.sql no contiene operaciones sobre PostgreSQL)
+Comando: sqlite3 -batch /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < semaforo.sql
+--- stdout ---
+control | foreign_keys | OK
+control | captura_unica | OK
+control | filas_actualizadas_igual_a_procesadas | OK
+control | procesadas_con_estado_y_motivo | OK
+control | evaluadas_previas_sin_cambios | OK
+control | precios_de_items_sin_cambios | OK
+control | producto_cache_sin_cambios | OK
+procesada | d2000000-0000-4000-8000-0000000000c1 | d2000000-0000-4000-8000-0000000000b1 | CONFLICTO | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos
+procesadas | 1
+SEMAFORO CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: SEMAFORO CONFIRMADO
+Resultado semaforo: OK
+Lectura PostgreSQL (servidor_despues): código 0
+--- lectura servidor_despues ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 10 | t | f
+producto | 6 | 700.00 | 15 | t | f
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_despues ---
+--- diagnóstico servidor_despues ---
+--- fin diagnóstico servidor_despues ---
+PostgreSQL antes/después: idéntico byte a byte (precio, stock y estado por producto; pedidos y líneas)
+Resultado simulación: OK
+>> Paso 07: código 0
+
+######## Paso 08 — C2 — resultado CONFLICTO con ambos precios (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.KKEgdj
+Comprobación c2: solicitud=d2000000-0000-4000-8000-0000000000c1 producto=4 precio_visto=120000 estado=CONFLICTO motivo=producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos lapida=0
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 120000 | 120000 | OK
+K-03 | estado de la solicitud | CONFLICTO | CONFLICTO | OK
+K-04 | motivo de la solicitud | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 0 | 0 | OK
+K-07 | visible en v_catalogo_disponible | 1 | 1 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 4 | [U8 prueba] Base C2 precio | 132000 | 20 | 1 | 0 | 2026-11-07 22:53:58.569903+00
+dato | snapshot_servidor | 4 | 132000 | 20 | t | f | 2026-11-07 22:53:58.569903+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c2: OK
+>> Paso 08: código 0
+
+######## Paso 09 — C2 — punto de copia: CONFLICTO antes de aceptar (2026-11-07T19:53:58-0300)
+377933807c4b054fcfd57c2ae7943a7a7a590236b2935ef0c00439321a5841e3  /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_conflicto.db
+>> Paso 09: código 0
+
+######## Paso 10 — C2 — aceptación simulada del cliente (132000) y solicitud nueva (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.F2jCxs
+ACEPTACIÓN SIMULADA DEL CLIENTE: el cliente del borrador d2000000-0000-4000-8000-0000000000b1 acepta el precio actual de la instantánea.
+Solicitud anterior=d2000000-0000-4000-8000-0000000000c1; solicitud nueva=d2000000-0000-4000-8000-0000000000c2
+Comando: sqlite3 -batch -cmd .parameter\ set\ @id_local\ \"\'d2000000-0000-4000-8000-0000000000b1\'\" -cmd .parameter\ set\ @solicitud_anterior\ \"\'d2000000-0000-4000-8000-0000000000c1\'\" -cmd .parameter\ set\ @solicitud_nueva\ \"\'d2000000-0000-4000-8000-0000000000c2\'\" /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < aceptar_precio.sql
+--- stdout ---
+control | foreign_keys | OK
+control | solicitud_anterior_en_conflicto | OK
+control | items_en_snapshot | OK
+paso | precios_actualizados_en_la_transaccion | 1
+control | solicitud_anterior_sin_cambios | OK
+control | precios_iguales_a_snapshot | OK
+control | solicitud_nueva_pendiente | OK
+item | 4 | 1 | 132000
+solicitud | d2000000-0000-4000-8000-0000000000c1 | CONFLICTO | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos
+solicitud | d2000000-0000-4000-8000-0000000000c2 | PENDIENTE | <NULL>
+ACEPTACION CONFIRMADA
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: ACEPTACION CONFIRMADA
+Resultado aceptar_precio: OK
+>> Paso 10: código 0
+
+######## Paso 11 — C2 — solicitud nueva PENDIENTE con 132000 (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.j9lvza
+Comprobación c2: solicitud=d2000000-0000-4000-8000-0000000000c2 producto=4 precio_visto=132000 estado=PENDIENTE motivo=<NULL> lapida=0
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 132000 | 132000 | OK
+K-03 | estado de la solicitud | PENDIENTE | PENDIENTE | OK
+K-04 | motivo de la solicitud | <NULL> | <NULL> | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 0 | 0 | OK
+K-07 | visible en v_catalogo_disponible | 1 | 1 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 4 | [U8 prueba] Base C2 precio | 132000 | 20 | 1 | 0 | 2026-11-07 22:53:58.569903+00
+dato | snapshot_servidor | 4 | 132000 | 20 | t | f | 2026-11-07 22:53:58.569903+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c2: OK
+>> Paso 11: código 0
+
+######## Paso 12 — C2 — la solicitud anterior conserva CONFLICTO y su motivo (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.wHCHMB
+Comprobación c2: solicitud=d2000000-0000-4000-8000-0000000000c1 producto=4 precio_visto=132000 estado=CONFLICTO motivo=producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos lapida=0
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 132000 | 132000 | OK
+K-03 | estado de la solicitud | CONFLICTO | CONFLICTO | OK
+K-04 | motivo de la solicitud | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 0 | 0 | OK
+K-07 | visible en v_catalogo_disponible | 1 | 1 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 4 | [U8 prueba] Base C2 precio | 132000 | 20 | 1 | 0 | 2026-11-07 22:53:58.569903+00
+dato | snapshot_servidor | 4 | 132000 | 20 | t | f | 2026-11-07 22:53:58.569903+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c2: OK
+>> Paso 12: código 0
+
+######## Paso 13 — C2 — simulación de la solicitud nueva (2026-11-07T19:53:58-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.3pd9tb
+Lectura PostgreSQL (servidor_antes): código 0
+--- lectura servidor_antes ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 10 | t | f
+producto | 6 | 700.00 | 15 | t | f
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_antes ---
+--- diagnóstico servidor_antes ---
+--- fin diagnóstico servidor_antes ---
+>> Simulación únicamente en SQLite (semaforo.sql no contiene operaciones sobre PostgreSQL)
+Comando: sqlite3 -batch /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < semaforo.sql
+--- stdout ---
+control | foreign_keys | OK
+control | captura_unica | OK
+control | filas_actualizadas_igual_a_procesadas | OK
+control | procesadas_con_estado_y_motivo | OK
+control | evaluadas_previas_sin_cambios | OK
+control | precios_de_items_sin_cambios | OK
+control | producto_cache_sin_cambios | OK
+procesada | d2000000-0000-4000-8000-0000000000c2 | d2000000-0000-4000-8000-0000000000b1 | SIMULADO_APROBADO | todo coincide con snapshot de 2026-11-07 22:53:58.569903+00
+procesadas | 1
+SEMAFORO CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: SEMAFORO CONFIRMADO
+Resultado semaforo: OK
+Lectura PostgreSQL (servidor_despues): código 0
+--- lectura servidor_despues ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 10 | t | f
+producto | 6 | 700.00 | 15 | t | f
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_despues ---
+--- diagnóstico servidor_despues ---
+--- fin diagnóstico servidor_despues ---
+PostgreSQL antes/después: idéntico byte a byte (precio, stock y estado por producto; pedidos y líneas)
+Resultado simulación: OK
+>> Paso 13: código 0
+
+######## Paso 14 — C2 — solicitud nueva SIMULADO_APROBADO (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.RUyNqF
+Comprobación c2: solicitud=d2000000-0000-4000-8000-0000000000c2 producto=4 precio_visto=132000 estado=SIMULADO_APROBADO motivo=todo coincide con snapshot de 2026-11-07 22:53:58.569903+00 lapida=0
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 132000 | 132000 | OK
+K-03 | estado de la solicitud | SIMULADO_APROBADO | SIMULADO_APROBADO | OK
+K-04 | motivo de la solicitud | todo coincide con snapshot de 2026-11-07 22:53:58.569903+00 | todo coincide con snapshot de 2026-11-07 22:53:58.569903+00 | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 0 | 0 | OK
+K-07 | visible en v_catalogo_disponible | 1 | 1 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 4 | [U8 prueba] Base C2 precio | 132000 | 20 | 1 | 0 | 2026-11-07 22:53:58.569903+00
+dato | snapshot_servidor | 4 | 132000 | 20 | t | f | 2026-11-07 22:53:58.569903+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c2: OK
+>> Paso 14: código 0
+
+######## Paso 15 — C3 — borrador (3 u. a 90000) y solicitud PENDIENTE (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.c0w61v
+Borrador c3: id_local=d3000000-0000-4000-8000-0000000000b1 solicitud=d3000000-0000-4000-8000-0000000000c1 usuario=1 forma_pago=TARJETA items=[[5,3,90000]]
+Comando: sqlite3 -batch -cmd .parameter\ set\ @id_local\ \"\'d3000000-0000-4000-8000-0000000000b1\'\" -cmd .parameter\ set\ @solicitud\ \"\'d3000000-0000-4000-8000-0000000000c1\'\" -cmd .parameter\ set\ @usuario\ 1 -cmd .parameter\ set\ @forma_pago\ \"\'TARJETA\'\" -cmd .parameter\ set\ @items\ \"\'\[\[5\,3\,90000\]\]\'\" /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < crear_borrador.sql
+--- stdout ---
+control | foreign_keys | OK
+control | items_recibidos | OK
+control | identificadores_nuevos | OK
+control | items_del_catalogo_con_precio_vigente | OK
+control | borrador_items_y_solicitud_pendiente | OK
+borrador | d3000000-0000-4000-8000-0000000000b1 | 1 | TARJETA
+item | 5 | 3 | 90000
+solicitud | d3000000-0000-4000-8000-0000000000c1 | PENDIENTE | <NULL>
+BORRADOR CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: BORRADOR CONFIRMADO
+Resultado crear_borrador: OK
+>> Paso 15: código 0
+
+######## Paso 16 — C3 — preparación en PostgreSQL: stock 10 → 2 (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.ZQ0id2
+Preparación del escenario c3 en PostgreSQL de pruebas: preparar_c3_stock.sql
+Comando: docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 < preparar_c3_stock.sql
+--- stdout ---
+BEGIN
+ momento | id |          nombre           | precio | stock | disponible | eliminado 
+---------+----+---------------------------+--------+-------+------------+-----------
+ antes   |  5 | [U8 prueba] Base C3 stock | 900.00 |    10 | t          | f
+(1 row)
+
+DO
+ momento | id |          nombre           | precio | stock | disponible | eliminado 
+---------+----+---------------------------+--------+-------+------------+-----------
+ despues |  5 | [U8 prueba] Base C3 stock | 900.00 |     2 | t          | f
+(1 row)
+
+COMMIT
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0)
+Resultado preparación c3: OK
+>> Paso 16: código 0
+
+######## Paso 17 — C3 — instantánea c3_stock y renovación (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.5UX5gk
+Exportación: bash postgresql/laboratorio_u8.sh exportar /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt
+Comando: docker exec -i foodstore-u8-postgres psql -X -q -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 < /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/postgresql/exportar_snapshot.sql
+Código de salida (psql exportación): 0
+META filas=9
+META fechas=1
+META capturado_en=2026-11-07 22:53:59.411185+00
+META base=foodstore_u8
+META version_servidor=17.11 (Debian 17.11-1.pgdg13+2)
+CSV publicado: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv
+META publicado: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt
+filas=9
+capturado_en=2026-11-07 22:53:59.411185+00
+sha256_csv=d8526133b3646e53e7f5ca515deae9f6f6fab6f990dc86b9f074ee19666942a9
+Líneas CSV (con encabezado): 10
+Código de salida exportar: 0 (esperado 0)
+Renovación: bash movil/preparar_foodstore_movil.sh renovar /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt
+Renovación: código esperado=0 observado=0
+--- stdout ---
+foreign_keys | OK
+filas_esperadas | OK
+filas_importadas | OK
+sin_nulos | OK
+tipos_enteros | OK
+captura_unica | OK
+correspondencia_cache | OK
+lapidas_conservadas | OK
+items_conservados | OK
+cola_conservada | OK
+RENOVACION CONFIRMADA
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Resultado renovación: OK
+Código de salida renovar: 0 (esperado 0)
+d8526133b3646e53e7f5ca515deae9f6f6fab6f990dc86b9f074ee19666942a9  /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv
+e42c3243e468b60fe92d93f842d3910647d667a5e9b2911eedb34b46d25bc6a5  /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt
+>> Paso 17: código 0
+
+######## Paso 18 — C3 — simulación (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.Urn50A
+Lectura PostgreSQL (servidor_antes): código 0
+--- lectura servidor_antes ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | f
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_antes ---
+--- diagnóstico servidor_antes ---
+--- fin diagnóstico servidor_antes ---
+>> Simulación únicamente en SQLite (semaforo.sql no contiene operaciones sobre PostgreSQL)
+Comando: sqlite3 -batch /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < semaforo.sql
+--- stdout ---
+control | foreign_keys | OK
+control | captura_unica | OK
+control | filas_actualizadas_igual_a_procesadas | OK
+control | procesadas_con_estado_y_motivo | OK
+control | evaluadas_previas_sin_cambios | OK
+control | precios_de_items_sin_cambios | OK
+control | producto_cache_sin_cambios | OK
+procesada | d3000000-0000-4000-8000-0000000000c1 | d3000000-0000-4000-8000-0000000000b1 | RECHAZADO | producto_id=5: stock disponible=2, cantidad solicitada=3
+procesadas | 1
+SEMAFORO CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: SEMAFORO CONFIRMADO
+Resultado semaforo: OK
+Lectura PostgreSQL (servidor_despues): código 0
+--- lectura servidor_despues ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | f
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_despues ---
+--- diagnóstico servidor_despues ---
+--- fin diagnóstico servidor_despues ---
+PostgreSQL antes/después: idéntico byte a byte (precio, stock y estado por producto; pedidos y líneas)
+Resultado simulación: OK
+>> Paso 18: código 0
+
+######## Paso 19 — C3 — resultado RECHAZADO por stock (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.4raIfL
+Comprobación c3: solicitud=d3000000-0000-4000-8000-0000000000c1 producto=5 precio_visto=90000 estado=RECHAZADO motivo=producto_id=5: stock disponible=2, cantidad solicitada=3 lapida=0
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 90000 | 90000 | OK
+K-03 | estado de la solicitud | RECHAZADO | RECHAZADO | OK
+K-04 | motivo de la solicitud | producto_id=5: stock disponible=2, cantidad solicitada=3 | producto_id=5: stock disponible=2, cantidad solicitada=3 | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 0 | 0 | OK
+K-07 | visible en v_catalogo_disponible | 1 | 1 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 5 | [U8 prueba] Base C3 stock | 90000 | 2 | 1 | 0 | 2026-11-07 22:53:59.411185+00
+dato | snapshot_servidor | 5 | 90000 | 2 | t | f | 2026-11-07 22:53:59.411185+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c3: OK
+>> Paso 19: código 0
+
+######## Paso 20 — C4 — borrador previo (1 u. a 70000) y solicitud PENDIENTE (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.B9ol5W
+Borrador c4: id_local=d4000000-0000-4000-8000-0000000000b1 solicitud=d4000000-0000-4000-8000-0000000000c1 usuario=1 forma_pago=TRANSFERENCIA items=[[6,1,70000]]
+Comando: sqlite3 -batch -cmd .parameter\ set\ @id_local\ \"\'d4000000-0000-4000-8000-0000000000b1\'\" -cmd .parameter\ set\ @solicitud\ \"\'d4000000-0000-4000-8000-0000000000c1\'\" -cmd .parameter\ set\ @usuario\ 1 -cmd .parameter\ set\ @forma_pago\ \"\'TRANSFERENCIA\'\" -cmd .parameter\ set\ @items\ \"\'\[\[6\,1\,70000\]\]\'\" /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < crear_borrador.sql
+--- stdout ---
+control | foreign_keys | OK
+control | items_recibidos | OK
+control | identificadores_nuevos | OK
+control | items_del_catalogo_con_precio_vigente | OK
+control | borrador_items_y_solicitud_pendiente | OK
+borrador | d4000000-0000-4000-8000-0000000000b1 | 1 | TRANSFERENCIA
+item | 6 | 1 | 70000
+solicitud | d4000000-0000-4000-8000-0000000000c1 | PENDIENTE | <NULL>
+BORRADOR CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: BORRADOR CONFIRMADO
+Resultado crear_borrador: OK
+>> Paso 20: código 0
+
+######## Paso 21 — C4 — preparación en PostgreSQL: eliminado false → true (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.kQD7Dl
+Preparación del escenario c4 en PostgreSQL de pruebas: preparar_c4_baja.sql
+Comando: docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 < preparar_c4_baja.sql
+--- stdout ---
+BEGIN
+ momento | id |          nombre          | precio | stock | disponible | eliminado 
+---------+----+--------------------------+--------+-------+------------+-----------
+ antes   |  6 | [U8 prueba] Base C4 baja | 700.00 |    15 | t          | f
+(1 row)
+
+DO
+ momento | id |          nombre          | precio | stock | disponible | eliminado 
+---------+----+--------------------------+--------+-------+------------+-----------
+ despues |  6 | [U8 prueba] Base C4 baja | 700.00 |    15 | t          | t
+(1 row)
+
+COMMIT
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0)
+Resultado preparación c4: OK
+>> Paso 21: código 0
+
+######## Paso 22 — C4 — instantánea c4_baja y renovación (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.dMbtTw
+Exportación: bash postgresql/laboratorio_u8.sh exportar /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt
+Comando: docker exec -i foodstore-u8-postgres psql -X -q -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 < /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/postgresql/exportar_snapshot.sql
+Código de salida (psql exportación): 0
+META filas=9
+META fechas=1
+META capturado_en=2026-11-07 22:53:59.938648+00
+META base=foodstore_u8
+META version_servidor=17.11 (Debian 17.11-1.pgdg13+2)
+CSV publicado: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv
+META publicado: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt
+filas=9
+capturado_en=2026-11-07 22:53:59.938648+00
+sha256_csv=6f3ea4350019c04871b35fc1e94415e88355f8faba68513e84cda00d733496a6
+Líneas CSV (con encabezado): 10
+Código de salida exportar: 0 (esperado 0)
+Renovación: bash movil/preparar_foodstore_movil.sh renovar /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt
+Renovación: código esperado=0 observado=0
+--- stdout ---
+foreign_keys | OK
+filas_esperadas | OK
+filas_importadas | OK
+sin_nulos | OK
+tipos_enteros | OK
+captura_unica | OK
+correspondencia_cache | OK
+lapidas_conservadas | OK
+items_conservados | OK
+cola_conservada | OK
+RENOVACION CONFIRMADA
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Resultado renovación: OK
+Código de salida renovar: 0 (esperado 0)
+6f3ea4350019c04871b35fc1e94415e88355f8faba68513e84cda00d733496a6  /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv
+259ab3fb124ecb7b4d81dc46eaa430d072031a3ec5f6c40f6f279ed4190c8c01  /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt
+>> Paso 22: código 0
+
+######## Paso 23 — C4 — lápida en producto_cache, fuera del catálogo, precio del ítem sin cambio (2026-11-07T19:53:59-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.GZ4lSa
+Comprobación c4: solicitud=d4000000-0000-4000-8000-0000000000c1 producto=6 precio_visto=70000 estado=PENDIENTE motivo=<NULL> lapida=1
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 70000 | 70000 | OK
+K-03 | estado de la solicitud | PENDIENTE | PENDIENTE | OK
+K-04 | motivo de la solicitud | <NULL> | <NULL> | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 1 | 1 | OK
+K-07 | visible en v_catalogo_disponible | 0 | 0 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 6 | [U8 prueba] Base C4 baja | 70000 | 15 | 1 | 1 | 2026-11-07 22:53:59.938648+00
+dato | snapshot_servidor | 6 | 70000 | 15 | t | t | 2026-11-07 22:53:59.938648+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c4: OK
+>> Paso 23: código 0
+
+######## Paso 24 — C4 — simulación (2026-11-07T19:54:00-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.Y2G4GW
+Lectura PostgreSQL (servidor_antes): código 0
+--- lectura servidor_antes ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | t
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_antes ---
+--- diagnóstico servidor_antes ---
+--- fin diagnóstico servidor_antes ---
+>> Simulación únicamente en SQLite (semaforo.sql no contiene operaciones sobre PostgreSQL)
+Comando: sqlite3 -batch /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < semaforo.sql
+--- stdout ---
+control | foreign_keys | OK
+control | captura_unica | OK
+control | filas_actualizadas_igual_a_procesadas | OK
+control | procesadas_con_estado_y_motivo | OK
+control | evaluadas_previas_sin_cambios | OK
+control | precios_de_items_sin_cambios | OK
+control | producto_cache_sin_cambios | OK
+procesada | d4000000-0000-4000-8000-0000000000c1 | d4000000-0000-4000-8000-0000000000b1 | RECHAZADO | producto_id=6: eliminado=t
+procesadas | 1
+SEMAFORO CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: SEMAFORO CONFIRMADO
+Resultado semaforo: OK
+Lectura PostgreSQL (servidor_despues): código 0
+--- lectura servidor_despues ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | t
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_despues ---
+--- diagnóstico servidor_despues ---
+--- fin diagnóstico servidor_despues ---
+PostgreSQL antes/después: idéntico byte a byte (precio, stock y estado por producto; pedidos y líneas)
+Resultado simulación: OK
+>> Paso 24: código 0
+
+######## Paso 25 — C4 — resultado RECHAZADO por baja (2026-11-07T19:54:00-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.EVLy1C
+Comprobación c4: solicitud=d4000000-0000-4000-8000-0000000000c1 producto=6 precio_visto=70000 estado=RECHAZADO motivo=producto_id=6: eliminado=t lapida=1
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 70000 | 70000 | OK
+K-03 | estado de la solicitud | RECHAZADO | RECHAZADO | OK
+K-04 | motivo de la solicitud | producto_id=6: eliminado=t | producto_id=6: eliminado=t | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 1 | 1 | OK
+K-07 | visible en v_catalogo_disponible | 0 | 0 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 6 | [U8 prueba] Base C4 baja | 70000 | 15 | 1 | 1 | 2026-11-07 22:53:59.938648+00
+dato | snapshot_servidor | 6 | 70000 | 15 | t | t | 2026-11-07 22:53:59.938648+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c4: OK
+>> Paso 25: código 0
+
+######## Paso 26 — C5 — borrador (2 u. a 50000) contra la instantánea vigente (2026-11-07T19:54:00-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.2xLpOr
+Borrador c5: id_local=d5000000-0000-4000-8000-0000000000b1 solicitud=d5000000-0000-4000-8000-0000000000c1 usuario=1 forma_pago=EFECTIVO items=[[7,2,50000]]
+Comando: sqlite3 -batch -cmd .parameter\ set\ @id_local\ \"\'d5000000-0000-4000-8000-0000000000b1\'\" -cmd .parameter\ set\ @solicitud\ \"\'d5000000-0000-4000-8000-0000000000c1\'\" -cmd .parameter\ set\ @usuario\ 1 -cmd .parameter\ set\ @forma_pago\ \"\'EFECTIVO\'\" -cmd .parameter\ set\ @items\ \"\'\[\[7\,2\,50000\]\]\'\" /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < crear_borrador.sql
+--- stdout ---
+control | foreign_keys | OK
+control | items_recibidos | OK
+control | identificadores_nuevos | OK
+control | items_del_catalogo_con_precio_vigente | OK
+control | borrador_items_y_solicitud_pendiente | OK
+borrador | d5000000-0000-4000-8000-0000000000b1 | 1 | EFECTIVO
+item | 7 | 2 | 50000
+solicitud | d5000000-0000-4000-8000-0000000000c1 | PENDIENTE | <NULL>
+BORRADOR CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: BORRADOR CONFIRMADO
+Resultado crear_borrador: OK
+>> Paso 26: código 0
+
+######## Paso 27 — C5 — simulación (2026-11-07T19:54:00-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.gerfEf
+Lectura PostgreSQL (servidor_antes): código 0
+--- lectura servidor_antes ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | t
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_antes ---
+--- diagnóstico servidor_antes ---
+--- fin diagnóstico servidor_antes ---
+>> Simulación únicamente en SQLite (semaforo.sql no contiene operaciones sobre PostgreSQL)
+Comando: sqlite3 -batch /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < semaforo.sql
+--- stdout ---
+control | foreign_keys | OK
+control | captura_unica | OK
+control | filas_actualizadas_igual_a_procesadas | OK
+control | procesadas_con_estado_y_motivo | OK
+control | evaluadas_previas_sin_cambios | OK
+control | precios_de_items_sin_cambios | OK
+control | producto_cache_sin_cambios | OK
+procesada | d5000000-0000-4000-8000-0000000000c1 | d5000000-0000-4000-8000-0000000000b1 | SIMULADO_APROBADO | todo coincide con snapshot de 2026-11-07 22:53:59.938648+00
+procesadas | 1
+SEMAFORO CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: SEMAFORO CONFIRMADO
+Resultado semaforo: OK
+Lectura PostgreSQL (servidor_despues): código 0
+--- lectura servidor_despues ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | t
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_despues ---
+--- diagnóstico servidor_despues ---
+--- fin diagnóstico servidor_despues ---
+PostgreSQL antes/después: idéntico byte a byte (precio, stock y estado por producto; pedidos y líneas)
+Resultado simulación: OK
+>> Paso 27: código 0
+
+######## Paso 28 — C5 — resultado SIMULADO_APROBADO (no es venta ni reserva de stock) (2026-11-07T19:54:00-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.2Fs9qW
+Comprobación c5: solicitud=d5000000-0000-4000-8000-0000000000c1 producto=7 precio_visto=50000 estado=SIMULADO_APROBADO motivo=todo coincide con snapshot de 2026-11-07 22:53:59.938648+00 lapida=0
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 50000 | 50000 | OK
+K-03 | estado de la solicitud | SIMULADO_APROBADO | SIMULADO_APROBADO | OK
+K-04 | motivo de la solicitud | todo coincide con snapshot de 2026-11-07 22:53:59.938648+00 | todo coincide con snapshot de 2026-11-07 22:53:59.938648+00 | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 0 | 0 | OK
+K-07 | visible en v_catalogo_disponible | 1 | 1 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 7 | [U8 prueba] Base C5 sin cambios | 50000 | 30 | 1 | 0 | 2026-11-07 22:53:59.938648+00
+dato | snapshot_servidor | 7 | 50000 | 30 | t | f | 2026-11-07 22:53:59.938648+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación c5: OK
+>> Paso 28: código 0
+
+######## Paso 29 — C6-1 — estado antes de reinsertar (2026-11-07T19:54:00-0300)
+>> Paso 29: código 0
+
+######## Paso 30 — C6-1 — reinsertar el solicitud_uuid original de C2 (2026-11-07T19:54:00-0300)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.cC7ElU
+Intento c6_uuid: solicitud=d2000000-0000-4000-8000-0000000000c1 id_local=d2000000-0000-4000-8000-0000000000b1
+Comando: sqlite3 -batch -cmd ... /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < insertar_solicitud.sql
+--- stdout ---
+I-01 | foreign_keys activo | 1 | 1 | OK
+I-02 | filas de cola_sync antes del intento | >0 | 5 | OK
+I-03 | filas de cola_sync despues del intento | 5 | 5 | OK
+I-04 | cola_sync identica a la anterior (ambas direcciones) | 0 | 0 | OK
+I-05 | violaciones de claves foraneas | 0 | 0 | OK
+solicitud | d2000000-0000-4000-8000-0000000000c1 | CONFLICTO | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos
+solicitud | d2000000-0000-4000-8000-0000000000c2 | SIMULADO_APROBADO | todo coincide con snapshot de 2026-11-07 22:53:58.569903+00
+--- fin stdout ---
+--- stderr ---
+Error near line 27: UNIQUE constraint failed: cola_sync.solicitud_uuid
+--- fin stderr ---
+Código: 1 (esperado 1); stderr esperado: Error near line 27: UNIQUE constraint failed: cola_sync.solicitud_uuid
+Comprobaciones SQL: esperadas=5 OK=5 FALLA=0
+Resultado c6_uuid: OK (error esperado y cola_sync sin cambios)
+>> Paso 30: código 0
+
+######## Paso 31 — C6-1 — estado después (2026-11-07T19:54:00-0300)
+>> Paso 31: código 0
+
+######## Paso 32 — C6-1 — sin inserción ni cambios (2026-11-07T19:54:00-0300)
+diff: /tmp/foodstore_u8_d_puntos_20261107_195358/c6_1_antes.txt: No such file or directory
+diff: /tmp/foodstore_u8_d_puntos_20261107_195358/c6_1_despues.txt: No such file or directory
+>> Paso 32: código 1
+SECUENCIA DETENIDA en el paso 32. No se reintenta ni se reinicializa.
+Código de salida de la secuencia: 1

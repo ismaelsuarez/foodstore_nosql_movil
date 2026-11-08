@@ -1,0 +1,673 @@
+Recorded: 2026-11-07T12:18:06-0300
+Command: bash /tmp/foodstore_u8_verif_registro.zEU2mf/driver.sh /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil /tmp/foodstore_u8_verif_registro.zEU2mf
+Bounded Bash log-file verification
+Start: 2026-11-07T12:18:05-0300
+Root: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil
+Scratch: /tmp/foodstore_u8_verif_registro.zEU2mf
+Strict TDD: disabled by explicit parent choice; verification only.
+
+=== Versions ===
+GNU bash, versión 5.3.9(1)-release (x86_64-pc-linux-gnu)
+Copyright (C) 2025 Free Software Foundation, Inc.
+Licencia GPLv3+: GPL de GNU versión 3 o posterior <http://gnu.org/licenses/gpl.html>
+
+Esto es software libre, es libre para modificar y redistribuirlo.
+No hay NINGUNA GARANTÍA, a la extensión permitida por la ley.
+3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76 (64-bit)
+
+=== Protected SHA-256 at start ===
+ASSERT PASS: start hash command succeeded
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  unidades/unidad-8/movil/schema_sqlite.sql
+2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7  unidades/unidad-8/movil/pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  unidades/unidad-8/movil/verificar_bloque_b.sh
+ff2acc1de7379ebbbb40c3a77fa8cf0ae4454408ef7fe64f7100e3faf9ddf2cf  unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt
+ebc7cf6a98ea4bc33bae7634b2d69b5cb01bd0603720a471d2c62f0fac9f9396  unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt
+ASSERT PASS: schema expected hash
+ASSERT PASS: SQL tests expected hash
+ASSERT PASS: helper differs from old hash
+ASSERT PASS: old run evidence expected hash
+ASSERT PASS: old negative evidence expected hash
+
+=== Full driver script ===
+#!/usr/bin/env bash
+set -uo pipefail
+root=$1
+scratch=$2
+cd "$root" || exit 2
+helper=unidades/unidad-8/movil/verificar_bloque_b.sh
+schema=unidades/unidad-8/movil/schema_sqlite.sql
+pruebas=unidades/unidad-8/movil/pruebas_sqlite.sql
+evidencias=unidades/unidad-8/evidencias
+old_a="$evidencias/bloque_b_20261107_104530.txt"
+old_b="$evidencias/bloque_b_control_negativo_20261107_104542.txt"
+protected=("$schema" "$pruebas" "$helper" "$old_a" "$old_b")
+failures=0
+show_file() {
+    local line
+    while IFS= read -r line || [[ -n $line ]]; do printf '%s\n' "$line"; done < "$1"
+}
+check() {
+    local description=$1
+    shift
+    if "$@"; then
+        printf 'ASSERT PASS: %s\n' "$description"
+    else
+        printf 'ASSERT FAIL: %s\n' "$description"
+        failures=$((failures + 1))
+    fi
+}
+absent_text() {
+    grep -Fq -- "$1" "$2"
+    local rc=$?
+    [[ $rc -eq 1 ]]
+}
+files_differ() {
+    cmp -s -- "$1" "$2"
+    local rc=$?
+    [[ $rc -eq 1 ]]
+}
+no_captures() {
+    local dir=$1
+    local -a captures
+    shopt -s nullglob
+    captures=("$dir"/.captura_bloque_b.*)
+    printf 'Remaining captures in %s: %s\n' "$dir" "${#captures[@]}"
+    if [[ ${#captures[@]} -gt 0 ]]; then printf '%s\n' "${captures[@]}"; fi
+    [[ ${#captures[@]} -eq 0 ]]
+}
+command_line() {
+    printf 'Command:'
+    printf ' %q' "$@"
+    printf '\n'
+}
+case_end() {
+    if [[ $failures -eq $1 ]]; then printf 'CASE %s VERDICT: PASS\n' "$2"; else printf 'CASE %s VERDICT: FAIL\n' "$2"; fi
+}
+hash_of() {
+    local value
+    value=$(sha256sum -- "$1") || return 2
+    printf '%s\n' "${value%% *}"
+}
+
+printf 'Bounded Bash log-file verification\n'
+printf 'Start: %s\nRoot: %s\nScratch: %s\n' "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$root" "$scratch"
+printf 'Strict TDD: disabled by explicit parent choice; verification only.\n'
+printf '\n=== Versions ===\n'
+bash --version
+sqlite3 --version
+printf '\n=== Protected SHA-256 at start ===\n'
+sha256sum -- "${protected[@]}" > "$scratch/start.sha256"
+rc=$?
+check 'start hash command succeeded' test "$rc" -eq 0
+show_file "$scratch/start.sha256"
+start_helper=$(hash_of "$helper")
+check 'schema expected hash' test "$(hash_of "$schema")" = cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9
+check 'SQL tests expected hash' test "$(hash_of "$pruebas")" = 2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7
+check 'helper differs from old hash' test "$start_helper" != 01e59b5a65e4fad11779e4786b566570754fcda8d18707ddf3e68bc76e5a7ade
+check 'old run evidence expected hash' test "$(hash_of "$old_a")" = ff2acc1de7379ebbbb40c3a77fa8cf0ae4454408ef7fe64f7100e3faf9ddf2cf
+check 'old negative evidence expected hash' test "$(hash_of "$old_b")" = ebc7cf6a98ea4bc33bae7634b2d69b5cb01bd0603720a471d2c62f0fac9f9396
+printf '\n=== Full driver script ===\n'
+show_file "${BASH_SOURCE[0]}"
+printf '\n=== Driver execution output ===\n'
+
+printf '\n=== Case a: valid new log ===\n'
+before=$failures
+stamp=$(date '+%Y%m%d_%H%M%S')
+if [[ $stamp != 20261107_* ]]; then printf 'FAIL: real date outside authorized evidence surface: %s\n' "$stamp"; exit 2; fi
+run_log="$evidencias/bloque_b_$stamp.txt"
+check 'new run log does not already exist' test ! -e "$run_log"
+check 'new run log is not a symlink' test ! -L "$run_log"
+if [[ $failures -ne $before ]]; then exit 2; fi
+command_line bash "$helper" "$run_log"
+printf 'Expected exit code: 0\n'
+bash "$helper" "$run_log" > "$scratch/a.out" 2>&1
+rc=$?
+printf 'Observed exit code: %s\n--- Full helper output ---\n' "$rc"
+show_file "$scratch/a.out"
+check 'a exit code' test "$rc" -eq 0
+check 'a log created' test -f "$run_log"
+check 'a global result in log' grep -Fxq 'RESULTADO GLOBAL: OK' "$run_log"
+check 'a 33 SQL checks in log' grep -Fxq 'Comprobaciones SQL: esperadas=33 OK=33 FALLA=0' "$run_log"
+check 'a stdout confirms publication' grep -Fxq "Registro guardado en: $run_log" "$scratch/a.out"
+check 'a no capture remains' no_captures "$evidencias"
+case_end "$before" a
+printf 'NEW_RUN_EVIDENCE: %s\n' "$run_log"
+
+printf '\n=== Case b: existing log ===\n'
+before=$failures
+existing="$scratch/existing.txt"
+printf 'Known content: preserve this existing log.\n' > "$existing"
+hash_before=$(hash_of "$existing")
+printf 'Existing file SHA-256 before: %s\n' "$hash_before"
+command_line bash "$helper" "$existing"
+printf 'Expected exit code: 2\n'
+bash "$helper" "$existing" > "$scratch/b.out" 2>&1
+rc=$?
+hash_after=$(hash_of "$existing")
+printf 'Observed exit code: %s\nExisting file SHA-256 after: %s\n--- Full helper output ---\n' "$rc" "$hash_after"
+show_file "$scratch/b.out"
+check 'b exit code' test "$rc" -eq 2
+check 'b existing content unchanged' test "$hash_before" = "$hash_after"
+check 'b no publication message' absent_text 'Registro guardado' "$scratch/b.out"
+check 'b tests not executed' absent_text '=== Entorno' "$scratch/b.out"
+case_end "$before" b
+
+printf '\n=== Case c: missing parent ===\n'
+before=$failures
+missing="$scratch/no_existe/r.txt"
+command_line bash "$helper" "$missing"
+printf 'Expected exit code: 2\n'
+bash "$helper" "$missing" > "$scratch/c.out" 2>&1
+rc=$?
+printf 'Observed exit code: %s\n--- Full helper output ---\n' "$rc"
+show_file "$scratch/c.out"
+check 'c exit code' test "$rc" -eq 2
+check 'c no publication message' absent_text 'Registro guardado' "$scratch/c.out"
+check 'c file not created' test ! -e "$missing"
+check 'c parent not created' test ! -e "$scratch/no_existe"
+check 'c tests not executed' absent_text '=== Entorno' "$scratch/c.out"
+case_end "$before" c
+
+printf '\n=== Case d: controlled tee failure ===\n'
+before=$failures
+mkdir "$scratch/bin" "$scratch/capture_failure"
+rc=$?
+check 'd fixture directories created' test "$rc" -eq 0
+printf '%s\n' '#!/usr/bin/env bash' 'cat > /dev/null' 'printf "%s\n" "tee: error de escritura simulado" >&2' 'exit 1' > "$scratch/bin/tee"
+chmod u+x "$scratch/bin/tee"
+rc=$?
+check 'd simulated tee executable' test "$rc" -eq 0
+printf '%s\n' 'Simulated tee script:'
+show_file "$scratch/bin/tee"
+failed_log="$scratch/capture_failure/r.txt"
+command_line env "PATH=$scratch/bin:$PATH" "TMPDIR=$scratch" bash "$helper" "$failed_log"
+printf 'Expected exit code: 2\n'
+PATH="$scratch/bin:$PATH" TMPDIR="$scratch" bash "$helper" "$failed_log" > "$scratch/d.out" 2>&1
+rc=$?
+printf 'Observed exit code: %s\n--- Full helper output ---\n' "$rc"
+show_file "$scratch/d.out"
+check 'd exit code' test "$rc" -eq 2
+check 'd fake tee failure observed' grep -Fxq 'tee: error de escritura simulado' "$scratch/d.out"
+check 'd no publication message' absent_text 'Registro guardado' "$scratch/d.out"
+check 'd log not created' test ! -e "$failed_log"
+check 'd no capture remains' no_captures "$scratch/capture_failure"
+case_end "$before" d
+
+for control in sin_error sintaxis; do
+    printf '\n=== Case e/%s: C7 negative control ===\n' "$control"
+    before=$failures
+    copy="$scratch/$control"
+    mkdir "$copy"
+    rc=$?
+    check "e/$control fixture directory created" test "$rc" -eq 0
+    cp -- "$schema" "$pruebas" "$helper" "$copy/"
+    rc=$?
+    check "e/$control three files copied" test "$rc" -eq 0
+    if [[ $control == sin_error ]]; then
+        command_line sed -i 's/9101, 0, 105000); -- C7A/9101, 1, 105000); -- C7A/' "$copy/pruebas_sqlite.sql"
+        sed -i "s/9101, 0, 105000); -- C7A/9101, 1, 105000); -- C7A/" "$copy/pruebas_sqlite.sql"
+        sed_rc=$?
+        summary_pattern='^C7-a[[:space:]]+\|.*\| FALLA$'
+        changed_line='9101, 1, 105000); -- C7A'
+    else
+        command_line sed -i 's/VALUES (.b7b00000-0000-4000-8000-000000000001., 9999, 1, 50000); -- C7B/VALUES (9999 1); -- C7B/' "$copy/pruebas_sqlite.sql"
+        sed -i "s/VALUES (.b7b00000-0000-4000-8000-000000000001., 9999, 1, 50000); -- C7B/VALUES (9999 1); -- C7B/" "$copy/pruebas_sqlite.sql"
+        sed_rc=$?
+        summary_pattern='^C7-b[[:space:]]+\|.*\| FALLA$'
+        changed_line='VALUES (9999 1); -- C7B'
+    fi
+    check "e/$control sed succeeded" test "$sed_rc" -eq 0
+    check "e/$control SQL copy actually changed" files_differ "$pruebas" "$copy/pruebas_sqlite.sql"
+    check "e/$control expected edited text" grep -Fq -- "$changed_line" "$copy/pruebas_sqlite.sql"
+    printf 'Marker lines after sed:\n'
+    grep -nE -- '^INSERT .*; -- C7[AB]_SENTENCIA_INVALIDA$' "$copy/pruebas_sqlite.sql"
+    marker_rc=$?
+    check "e/$control marker lines found" test "$marker_rc" -eq 0
+    check "e/$control schema copy unchanged" cmp -s "$schema" "$copy/schema_sqlite.sql"
+    check "e/$control helper copy unchanged" cmp -s "$helper" "$copy/verificar_bloque_b.sh"
+    command_line env "TMPDIR=$scratch" bash "$copy/verificar_bloque_b.sh"
+    printf 'Expected exit code: 1\n'
+    TMPDIR="$scratch" bash "$copy/verificar_bloque_b.sh" > "$scratch/e_$control.out" 2>&1
+    rc=$?
+    printf 'Observed exit code: %s\n--- Full helper output ---\n' "$rc"
+    show_file "$scratch/e_$control.out"
+    check "e/$control exit code" test "$rc" -eq 1
+    check "e/$control global failure" grep -Fxq 'RESULTADO GLOBAL: FALLA' "$scratch/e_$control.out"
+    check "e/$control targeted C7 summary failure" grep -Eq -- "$summary_pattern" "$scratch/e_$control.out"
+    case_end "$before" "e/$control"
+done
+
+printf '\n=== Protected SHA-256 at end ===\n'
+sha256sum -- "${protected[@]}" > "$scratch/end.sha256"
+rc=$?
+check 'end hash command succeeded' test "$rc" -eq 0
+show_file "$scratch/end.sha256"
+check 'all three scripts and both existing evidences unchanged' cmp -s "$scratch/start.sha256" "$scratch/end.sha256"
+check 'no captures remain in repository evidence directory' no_captures "$evidencias"
+printf 'End: %s\n' "$(date '+%Y-%m-%dT%H:%M:%S%z')"
+printf 'Total failed assertions: %s\n' "$failures"
+if [[ $failures -eq 0 ]]; then printf 'DRIVER VERDICT: PASS\n'; exit 0; else printf 'DRIVER VERDICT: FAIL\n'; exit 1; fi
+
+=== Driver execution output ===
+
+=== Case a: valid new log ===
+ASSERT PASS: new run log does not already exist
+ASSERT PASS: new run log is not a symlink
+Command: bash unidades/unidad-8/movil/verificar_bloque_b.sh unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+Expected exit code: 0
+Observed exit code: 0
+--- Full helper output ---
+
+=== Entorno ===
+Fecha:          2026-11-07T12:18:05-0300
+Bash:           5.3.9(1)-release
+sqlite3:        /home/linuxbrew/.linuxbrew/bin/sqlite3
+Versión:        3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76 (64-bit)
+Base temporal:  /tmp/gpcCwx2O/gapTxciz/foodstore_u8_bloque_b.KoQFUG/prueba_bloque_b_descartable.db (descartable; no se borra al terminar)
+Huellas SHA-256 de los scripts:
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  schema_sqlite.sql
+2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7  pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  verificar_bloque_b.sh
+
+=== Paso 1: esquema ===
+Comando: sqlite3 -batch "/tmp/gpcCwx2O/gapTxciz/foodstore_u8_bloque_b.KoQFUG/prueba_bloque_b_descartable.db" < schema_sqlite.sql
+Código de salida: 0 (esperado 0)
+--- stdout esquema (0 líneas) ---
+--- fin stdout esquema ---
+--- stderr esquema (0 líneas) ---
+--- fin stderr esquema ---
+
+=== Paso 2: pruebas ===
+Comando: sqlite3 -batch "/tmp/gpcCwx2O/gapTxciz/foodstore_u8_bloque_b.KoQFUG/prueba_bloque_b_descartable.db" < pruebas_sqlite.sql
+Código de salida: 1 (esperado 1: dos errores de restricción provocados)
+--- stdout pruebas (44 líneas) ---
+== Conexion: foreign_keys
+B-01 | PRAGMA foreign_keys activo | 1 | 1 | OK
+== Esquema
+B-02 | tablas STRICT del esquema | 4 | 4 | OK
+B-03 | indice ux_cola_una_pendiente y vista v_catalogo_disponible | 2 | 2 | OK
+B-04 | base sin datos previos (4 tablas) | 0 | 0 | OK
+== Fixture sintetica
+FIX-01 | productos de la fixture en producto_cache | 4 | 4 | OK
+== COMMIT: borrador completo
+COMMIT-01 | pedido_borrador del borrador confirmado | 1 | 1 | OK
+COMMIT-02 | item_borrador del borrador confirmado | 2 | 2 | OK
+COMMIT-03 | cola_sync PENDIENTE con motivo NULL | 1 | 1 | OK
+COMMIT-04 | total visto del borrador en centavos | 300000 | 300000 | OK
+== ROLLBACK: operacion deshecha
+ROLLBACK-01 | filas de la operacion antes de ROLLBACK (3 tablas) | 3 | 3 | OK
+ROLLBACK-02 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+ROLLBACK-03 | item_borrador tras ROLLBACK | 0 | 0 | OK
+ROLLBACK-04 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== C1: v_catalogo_disponible (producto_id | nombre | precio | stock_visto)
+9101 | Muzzarella (fixture) | 1050.00 | 10
+9102 | Empanada de carne (fixture) | 150.00 | 40
+C1-01 | productos en v_catalogo_disponible | 2 | 2 | OK
+C1-02 | ids visibles en el catalogo | 9101,9102 | 9101,9102 | OK
+C1-03 | lapida 9104 conservada en producto_cache y oculta en la vista | 1 | 1 | OK
+C1-04 | no disponible 9103 oculto en la vista | 0 | 0 | OK
+== C7-a: cantidad = 0 (se espera CHECK constraint failed: cantidad > 0)
+C7A-01 | foreign_keys activo antes de BEGIN | 1 | 1 | OK
+C7A-02 | preparacion valida: encabezado dentro de la transaccion | 1 | 1 | OK
+C7A-03 | item invalido no grabado (dentro de la transaccion) | 0 | 0 | OK
+C7A-04 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+C7A-05 | item_borrador tras ROLLBACK | 0 | 0 | OK
+C7A-06 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== C7-b: producto inexistente (se espera FOREIGN KEY constraint failed)
+C7B-01 | foreign_keys activo antes de BEGIN | 1 | 1 | OK
+C7B-02 | producto 9999 ausente de producto_cache | 0 | 0 | OK
+C7B-03 | preparacion valida: encabezado dentro de la transaccion | 1 | 1 | OK
+C7B-04 | item invalido no grabado (dentro de la transaccion) | 0 | 0 | OK
+C7B-05 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+C7B-06 | item_borrador tras ROLLBACK | 0 | 0 | OK
+C7B-07 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== Estado final
+FIN-01 | filas finales pedido_borrador | item_borrador | cola_sync | 1|2|1 | 1|2|1 | OK
+FIN-02 | violaciones de claves foraneas (foreign_key_check) | 0 | 0 | OK
+FIN-03 | integrity_check | ok | ok | OK
+--- fin stdout pruebas ---
+--- stderr pruebas (2 líneas) ---
+Error near line 201: CHECK constraint failed: cantidad > 0
+Error near line 243: FOREIGN KEY constraint failed
+--- fin stderr pruebas ---
+
+=== Paso 3: verificación ===
+stderr esperado:
+  Error near line 201: CHECK constraint failed: cantidad > 0
+  Error near line 243: FOREIGN KEY constraint failed
+Comprobaciones SQL: esperadas=33 OK=33 FALLA=0
+
+=== Resumen ===
+Prueba     | Esperado                                                       | Resultado
+Esquema    | código 0, sin errores                                         | OK
+COMMIT     | 1 encabezado, 2 ítems, 1 PENDIENTE con motivo NULL            | OK
+ROLLBACK   | 3 filas antes, 0 en las tres tablas después                   | OK
+C1         | vista con 9101 y 9102; lápida 9104 conservada                 | OK
+C7-a       | CHECK cantidad > 0 en línea 201; 0 filas tras ROLLBACK        | OK
+C7-b       | FOREIGN KEY en línea 243; 0 filas tras ROLLBACK               | OK
+stderr     | exactamente los dos diagnósticos esperados                    | OK
+Código    | salida de pruebas = 1 (observado 1)                            | OK
+SQL        | 33 comprobaciones en OK (observado 33 OK, 0 FALLA)             | OK
+
+RESULTADO GLOBAL: OK
+Base temporal conservada: /tmp/gpcCwx2O/gapTxciz/foodstore_u8_bloque_b.KoQFUG/prueba_bloque_b_descartable.db
+Registro guardado en: unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+ASSERT PASS: a exit code
+ASSERT PASS: a log created
+ASSERT PASS: a global result in log
+ASSERT PASS: a 33 SQL checks in log
+ASSERT PASS: a stdout confirms publication
+Remaining captures in unidades/unidad-8/evidencias: 0
+ASSERT PASS: a no capture remains
+CASE a VERDICT: PASS
+NEW_RUN_EVIDENCE: unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+
+=== Case b: existing log ===
+Existing file SHA-256 before: 3ed5316eaf3b629c6726bec410ee1ed3750b6c6cbfb1a1e72d0197b0e784d402
+Command: bash unidades/unidad-8/movil/verificar_bloque_b.sh /tmp/foodstore_u8_verif_registro.zEU2mf/existing.txt
+Expected exit code: 2
+Observed exit code: 2
+Existing file SHA-256 after: 3ed5316eaf3b629c6726bec410ee1ed3750b6c6cbfb1a1e72d0197b0e784d402
+--- Full helper output ---
+El registro ya existe y no se sobrescribe: /tmp/foodstore_u8_verif_registro.zEU2mf/existing.txt
+ASSERT PASS: b exit code
+ASSERT PASS: b existing content unchanged
+ASSERT PASS: b no publication message
+ASSERT PASS: b tests not executed
+CASE b VERDICT: PASS
+
+=== Case c: missing parent ===
+Command: bash unidades/unidad-8/movil/verificar_bloque_b.sh /tmp/foodstore_u8_verif_registro.zEU2mf/no_existe/r.txt
+Expected exit code: 2
+Observed exit code: 2
+--- Full helper output ---
+El directorio del registro no existe o no admite escritura: /tmp/foodstore_u8_verif_registro.zEU2mf/no_existe
+ASSERT PASS: c exit code
+ASSERT PASS: c no publication message
+ASSERT PASS: c file not created
+ASSERT PASS: c parent not created
+ASSERT PASS: c tests not executed
+CASE c VERDICT: PASS
+
+=== Case d: controlled tee failure ===
+ASSERT PASS: d fixture directories created
+ASSERT PASS: d simulated tee executable
+Simulated tee script:
+#!/usr/bin/env bash
+cat > /dev/null
+printf "%s\n" "tee: error de escritura simulado" >&2
+exit 1
+Command: env PATH=/tmp/foodstore_u8_verif_registro.zEU2mf/bin:/home/devops/.pi/agent/bin:/home/devops/.local/share/pi-node/current/bin:/home/devops/.local/share/pi-node/current/bin:/home/devops/.local/bin:/run/user/1000/fnm_multishells/212229_1794059383662/bin:/home/devops/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/home/devops/.local/bin:/home/devops/.opencode/bin:/home/devops/.volta/bin:/home/devops/.bun/bin:/home/devops/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/home/devops/.config:/home/devops/.cargo/bin:/usr/local/lib/python3.14:/usr/local/go/bin:/home/devops/.local/bin:/run/user/1000/fnm_multishells/143414_1794058546979/bin:/home/devops/.cargo/bin:/home/devops/.local/bin:/home/devops/.opencode/bin:/home/devops/.volta/bin:/home/devops/.bun/bin:/home/devops/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/home/devops/.config:/home/devops/.cargo/bin:/usr/local/lib/python3.14:/home/devops/.local/bin:/run/user/1000/fnm_multishells/10610_1794056871771/bin:/home/devops/.cargo/bin:/home/devops/.local/bin:/home/devops/.opencode/bin:/home/devops/.volta/bin:/home/devops/.bun/bin:/home/devops/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/home/devops/.config:/home/devops/.cargo/bin:/usr/local/lib/python3.14:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin TMPDIR=/tmp/foodstore_u8_verif_registro.zEU2mf bash unidades/unidad-8/movil/verificar_bloque_b.sh /tmp/foodstore_u8_verif_registro.zEU2mf/capture_failure/r.txt
+Expected exit code: 2
+Observed exit code: 2
+--- Full helper output ---
+tee: error de escritura simulado
+Fallo al capturar el registro (tee terminó con código 1); no se guardó: /tmp/foodstore_u8_verif_registro.zEU2mf/capture_failure/r.txt
+ASSERT PASS: d exit code
+ASSERT PASS: d fake tee failure observed
+ASSERT PASS: d no publication message
+ASSERT PASS: d log not created
+Remaining captures in /tmp/foodstore_u8_verif_registro.zEU2mf/capture_failure: 0
+ASSERT PASS: d no capture remains
+CASE d VERDICT: PASS
+
+=== Case e/sin_error: C7 negative control ===
+ASSERT PASS: e/sin_error fixture directory created
+ASSERT PASS: e/sin_error three files copied
+Command: sed -i s/9101\,\ 0\,\ 105000\)\;\ --\ C7A/9101\,\ 1\,\ 105000\)\;\ --\ C7A/ /tmp/foodstore_u8_verif_registro.zEU2mf/sin_error/pruebas_sqlite.sql
+ASSERT PASS: e/sin_error sed succeeded
+ASSERT PASS: e/sin_error SQL copy actually changed
+ASSERT PASS: e/sin_error expected edited text
+Marker lines after sed:
+201:INSERT INTO item_borrador (id_local, producto_id, cantidad, precio_centavos_visto) VALUES ('b7a00000-0000-4000-8000-000000000001', 9101, 1, 105000); -- C7A_SENTENCIA_INVALIDA
+243:INSERT INTO item_borrador (id_local, producto_id, cantidad, precio_centavos_visto) VALUES ('b7b00000-0000-4000-8000-000000000001', 9999, 1, 50000); -- C7B_SENTENCIA_INVALIDA
+ASSERT PASS: e/sin_error marker lines found
+ASSERT PASS: e/sin_error schema copy unchanged
+ASSERT PASS: e/sin_error helper copy unchanged
+Command: env TMPDIR=/tmp/foodstore_u8_verif_registro.zEU2mf bash /tmp/foodstore_u8_verif_registro.zEU2mf/sin_error/verificar_bloque_b.sh
+Expected exit code: 1
+Observed exit code: 1
+--- Full helper output ---
+
+=== Entorno ===
+Fecha:          2026-11-07T12:18:06-0300
+Bash:           5.3.9(1)-release
+sqlite3:        /home/linuxbrew/.linuxbrew/bin/sqlite3
+Versión:        3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76 (64-bit)
+Base temporal:  /tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.HSpE7K/prueba_bloque_b_descartable.db (descartable; no se borra al terminar)
+Huellas SHA-256 de los scripts:
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  schema_sqlite.sql
+57893b5a7e67dadb6c5f2f00a5de56b4d6aa7d2f4c95b731e941a32fbed7be88  pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  verificar_bloque_b.sh
+
+=== Paso 1: esquema ===
+Comando: sqlite3 -batch "/tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.HSpE7K/prueba_bloque_b_descartable.db" < schema_sqlite.sql
+Código de salida: 0 (esperado 0)
+--- stdout esquema (0 líneas) ---
+--- fin stdout esquema ---
+--- stderr esquema (0 líneas) ---
+--- fin stderr esquema ---
+
+=== Paso 2: pruebas ===
+Comando: sqlite3 -batch "/tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.HSpE7K/prueba_bloque_b_descartable.db" < pruebas_sqlite.sql
+Código de salida: 1 (esperado 1: dos errores de restricción provocados)
+--- stdout pruebas (44 líneas) ---
+== Conexion: foreign_keys
+B-01 | PRAGMA foreign_keys activo | 1 | 1 | OK
+== Esquema
+B-02 | tablas STRICT del esquema | 4 | 4 | OK
+B-03 | indice ux_cola_una_pendiente y vista v_catalogo_disponible | 2 | 2 | OK
+B-04 | base sin datos previos (4 tablas) | 0 | 0 | OK
+== Fixture sintetica
+FIX-01 | productos de la fixture en producto_cache | 4 | 4 | OK
+== COMMIT: borrador completo
+COMMIT-01 | pedido_borrador del borrador confirmado | 1 | 1 | OK
+COMMIT-02 | item_borrador del borrador confirmado | 2 | 2 | OK
+COMMIT-03 | cola_sync PENDIENTE con motivo NULL | 1 | 1 | OK
+COMMIT-04 | total visto del borrador en centavos | 300000 | 300000 | OK
+== ROLLBACK: operacion deshecha
+ROLLBACK-01 | filas de la operacion antes de ROLLBACK (3 tablas) | 3 | 3 | OK
+ROLLBACK-02 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+ROLLBACK-03 | item_borrador tras ROLLBACK | 0 | 0 | OK
+ROLLBACK-04 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== C1: v_catalogo_disponible (producto_id | nombre | precio | stock_visto)
+9101 | Muzzarella (fixture) | 1050.00 | 10
+9102 | Empanada de carne (fixture) | 150.00 | 40
+C1-01 | productos en v_catalogo_disponible | 2 | 2 | OK
+C1-02 | ids visibles en el catalogo | 9101,9102 | 9101,9102 | OK
+C1-03 | lapida 9104 conservada en producto_cache y oculta en la vista | 1 | 1 | OK
+C1-04 | no disponible 9103 oculto en la vista | 0 | 0 | OK
+== C7-a: cantidad = 0 (se espera CHECK constraint failed: cantidad > 0)
+C7A-01 | foreign_keys activo antes de BEGIN | 1 | 1 | OK
+C7A-02 | preparacion valida: encabezado dentro de la transaccion | 1 | 1 | OK
+C7A-03 | item invalido no grabado (dentro de la transaccion) | 0 | 1 | FALLA
+C7A-04 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+C7A-05 | item_borrador tras ROLLBACK | 0 | 0 | OK
+C7A-06 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== C7-b: producto inexistente (se espera FOREIGN KEY constraint failed)
+C7B-01 | foreign_keys activo antes de BEGIN | 1 | 1 | OK
+C7B-02 | producto 9999 ausente de producto_cache | 0 | 0 | OK
+C7B-03 | preparacion valida: encabezado dentro de la transaccion | 1 | 1 | OK
+C7B-04 | item invalido no grabado (dentro de la transaccion) | 0 | 0 | OK
+C7B-05 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+C7B-06 | item_borrador tras ROLLBACK | 0 | 0 | OK
+C7B-07 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== Estado final
+FIN-01 | filas finales pedido_borrador | item_borrador | cola_sync | 1|2|1 | 1|2|1 | OK
+FIN-02 | violaciones de claves foraneas (foreign_key_check) | 0 | 0 | OK
+FIN-03 | integrity_check | ok | ok | OK
+--- fin stdout pruebas ---
+--- stderr pruebas (1 líneas) ---
+Error near line 243: FOREIGN KEY constraint failed
+--- fin stderr pruebas ---
+
+=== Paso 3: verificación ===
+stderr esperado:
+  Error near line 201: CHECK constraint failed: cantidad > 0
+  Error near line 243: FOREIGN KEY constraint failed
+--- /tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.HSpE7K/pruebas.err.esperado	2026-11-07 12:18:06.475363602 -0300
++++ /tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.HSpE7K/pruebas.err	2026-11-07 12:18:06.427443442 -0300
+@@ -1,2 +1 @@
+-Error near line 201: CHECK constraint failed: cantidad > 0
+ Error near line 243: FOREIGN KEY constraint failed
+Comprobaciones SQL: esperadas=33 OK=32 FALLA=1
+
+=== Resumen ===
+Prueba     | Esperado                                                       | Resultado
+Esquema    | código 0, sin errores                                         | OK
+COMMIT     | 1 encabezado, 2 ítems, 1 PENDIENTE con motivo NULL            | OK
+ROLLBACK   | 3 filas antes, 0 en las tres tablas después                   | OK
+C1         | vista con 9101 y 9102; lápida 9104 conservada                 | OK
+C7-a       | CHECK cantidad > 0 en línea 201; 0 filas tras ROLLBACK        | FALLA
+C7-b       | FOREIGN KEY en línea 243; 0 filas tras ROLLBACK               | OK
+stderr     | exactamente los dos diagnósticos esperados                    | FALLA
+Código    | salida de pruebas = 1 (observado 1)                            | OK
+SQL        | 33 comprobaciones en OK (observado 32 OK, 1 FALLA)             | FALLA
+
+RESULTADO GLOBAL: FALLA
+Base temporal conservada: /tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.HSpE7K/prueba_bloque_b_descartable.db
+ASSERT PASS: e/sin_error exit code
+ASSERT PASS: e/sin_error global failure
+ASSERT PASS: e/sin_error targeted C7 summary failure
+CASE e/sin_error VERDICT: PASS
+
+=== Case e/sintaxis: C7 negative control ===
+ASSERT PASS: e/sintaxis fixture directory created
+ASSERT PASS: e/sintaxis three files copied
+Command: sed -i s/VALUES\ \(.b7b00000-0000-4000-8000-000000000001.\,\ 9999\,\ 1\,\ 50000\)\;\ --\ C7B/VALUES\ \(9999\ 1\)\;\ --\ C7B/ /tmp/foodstore_u8_verif_registro.zEU2mf/sintaxis/pruebas_sqlite.sql
+ASSERT PASS: e/sintaxis sed succeeded
+ASSERT PASS: e/sintaxis SQL copy actually changed
+ASSERT PASS: e/sintaxis expected edited text
+Marker lines after sed:
+201:INSERT INTO item_borrador (id_local, producto_id, cantidad, precio_centavos_visto) VALUES ('b7a00000-0000-4000-8000-000000000001', 9101, 0, 105000); -- C7A_SENTENCIA_INVALIDA
+243:INSERT INTO item_borrador (id_local, producto_id, cantidad, precio_centavos_visto) VALUES (9999 1); -- C7B_SENTENCIA_INVALIDA
+ASSERT PASS: e/sintaxis marker lines found
+ASSERT PASS: e/sintaxis schema copy unchanged
+ASSERT PASS: e/sintaxis helper copy unchanged
+Command: env TMPDIR=/tmp/foodstore_u8_verif_registro.zEU2mf bash /tmp/foodstore_u8_verif_registro.zEU2mf/sintaxis/verificar_bloque_b.sh
+Expected exit code: 1
+Observed exit code: 1
+--- Full helper output ---
+
+=== Entorno ===
+Fecha:          2026-11-07T12:18:06-0300
+Bash:           5.3.9(1)-release
+sqlite3:        /home/linuxbrew/.linuxbrew/bin/sqlite3
+Versión:        3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76 (64-bit)
+Base temporal:  /tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.f0KYcR/prueba_bloque_b_descartable.db (descartable; no se borra al terminar)
+Huellas SHA-256 de los scripts:
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  schema_sqlite.sql
+0b6fa4c39332869ca5f2342aa084ff57c650cf35a5044f5e967df0b77a2f70cf  pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  verificar_bloque_b.sh
+
+=== Paso 1: esquema ===
+Comando: sqlite3 -batch "/tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.f0KYcR/prueba_bloque_b_descartable.db" < schema_sqlite.sql
+Código de salida: 0 (esperado 0)
+--- stdout esquema (0 líneas) ---
+--- fin stdout esquema ---
+--- stderr esquema (0 líneas) ---
+--- fin stderr esquema ---
+
+=== Paso 2: pruebas ===
+Comando: sqlite3 -batch "/tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.f0KYcR/prueba_bloque_b_descartable.db" < pruebas_sqlite.sql
+Código de salida: 1 (esperado 1: dos errores de restricción provocados)
+--- stdout pruebas (44 líneas) ---
+== Conexion: foreign_keys
+B-01 | PRAGMA foreign_keys activo | 1 | 1 | OK
+== Esquema
+B-02 | tablas STRICT del esquema | 4 | 4 | OK
+B-03 | indice ux_cola_una_pendiente y vista v_catalogo_disponible | 2 | 2 | OK
+B-04 | base sin datos previos (4 tablas) | 0 | 0 | OK
+== Fixture sintetica
+FIX-01 | productos de la fixture en producto_cache | 4 | 4 | OK
+== COMMIT: borrador completo
+COMMIT-01 | pedido_borrador del borrador confirmado | 1 | 1 | OK
+COMMIT-02 | item_borrador del borrador confirmado | 2 | 2 | OK
+COMMIT-03 | cola_sync PENDIENTE con motivo NULL | 1 | 1 | OK
+COMMIT-04 | total visto del borrador en centavos | 300000 | 300000 | OK
+== ROLLBACK: operacion deshecha
+ROLLBACK-01 | filas de la operacion antes de ROLLBACK (3 tablas) | 3 | 3 | OK
+ROLLBACK-02 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+ROLLBACK-03 | item_borrador tras ROLLBACK | 0 | 0 | OK
+ROLLBACK-04 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== C1: v_catalogo_disponible (producto_id | nombre | precio | stock_visto)
+9101 | Muzzarella (fixture) | 1050.00 | 10
+9102 | Empanada de carne (fixture) | 150.00 | 40
+C1-01 | productos en v_catalogo_disponible | 2 | 2 | OK
+C1-02 | ids visibles en el catalogo | 9101,9102 | 9101,9102 | OK
+C1-03 | lapida 9104 conservada en producto_cache y oculta en la vista | 1 | 1 | OK
+C1-04 | no disponible 9103 oculto en la vista | 0 | 0 | OK
+== C7-a: cantidad = 0 (se espera CHECK constraint failed: cantidad > 0)
+C7A-01 | foreign_keys activo antes de BEGIN | 1 | 1 | OK
+C7A-02 | preparacion valida: encabezado dentro de la transaccion | 1 | 1 | OK
+C7A-03 | item invalido no grabado (dentro de la transaccion) | 0 | 0 | OK
+C7A-04 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+C7A-05 | item_borrador tras ROLLBACK | 0 | 0 | OK
+C7A-06 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== C7-b: producto inexistente (se espera FOREIGN KEY constraint failed)
+C7B-01 | foreign_keys activo antes de BEGIN | 1 | 1 | OK
+C7B-02 | producto 9999 ausente de producto_cache | 0 | 0 | OK
+C7B-03 | preparacion valida: encabezado dentro de la transaccion | 1 | 1 | OK
+C7B-04 | item invalido no grabado (dentro de la transaccion) | 0 | 0 | OK
+C7B-05 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+C7B-06 | item_borrador tras ROLLBACK | 0 | 0 | OK
+C7B-07 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== Estado final
+FIN-01 | filas finales pedido_borrador | item_borrador | cola_sync | 1|2|1 | 1|2|1 | OK
+FIN-02 | violaciones de claves foraneas (foreign_key_check) | 0 | 0 | OK
+FIN-03 | integrity_check | ok | ok | OK
+--- fin stdout pruebas ---
+--- stderr pruebas (4 líneas) ---
+Error near line 201: CHECK constraint failed: cantidad > 0
+Parse error near line 243: near "1": syntax error
+  id, cantidad, precio_centavos_visto) VALUES (9999 1); -- C7B_SENTENCIA_INVALID
+                                      error here ---^
+--- fin stderr pruebas ---
+
+=== Paso 3: verificación ===
+stderr esperado:
+  Error near line 201: CHECK constraint failed: cantidad > 0
+  Error near line 243: FOREIGN KEY constraint failed
+--- /tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.f0KYcR/pruebas.err.esperado	2026-11-07 12:18:06.669363040 -0300
++++ /tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.f0KYcR/pruebas.err	2026-11-07 12:18:06.622197003 -0300
+@@ -1,2 +1,4 @@
+ Error near line 201: CHECK constraint failed: cantidad > 0
+-Error near line 243: FOREIGN KEY constraint failed
++Parse error near line 243: near "1": syntax error
++  id, cantidad, precio_centavos_visto) VALUES (9999 1); -- C7B_SENTENCIA_INVALID
++                                      error here ---^
+Comprobaciones SQL: esperadas=33 OK=33 FALLA=0
+
+=== Resumen ===
+Prueba     | Esperado                                                       | Resultado
+Esquema    | código 0, sin errores                                         | OK
+COMMIT     | 1 encabezado, 2 ítems, 1 PENDIENTE con motivo NULL            | OK
+ROLLBACK   | 3 filas antes, 0 en las tres tablas después                   | OK
+C1         | vista con 9101 y 9102; lápida 9104 conservada                 | OK
+C7-a       | CHECK cantidad > 0 en línea 201; 0 filas tras ROLLBACK        | OK
+C7-b       | FOREIGN KEY en línea 243; 0 filas tras ROLLBACK               | FALLA
+stderr     | exactamente los dos diagnósticos esperados                    | FALLA
+Código    | salida de pruebas = 1 (observado 1)                            | OK
+SQL        | 33 comprobaciones en OK (observado 33 OK, 0 FALLA)             | OK
+
+RESULTADO GLOBAL: FALLA
+Base temporal conservada: /tmp/foodstore_u8_verif_registro.zEU2mf/foodstore_u8_bloque_b.f0KYcR/prueba_bloque_b_descartable.db
+ASSERT PASS: e/sintaxis exit code
+ASSERT PASS: e/sintaxis global failure
+ASSERT PASS: e/sintaxis targeted C7 summary failure
+CASE e/sintaxis VERDICT: PASS
+
+=== Protected SHA-256 at end ===
+ASSERT PASS: end hash command succeeded
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  unidades/unidad-8/movil/schema_sqlite.sql
+2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7  unidades/unidad-8/movil/pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  unidades/unidad-8/movil/verificar_bloque_b.sh
+ff2acc1de7379ebbbb40c3a77fa8cf0ae4454408ef7fe64f7100e3faf9ddf2cf  unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt
+ebc7cf6a98ea4bc33bae7634b2d69b5cb01bd0603720a471d2c62f0fac9f9396  unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt
+ASSERT PASS: all three scripts and both existing evidences unchanged
+Remaining captures in unidades/unidad-8/evidencias: 0
+ASSERT PASS: no captures remain in repository evidence directory
+End: 2026-11-07T12:18:06-0300
+Total failed assertions: 0
+DRIVER VERDICT: PASS
+Driver observed exit code: 0

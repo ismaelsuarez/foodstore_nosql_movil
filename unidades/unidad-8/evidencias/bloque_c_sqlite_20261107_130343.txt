@@ -1,0 +1,236 @@
+Food Store U8 — Bloque C — SQLite: base entregable, renovación y pruebas b–f
+Ejecución: Claude (sesión principal). Scripts SQLite redactados por un subagente gentle-ai-worker; la sesión principal agregó a preparar_foodstore_movil.sh una comprobación estructural previa del CSV (columnas sobrantes). No es una revisión humana.
+Fecha: 2026-11-07T13:03:43-0300
+Bash: 5.3.9(1)-release
+sqlite3: 3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76 (64-bit)
+Huellas:
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  schema_sqlite.sql
+523f31b84af57ecc73cbc14ee1fa851096759c35f62af92a623e32d43570c0b7  snapshot_servidor.sql
+1273c01344352d0e7f624da99aaaa2327d252e46e059737a814c2c0a210e0b86  renovar_snapshot.sql
+be699c02dd35f1399c22a45ebf08470b0241750ac62352dc320d6bfa3324444b  consultas_bloque_c.sql
+d806311f1cb4832e3c6370ff697d2bc727e654bdf36546757a0baa029d6744c4  preparar_foodstore_movil.sh
+b063dec075798eb7cf322c3859be829b822902425cebdeab941b3a33047eb10e  verificar_bloque_c.sh
+46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc  servidor_snapshot.csv
+8451dcdff04efbe78960f96ed36cb86013345fb5db9fe8db2f8b78d24c92052d  servidor_snapshot_meta.txt
+
+== Paso 1: bash unidades/unidad-8/movil/preparar_foodstore_movil.sh crear unidades/unidad-8/movil/foodstore_movil.db
+schema_sqlite.sql: código esperado=0 observado=0
+--- stdout ---
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Resultado esquema: OK
+snapshot_servidor.sql: código esperado=0 observado=0
+--- stdout ---
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Resultado esquema: OK
+BASE NUEVA PUBLICADA: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db
+Código de salida crear: 0 (esperado 0)
+
+== Paso 2 (prueba d, renovación con el CSV autorizado): bash unidades/unidad-8/movil/preparar_foodstore_movil.sh renovar unidades/unidad-8/movil/foodstore_movil.db unidades/unidad-8/movil/servidor_snapshot.csv unidades/unidad-8/movil/servidor_snapshot_meta.txt
+Renovación: código esperado=0 observado=0
+--- stdout ---
+foreign_keys | OK
+filas_esperadas | OK
+filas_importadas | OK
+sin_nulos | OK
+tipos_enteros | OK
+captura_unica | OK
+correspondencia_cache | OK
+lapidas_conservadas | OK
+items_conservados | OK
+cola_conservada | OK
+RENOVACION CONFIRMADA
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Resultado renovación: OK
+Código de salida renovar: 0 (esperado 0)
+
+== Paso 3: bash unidades/unidad-8/movil/verificar_bloque_c.sh unidades/unidad-8/movil/foodstore_movil.db
+Base original (solo lectura): /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db
+Bash: 5.3.9(1)-release
+SQLite: 3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76 (64-bit)
+
+=== b/c/f: correspondencia, catálogo, integridad ===
+Directorio temporal conservado: /tmp/foodstore_u8_c_verificacion.JKV0bd
+--- stdout consultas ---
+C-F-01 | foreign_keys activo | 1 | 1 | OK
+== b: correspondencia con CSV
+C-B-01 | filas CSV original | 9 | 9 | OK
+C-B-02 | filas snapshot iguales al CSV y a nueve | 9 | 9 | OK
+C-B-03 | diferencias CSV/snapshot en ambas direcciones | 0 | 0 | OK
+C-B-04 | diferencias CSV/cache reconvertido en ambas direcciones | 0 | 0 | OK
+C-B-05 | una misma captura en CSV, snapshot y cache | 1 | 1 | OK
+C-B-06 | filas cache iguales al CSV y a nueve | 9 | 9 | OK
+== c: catalogo y lapidas
+C-C-01 | ids disponibles ordenados | 1,2,3,4,5,6,7 | 1,2,3,4,5,6,7 | OK
+producto_id | nombre | precio | stock_visto
+1 | Muzzarella | 1050.0 | 50
+2 | Napolitana | 1500.0 | 40
+3 | Coca 1.5L | 800.0 | 100
+4 | [U8 prueba] Base C2 precio | 1200.0 | 20
+5 | [U8 prueba] Base C3 stock | 900.0 | 10
+6 | [U8 prueba] Base C4 baja | 700.0 | 15
+7 | [U8 prueba] Base C5 sin cambios | 500.0 | 30
+C-C-02 | producto 9 conserva lapida y no aparece en vista | 1 | 1 | OK
+C-C-03 | producto 8 no disponible y ausente en vista | 1 | 1 | OK
+== f: integridad, fixture ausente y tablas vacias
+C-F-02 | pedido_borrador vacio | 0 | 0 | OK
+C-F-03 | item_borrador vacio | 0 | 0 | OK
+C-F-04 | cola_sync vacia | 0 | 0 | OK
+C-F-05 | fixture B ausente de cache y snapshot | 0 | 0 | OK
+C-F-06 | integrity_check | ok | ok | OK
+C-F-07 | foreign_key_check sin infracciones | 0 | 0 | OK
+C-F-08 | cinco tablas main STRICT | 5 | 5 | OK
+--- fin stdout consultas ---
+--- stderr consultas ---
+--- fin stderr consultas ---
+Código esperado=0 observado=0; comprobaciones esperadas=17 OK=17 FALLA=0; stderr esperado vacío
+b/c/f SQL: OK
+
+=== b: correspondencia con servidor sin modificarlo ===
+Código inspect esperado=0 observado=0; estado esperado=true observado=true
+--- diagnóstico inspect ---
+--- fin diagnóstico inspect ---
+Código COPY esperado=0 observado=0; extracción CSV esperada=0 observada=0
+--- diagnóstico COPY ---
+--- fin diagnóstico COPY ---
+b servidor: seis columnas idénticas byte a byte: OK
+
+=== d: repetir renovación válida sobre copia ===
+Directorio temporal conservado: /tmp/foodstore_u8_c_verificacion.7zapeP
+Dump antes/snapshot_servidor: código esperado=0 observado=0
+--- diagnóstico dump antes/snapshot_servidor ---
+--- fin diagnóstico dump antes/snapshot_servidor ---
+Dump antes/producto_cache: código esperado=0 observado=0
+--- diagnóstico dump antes/producto_cache ---
+--- fin diagnóstico dump antes/producto_cache ---
+--- stdout coordinador ---
+Renovación: código esperado=0 observado=0
+--- stdout ---
+foreign_keys | OK
+filas_esperadas | OK
+filas_importadas | OK
+sin_nulos | OK
+tipos_enteros | OK
+captura_unica | OK
+correspondencia_cache | OK
+lapidas_conservadas | OK
+items_conservados | OK
+cola_conservada | OK
+RENOVACION CONFIRMADA
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Resultado renovación: OK
+--- fin stdout coordinador ---
+--- stderr coordinador ---
+--- fin stderr coordinador ---
+Código renovación esperado=0 observado=0
+Dump despues/snapshot_servidor: código esperado=0 observado=0
+--- diagnóstico dump despues/snapshot_servidor ---
+--- fin diagnóstico dump despues/snapshot_servidor ---
+Dump despues/producto_cache: código esperado=0 observado=0
+--- diagnóstico dump despues/producto_cache ---
+--- fin diagnóstico dump despues/producto_cache ---
+snapshot_servidor antes/después: idénticos byte a byte
+producto_cache antes/después: idénticos byte a byte
+d renovación repetible: OK
+
+=== e1: importación inválida y reversión comprobada ===
+Directorio temporal conservado: /tmp/foodstore_u8_c_verificacion.pyXUl9
+Alteración esperada: producto 5 disponible t→x; filas originales coincidentes=1 alteradas=1
+e1 preparación de la copia alterada: OK
+Dump antes/snapshot_servidor: código esperado=0 observado=0
+--- diagnóstico dump antes/snapshot_servidor ---
+--- fin diagnóstico dump antes/snapshot_servidor ---
+Dump antes/producto_cache: código esperado=0 observado=0
+--- diagnóstico dump antes/producto_cache ---
+--- fin diagnóstico dump antes/producto_cache ---
+--- stdout coordinador ---
+Renovación: código esperado=0 observado=1
+--- stdout ---
+foreign_keys | OK
+filas_esperadas | OK
+--- fin stdout ---
+--- stderr ---
+servidor_snapshot.csv:6: INSERT failed: CHECK constraint failed: disponible IN ('t', 'f')
+--- fin stderr ---
+--- fin stdout coordinador ---
+--- stderr coordinador ---
+FALLA: renovación interrumpida; la transacción abierta se revierte al cerrar, catálogo no cargado.
+--- fin stderr coordinador ---
+Código renovación esperado=1 observado=1; diagnóstico esperado no vacío
+servidor_snapshot.csv:6: INSERT failed: CHECK constraint failed: disponible IN ('t', 'f')
+Dump despues/snapshot_servidor: código esperado=0 observado=0
+--- diagnóstico dump despues/snapshot_servidor ---
+--- fin diagnóstico dump despues/snapshot_servidor ---
+Dump despues/producto_cache: código esperado=0 observado=0
+--- diagnóstico dump despues/producto_cache ---
+--- fin diagnóstico dump despues/producto_cache ---
+snapshot_servidor antes/después: idénticos byte a byte
+producto_cache antes/después: idénticos byte a byte
+e1 rechazo con snapshot y catálogo intactos: OK
+
+=== e2: importación inválida y reversión comprobada ===
+Directorio temporal conservado: /tmp/foodstore_u8_c_verificacion.0zyXaL
+Alteración esperada: última fila retirada (líneas 10→9); observado=10→9
+e2 preparación de la copia alterada: OK
+Dump antes/snapshot_servidor: código esperado=0 observado=0
+--- diagnóstico dump antes/snapshot_servidor ---
+--- fin diagnóstico dump antes/snapshot_servidor ---
+Dump antes/producto_cache: código esperado=0 observado=0
+--- diagnóstico dump antes/producto_cache ---
+--- fin diagnóstico dump antes/producto_cache ---
+--- stdout coordinador ---
+Renovación: código esperado=0 observado=1
+--- stdout ---
+foreign_keys | OK
+filas_esperadas | OK
+filas_importadas | FALLA
+--- fin stdout ---
+--- stderr ---
+Error near line 34: CHECK constraint failed: ok = 1
+--- fin stderr ---
+--- fin stdout coordinador ---
+--- stderr coordinador ---
+FALLA: renovación interrumpida; la transacción abierta se revierte al cerrar, catálogo no cargado.
+--- fin stderr coordinador ---
+Código renovación esperado=1 observado=1; diagnóstico esperado no vacío
+Error near line 34: CHECK constraint failed: ok = 1
+Dump despues/snapshot_servidor: código esperado=0 observado=0
+--- diagnóstico dump despues/snapshot_servidor ---
+--- fin diagnóstico dump despues/snapshot_servidor ---
+Dump despues/producto_cache: código esperado=0 observado=0
+--- diagnóstico dump despues/producto_cache ---
+--- fin diagnóstico dump despues/producto_cache ---
+snapshot_servidor antes/después: idénticos byte a byte
+producto_cache antes/después: idénticos byte a byte
+e2 rechazo con snapshot y catálogo intactos: OK
+
+=== Resumen ===
+RESULTADO GLOBAL: OK
+Todos los directorios temporales indicados se conservan; la base original no se renovó.
+Código de salida verificar_bloque_c: 0 (esperado 0)
+
+== Paso 4 (prueba e3, control adicional): CSV con una columna sobrante en una copia fuera del repositorio
+Directorio temporal conservado: /tmp/foodstore_u8_c_e3.dZVTzt
+Línea alterada: 2,Napolitana,150000,40,t,f,2026-11-07 15:51:24.499236+00,sobrante
+CSV fuera de contrato: línea 3: se esperaban 7 campos sin comillas
+FALLA: CSV fuera de contrato; no se abre la base.
+Código de salida renovar e3: 1 (esperado 1)
+snapshot_servidor antes/después: idénticos
+producto_cache antes/después: idénticos
+e3: OK
+
+== Estado final de la base entregable
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  unidades/unidad-8/movil/foodstore_movil.db
+-rw------- 1 devops devops 40960 Nov  7 13:03 foodstore_movil.db
+-rw-rw-r-- 1 devops devops  7731 Nov  7 13:03 preparar_foodstore_movil.sh
+Parse error in 3rd command line argument: no such column: "table" - should this be a string literal in single-quotes?
+  SELECT name FROM sqlite_schema WHERE type IN ("table","view","index") ORDER BY
+                                  error here ---^
+RESULTADO GLOBAL DE ESTA EJECUCIÓN: OK

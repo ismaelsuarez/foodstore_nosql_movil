@@ -1,0 +1,203 @@
+Food Store U8 — Actualización del informe tras aprobación comunicada por el equipo
+Fecha real de registro del nombre de esta evidencia: 2026-11-07T23:03:21-0300
+Trabajo exclusivamente documental; TDD desactivado por decisión explícita del padre.
+RED: no activo. GREEN: no activo; validación estructural informada por separado.
+
+1. Procedencia, alcance y límites
+Ismael comunicó en nombre del equipo, en la conversación de coordinación:
+«Bien el equipo lo aprueba».
+Se registra la comunicación aportada por el equipo, sin inventar firma, reunión,
+fecha ni hora de aprobación. Las horas de este archivo son de registro/ejecución,
+no de aprobación.
+La aprobación abarca el informe presentado, incluido el desarrollo H1/H3/H6 y
+su selección para presentación en el informe. No implica aprobación docente,
+cierre de todo TP8 o E, revisión humana individual de los 120 scripts, DUIA
+definitiva, ensayo realizado ni autorización para publicar.
+Siguen pendientes el contraste de DUIA con el formato oficial, su revisión humana,
+la elección de qué mostrar en vivo, ensayo de defensa y preparación de la entrega.
+No se convierten propuestas de mantenimiento en procedimientos implementados.
+
+2. Originales contrastados y conservados
+Se ejecutó antes de escribir:
+sha256sum unidades/unidad-8/docs/informe.html unidades/unidad-8/docs/informe.pdf
+Coincidencia con las huellas suministradas y las líneas 80–81 de
+unidades/unidad-8/evidencias/bloque_e_informe_20261107_220745.txt:
+HTML: e9886b0db311bb7148a66585e3d778f9858860625bfdf900de1158d8594cdda3
+PDF:  a2881fa53ab17d6fc7cfdc6966943a74d5a6139d776b0c3d17df473f28629531
+La evidencia anterior se leyó y no se modificó: describe correctamente el borrador.
+
+Resguardo NUEVO, creado con mkdir sin -p sobre el nombre final:
+/home/devops/.local/share/foodstore_u8_resguardos/20261107_205605/informe_borrador_20261107_230111/
+Fecha real de la operación: 2026-11-07T23:01:11-0300.
+Copia: cp --preserve=timestamps unidades/unidad-8/docs/informe.html unidades/unidad-8/docs/informe.pdf "$backup/"
+El mkdir y la copia dieron código 0. No se sobrescribió ningún resguardo existente.
+SHA-256 comprobados sobre origen y destino, iguales para cada archivo:
+Origen HTML = destino informe.html = e9886b0db311bb7148a66585e3d778f9858860625bfdf900de1158d8594cdda3
+Origen PDF  = destino informe.pdf  = a2881fa53ab17d6fc7cfdc6966943a74d5a6139d776b0c3d17df473f28629531
+
+Temporales: mktemp -d /tmp/foodstore_u8_informe.XXXXXX
+Directorio observado: /tmp/foodstore_u8_informe.npqK7X
+Antes de editar se guardaron allí informe_original.html y el texto original:
+pdftotext -layout unidades/unidad-8/docs/informe.pdf "$tmp/informe_original.txt"
+No se eliminaron temporales ni originales.
+
+3. Lista exacta de cambios del HTML (10 líneas, misma numeración antes/después)
+L6, contenido de title:
+ANTES: Food Store · TP8 Unidad 8 · Borrador para revisión del equipo
+DESPUÉS: Food Store · TP8 Unidad 8 · Informe revisado y aprobado por el equipo
+L39, contenido del aviso div class="draft":
+ANTES: BORRADOR para revisión del equipo — no aprobado
+DESPUÉS: Informe revisado y aprobado por el equipo
+L55, L85, L116, L149, L170 y L188, contenido de los seis pies:
+ANTES: Food Store · TP8 · Borrador · N / 6
+DESPUÉS: Food Store · TP8 · Informe revisado y aprobado por el equipo · N / 6
+N conserva respectivamente 1, 2, 3, 4, 5 y 6.
+L176, únicamente las dos últimas oraciones del párrafo:
+ANTES: H1/H3/H6 son selección propuesta, no aprobada. La consigna pide OpenCode Plan; el equipo informó sustitución por Claude, no aprobación final.
+DESPUÉS: H1/H3/H6: selección aprobada por el equipo para el informe. La consigna pide OpenCode Plan; el equipo informó sustitución por Claude, no aprobación docente del informe.
+L186, párrafo completo (las etiquetas p y strong se conservan):
+ANTES: E sigue abierto: revisión humana del informe y hallazgos, DUIA contra formato oficial, elección y ensayo de defensa de 10 minutos, modalidad ZIP o repositorio con etiqueta tp8 y operaciones Git. No se declara aprobación humana/docente, DUIA definitiva, ensayo realizado ni entrega publicada.
+DESPUÉS: E sigue abierto: revisión humana individual de los scripts, DUIA contra formato oficial, elección y ensayo de defensa de 10 minutos, modalidad ZIP o repositorio con etiqueta tp8 y operaciones Git. Ismael comunicó la aprobación del equipo al informe. No se declara aprobación docente, DUIA definitiva, ensayo realizado ni entrega publicada.
+
+Comando observado:
+diff -u /tmp/foodstore_u8_informe.npqK7X/informe_original.html unidades/unidad-8/docs/informe.html
+Resultado: diferencias esperadas (código 1), exactamente las diez líneas indicadas.
+Sin cambios de CSS, diseño, tipografía, comandos, resultados, tablas técnicas,
+referencias, antecedentes ni límites de los hallazgos.
+No se usaron reemplazos globales. Se conservaron los términos técnicos borrador,
+pedido_borrador, item_borrador y las propuestas de mantenimiento; DUIA sigue borrador.
+
+4. Regeneración y paginación
+Se reutilizó el comando de la evidencia anterior con las mismas opciones de
+Chrome, sustituyendo únicamente el directorio temporal por el nuevo:
+repo="$PWD"; tmp=/tmp/foodstore_u8_informe.npqK7X; google-chrome --headless=new --disable-gpu --no-sandbox --disable-background-networking --disable-extensions --no-first-run --user-data-dir="$tmp/perfil" --no-pdf-header-footer --print-to-pdf="$repo/unidades/unidad-8/docs/informe.pdf" "file://$repo/unidades/unidad-8/docs/informe.html"; pdfinfo unidades/unidad-8/docs/informe.pdf; pdftoppm -r 90 -png unidades/unidad-8/docs/informe.pdf "$tmp/entrega"
+Resultado observado: código 0; Chrome escribió 150354 bytes. Una sola conversión.
+PDF: Title Food Store · TP8 Unidad 8 · Informe revisado y aprobado por el equipo.
+Creator HeadlessChrome/157.0.0.0; Producer Skia/PDF m157; PDF version 1.4.
+CreationDate y ModDate: Sat Nov 7 23:01:47 2026 -03 (generación, no aprobación).
+Pages: 6. A4: 594.96 x 841.92 pts. Tagged: yes. Encrypted: no.
+Se conserva cuerpo 10 pt, tablas 9 pt, código/referencias 8,2 pt y márgenes 15 mm.
+El aviso del harness «.pdf unconfirmed — no analyzer handles this file type»
+no es un error de conversión; se verificó con pdfinfo, texto extraído y PNG.
+
+5. Revisión visual de TODAS las páginas de la versión final
+Render adicional solicitado:
+pdftoppm -r 80 -png unidades/unidad-8/docs/informe.pdf /tmp/foodstore_u8_informe.npqK7X/revision
+Resultado: código 0. Se abrieron con read los seis archivos revision-1.png a
+revision-6.png (no solo miniaturas ni una muestra).
+P1: identificación y aviso de aprobación legibles, tabla y referencias completas,
+pie en un renglón, sin cortes ni superposiciones.
+P2: esquema, flujo, comandos y clave de evidencias completos; pie dentro del margen,
+sin huérfanos, tildes y flechas legibles.
+P3: C2/C3, comandos, resultados, controles y referencias dentro de márgenes;
+pie legible, sin desbordes ni solapamientos.
+P4: C4/C5/C6, consulta de control e incidencia conservada completos;
+bloques de comandos y pie sin cortes ni superposiciones.
+P5: tabla de tres motores, propuestas y límites de mantenimiento completos;
+referencias y pie dentro del margen, sin desbordes.
+P6: H1/H3/H6 completos y legibles, índice en columna ancha, cifras 7,6655,
+14,7085 y +91,88 % visibles; SHA, pendientes, referencias y pie completos.
+Sin cortes ni solapamientos. El ajuste de renglones no agregó páginas.
+Inspección visual del agente; no se atribuye al equipo ni a un docente.
+
+6. Diff del texto PDF
+Comandos observados:
+pdftotext -layout unidades/unidad-8/docs/informe.pdf /tmp/foodstore_u8_informe.npqK7X/informe_actual.txt
+diff -u /tmp/foodstore_u8_informe.npqK7X/informe_original.txt /tmp/foodstore_u8_informe.npqK7X/informe_actual.txt
+Extracción: código 0. Diff: código 1 esperado por cambios de estado.
+Lista de líneas afectadas del texto original (numeración del diff):
+- L12: aviso de borrador pasa al estado revisado y aprobado por el equipo.
+- L58, L118, L175, L233, L291 y L345: seis pies con ese mismo cambio.
+- L238, L240–242, L245–249 y L251–253: solo espacios de alineación de la
+  tercera columna de la tabla de la página 5; palabras, orden y cifras iguales.
+- L298–299: frases de selección H1/H3/H6 y alcance de aprobación; ahora tres
+  renglones por el ajuste de texto, sin alterar las fichas técnicas siguientes.
+- L334–336: párrafo de pendientes/aprobación; ahora cuatro renglones y una
+  línea vacía adicional antes de las referencias, sin alterar sus textos.
+
+Contraste palabra a palabra, normalizando TODOS los espacios y saltos:
+git diff --no-index --word-diff=porcelain -- /dev/fd/63 /dev/fd/62 63< <(tr -s '[:space:]' ' ' < /tmp/foodstore_u8_informe.npqK7X/informe_original.txt) 62< <(tr -s '[:space:]' ' ' < /tmp/foodstore_u8_informe.npqK7X/informe_actual.txt) | grep -E '^[+-]'
+Salida de cambios léxicos (omitidas solo las cabeceras de archivos):
+-BORRADOR para revisión del equipo — no
++Informe revisado y
++por el equipo
+-Borrador
++Informe revisado y aprobado por el equipo
+-Borrador
++Informe revisado y aprobado por el equipo
+-Borrador
++Informe revisado y aprobado por el equipo
+-Borrador
++Informe revisado y aprobado por el equipo
+-Borrador
++Informe revisado y aprobado por el equipo
+-H1/H3/H6 son
++H1/H3/H6:
+-propuesta, no aprobada.
++aprobada por el equipo para el informe.
+-final.
++docente del informe.
+-del informe y hallazgos,
++individual de los scripts,
++Ismael comunicó la aprobación del equipo al informe.
+-humana/docente,
++docente,
+-Borrador
++Informe revisado y aprobado por el equipo
+La palabra «aprobado» del aviso queda como token común entre ambas versiones,
+por eso el diff léxico divide el cambio de esa frase.
+Conclusión observada: todas las diferencias léxicas son menciones de estado
+permitidas. Fuera de ellas no hay diferencias de contenido técnico; los otros
+cambios del diff de layout son únicamente espacios o saltos de renglón.
+
+7. Huellas nuevas y control de base
+Comando:
+sha256sum unidades/unidad-8/docs/informe.html unidades/unidad-8/docs/informe.pdf unidades/unidad-8/movil/foodstore_movil.db
+Salida:
+169052ed3cdab7372d2c7809c3329c7215cfb22d4de35664a5cd1b543d77a0ca  unidades/unidad-8/docs/informe.html
+4a9902cdd93a08ebff6fbad2ec919e4abdf6c40bc44407b5f284a0346e6feb78  unidades/unidad-8/docs/informe.pdf
+cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace  unidades/unidad-8/movil/foodstore_movil.db
+La huella de la base no cambió. Solo se leyó para sha256sum, sin abrir un cliente.
+
+8. Archivos documentales modificados (rutas relativas a unidades/unidad-8/)
+- docs/informe.html: solo las diez líneas detalladas en §3.
+- docs/informe.pdf: regeneración del HTML, seis páginas, misma presentación.
+- README.md: estado del informe, H1/H3/H6 para presentación en él, pendientes
+  acotados y enlace a esta evidencia; generación anterior identificada como tal.
+- docs/kiro/tasks.md: estado E6 y selección para informe, límites de aprobación
+  de E3 y de E; referencias de generación anterior y de esta actualización.
+- docs/bitacora_ia.md: entrada 7 con generación anterior, aprobación comunicada
+  por Ismael y actualización actual con fecha real; referencias de estado previas
+  precisadas sin convertir el estado histórico en una aprobación retroactiva.
+- docs/DUIA.md: HTML/PDF entre documentos producidos con asistencia de IA,
+  aprobación del informe registrada con procedencia y límites; la DUIA sigue
+  borrador, sin firmas y pendiente de formato oficial y revisión humana.
+- docs/revision_scripts_ia.md: aprobación de selección H1/H3/H6 para informe,
+  sin declarar aprobada toda E3 ni revisión humana individual de 120 scripts.
+- docs/guia_defensa.md: selección aprobada para informe; elección de qué mostrar
+  en vivo y ensayo permanecen pendientes; sin cambiar propuestas ni fichas.
+- evidencias/bloque_e_informe_aprobado_20261107_230321.txt: este archivo NUEVO.
+No se modificaron evidencias históricas, SQL, scripts, auxiliares, CSV,
+metadatos ni bases. No se inspeccionó odd/ ni se ejecutaron Docker, motores,
+clientes de bases, scripts de la cursada, restauraciones o E-1; no se repitió B/C/D.
+Sin instaladores, ZIP, publicación ni operaciones Git modificadoras.
+Avisos automáticos Markdown: marksman silent, diagnósticos incompletos; no se
+presentan como lint limpio. Se inspeccionaron las menciones finales con grep;
+la validación requerida es estructural, no un linter ni una ejecución de motores.
+
+9. Estado final de Git
+Comando observado:
+git status --porcelain=v1 -uall | grep -v '^?? odd/'
+Resumen observado con awk sobre esa misma salida:
+Cambios rastreados: 0
+No rastreados: 68
+Todos los no rastreados corresponden a unidades/unidad-8/. Antes había 67;
+la única ruta agregada es esta evidencia nueva. Los otros ocho documentos
+editados ya eran no rastreados y no aparecen como M en Git por ese motivo.
+Se preservaron todos los demás archivos y no se inspeccionó odd/.
+No hubo staging, commit, cambio de rama, etiqueta, fetch/pull/push ni publicación.
+La comprobación final repitió pdfinfo (6 páginas) y SHA-256 de HTML/PDF,
+copias de resguardo y base: coincidieron con §§2 y 7.
+El diff adicional con -U0 confirmó las líneas de §6; sus diferencias son
+esperadas, no una prueba de igualdad fallida ni un fallo de contenido técnico.
+E permanece abierto. Esta tarea se detiene luego de la actualización documental.

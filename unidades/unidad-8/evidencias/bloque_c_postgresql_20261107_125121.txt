@@ -1,0 +1,252 @@
+Food Store U8 — Bloque C — Laboratorio PostgreSQL y exportación
+Ejecución: Claude (sesión principal); scripts redactados por un subagente gentle-ai-worker y leídos antes de ejecutar. No es una revisión humana.
+Fecha: 2026-11-07T12:51:21-0300
+Bash: 5.3.9(1)-release
+Docker: cliente 29.9.3 servidor 29.9.3
+Contexto Docker: default
+Huellas de los scripts C (postgresql/):
+a2fbec88c044bc51d7755660ad83d6923c70c145712ed8252df1b421360654b8  laboratorio_u8.sh
+97afca557a47f438f134009983233b7502c8c42d7e506d3c428254bd4a12d610  datos_auxiliares_u8.sql
+b5aceb77cc63dd7ff5536b049eb9859141a7675ba44f539471b0dc57548a0ae9  snapshot_movil.sql
+6bb56060f2c7315773740665465f2446dad99a6576f4e29e411e8bf7457c06dc  exportar_snapshot.sql
+e9e0f37c79fc491bece64cf0c5c4a82a460b7915f36515cb2df0dd6bf175f120  verificar_instalacion_u8.sql
+
+== Credencial privada (solo ruta, permisos y ACL; nunca el contenido)
+drwx------ 2 devops devops 4096 Nov  7 12:51 /home/devops/.local/share/foodstore_u8_lab
+-rw-r-----+ 1 devops devops 32 Nov  7 12:51 /home/devops/.local/share/foodstore_u8_lab/pg_superusuario
+user::rw-
+user:dnsmasq:r--
+(uid 999 = usuario postgres del contenedor; en el host se llama dnsmasq; el directorio 0700 impide atravesarlo desde el host)
+
+== Paso 1: bash unidades/unidad-8/postgresql/laboratorio_u8.sh crear
+Comando: docker volume create --label proyecto=foodstore-u8 foodstore_u8_pg_data
+foodstore_u8_pg_data
+Código de salida (crear volumen): 0
+Comando: docker --context default run -d --pull=never --name foodstore-u8-postgres --network none --security-opt no-new-privileges:true --label proyecto=foodstore-u8 -v foodstore_u8_pg_data:/var/lib/postgresql/data -v /home/devops/.local/share/foodstore_u8_lab/pg_superusuario:/run/secrets/pg_superusuario:ro -e POSTGRES_PASSWORD_FILE=/run/secrets/pg_superusuario -e POSTGRES_DB=foodstore_u8 sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3
+bbc9526eeb2841627fddd9b26623cf21fcd1bdde88cd8eb7c727bbe07b51382c
+Código de salida (crear contenedor): 0
+         server_version          
+---------------------------------
+ 17.11 (Debian 17.11-1.pgdg13+2)
+(1 row)
+
+postgres (PostgreSQL) 17.11 (Debian 17.11-1.pgdg13+2)
+Imagen=sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3 RepoDigests=["postgres@sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3"]
+Config.Image=sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3
+Image=sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3
+NetworkMode=none
+PortBindings={}
+Privileged=false
+SecurityOpt=["no-new-privileges:true"]
+CapAdd=null
+Mount Type=bind Source=/home/devops/.local/share/foodstore_u8_lab/pg_superusuario Destination=/run/secrets/pg_superusuario RW=false
+Mount Type=volume Source=/var/lib/docker/volumes/foodstore_u8_pg_data/_data Destination=/var/lib/postgresql/data RW=true
+State.Status=running
+Código de salida crear: 0
+
+== Paso 2: bash unidades/unidad-8/postgresql/laboratorio_u8.sh instalar
+Código de salida (comprobar public vacío): 0
+
+Origen: foodstore_baseII u6-cierre 8f7877c8a1ff25c1be28b29c46c38cd7c9663e86
+Archivo: schema.sql
+Blob: 9047b6fefcd5fa9a3e98f0b0354555e9ac322100
+Código de salida (huella origen): 0
+SHA-256: d5cbb990c76ecc085c44736e877d3fc9d993a734ecc137120679ff3706e8a108
+Comando: git show u6-cierre:schema.sql | docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 --single-transaction
+CREATE TYPE
+CREATE TYPE
+CREATE TYPE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+Códigos de salida: git show=0 psql=0
+
+Origen: foodstore_baseII u6-cierre 8f7877c8a1ff25c1be28b29c46c38cd7c9663e86
+Archivo: datos_iniciales.sql
+Blob: ee9bb62cd6295976a73f02027560090bb95b3e0c
+Código de salida (huella origen): 0
+SHA-256: ab983fbe7547793bc9fa5483c6254cee0d7c4b1363ba12f8b67ad3577327565f
+Comando: git show u6-cierre:datos_iniciales.sql | docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 
+BEGIN
+DO
+INSERT 0 2
+INSERT 0 3
+INSERT 0 3
+INSERT 0 7
+UPDATE 5
+ detalle_id | subtotal | subtotal_calculado 
+------------+----------+--------------------
+(0 rows)
+
+ pedido_id | total | total_calculado 
+-----------+-------+-----------------
+(0 rows)
+
+COMMIT
+Códigos de salida: git show=0 psql=0
+
+Origen: foodstore_baseII u6-cierre 8f7877c8a1ff25c1be28b29c46c38cd7c9663e86
+Archivo: tpi/sql/objetos_programables.sql
+Blob: 668b48c1f8c4ec20b29f9eea23679d314e0500f3
+Código de salida (huella origen): 0
+SHA-256: 9696a32e8edf56a5bdf23a30eda3bd589cedb0a1b00a382e63969bf3386aa6c4
+Comando: git show u6-cierre:tpi/sql/objetos_programables.sql | docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 --single-transaction
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE PROCEDURE
+Códigos de salida: git show=0 psql=0
+
+Comando: docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8  < /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/postgresql/datos_auxiliares_u8.sql
+BEGIN
+DO
+ id |              nombre               | precio  | stock | disponible | eliminado 
+----+-----------------------------------+---------+-------+------------+-----------
+  4 | [U8 prueba] Base C2 precio        | 1200.00 |    20 | t          | f
+  5 | [U8 prueba] Base C3 stock         |  900.00 |    10 | t          | f
+  6 | [U8 prueba] Base C4 baja          |  700.00 |    15 | t          | f
+  7 | [U8 prueba] Base C5 sin cambios   |  500.00 |    30 | t          | f
+  8 | [U8 prueba] No disponible inicial |  650.00 |     8 | f          | f
+  9 | [U8 prueba] Baja inicial          |  450.00 |     5 | t          | t
+(6 rows)
+
+COMMIT
+Código de salida (datos_auxiliares_u8.sql): 0
+
+Comando: docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 --single-transaction < /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/postgresql/snapshot_movil.sql
+CREATE VIEW
+Código de salida (snapshot_movil.sql): 0
+
+Comando: docker exec -i foodstore-u8-postgres psql -X -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8  < /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/postgresql/verificar_instalacion_u8.sql
+BEGIN
+Conteos del modelo (esperados: 3, 3, 9, 5, 7 respectivamente)
+     tabla      | filas 
+----------------+-------
+ categoria      |     3
+ usuario        |     3
+ producto       |     9
+ pedido         |     5
+ detalle_pedido |     7
+(5 rows)
+
+Productos seed (3), auxiliares U8 (6) y otros (0)
+ productos_seed | productos_u8 | productos_otros 
+----------------+--------------+-----------------
+              3 |            6 |               0
+(1 row)
+
+Presencia de seis funciones y un procedimiento (presente=t)
+                         firma                          | tipo | presente 
+--------------------------------------------------------+------+----------
+ public.calcular_total_pedido(bigint)                   | f    | t
+ public.fn_recalcular_total_delete()                    | f    | t
+ public.fn_recalcular_total_insert()                    | f    | t
+ public.fn_recalcular_total_update()                    | f    | t
+ public.fn_set_subtotal()                               | f    | t
+ public.fn_validar_detalle_vigente()                    | f    | t
+ public.registrar_detalle_pedido(bigint,bigint,integer) | p    | t
+(7 rows)
+
+Presencia de cinco triggers en detalle_pedido (presente=t, habilitado=O)
+          nombre          | presente | habilitado 
+--------------------------+----------+------------
+ trg_detalle_vigente      | t        | O
+ trg_subtotal             | t        | O
+ trg_total_detalle_delete | t        | O
+ trg_total_detalle_insert | t        | O
+ trg_total_detalle_update | t        | O
+(5 rows)
+
+Catálogo completo: IDs reales asignados por PostgreSQL
+ id |              nombre               | precio  | stock | disponible | eliminado |             categoria              
+----+-----------------------------------+---------+-------+------------+-----------+------------------------------------
+  1 | Muzzarella                        | 1050.00 |    50 | t          | f         | Pizzas
+  2 | Napolitana                        | 1500.00 |    40 | t          | f         | Pizzas
+  3 | Coca 1.5L                         |  800.00 |   100 | t          | f         | Bebidas
+  4 | [U8 prueba] Base C2 precio        | 1200.00 |    20 | t          | f         | [U8 prueba] Catálogo de pruebas U8
+  5 | [U8 prueba] Base C3 stock         |  900.00 |    10 | t          | f         | [U8 prueba] Catálogo de pruebas U8
+  6 | [U8 prueba] Base C4 baja          |  700.00 |    15 | t          | f         | [U8 prueba] Catálogo de pruebas U8
+  7 | [U8 prueba] Base C5 sin cambios   |  500.00 |    30 | t          | f         | [U8 prueba] Catálogo de pruebas U8
+  8 | [U8 prueba] No disponible inicial |  650.00 |     8 | f          | f         | [U8 prueba] Catálogo de pruebas U8
+  9 | [U8 prueba] Baja inicial          |  450.00 |     5 | t          | t         | [U8 prueba] Catálogo de pruebas U8
+(9 rows)
+
+Instantánea: incluye no disponibles y bajas iniciales
+ producto_id |              nombre               | precio_centavos | stock | disponible | eliminado 
+-------------+-----------------------------------+-----------------+-------+------------+-----------
+           1 | Muzzarella                        |          105000 |    50 | t          | f
+           2 | Napolitana                        |          150000 |    40 | t          | f
+           3 | Coca 1.5L                         |           80000 |   100 | t          | f
+           4 | [U8 prueba] Base C2 precio        |          120000 |    20 | t          | f
+           5 | [U8 prueba] Base C3 stock         |           90000 |    10 | t          | f
+           6 | [U8 prueba] Base C4 baja          |           70000 |    15 | t          | f
+           7 | [U8 prueba] Base C5 sin cambios   |           50000 |    30 | t          | f
+           8 | [U8 prueba] No disponible inicial |           65000 |     8 | f          | f
+           9 | [U8 prueba] Baja inicial          |           45000 |     5 | t          | t
+(9 rows)
+
+COMMIT
+Código de salida (verificar_instalacion_u8.sql): 0
+Código de salida instalar: 0
+
+== Paso 3: bash unidades/unidad-8/postgresql/laboratorio_u8.sh exportar unidades/unidad-8/movil/servidor_snapshot.csv unidades/unidad-8/movil/servidor_snapshot_meta.txt
+Comando: docker exec -i foodstore-u8-postgres psql -X -q -v ON_ERROR_STOP=1 -U postgres -d foodstore_u8 < /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/postgresql/exportar_snapshot.sql
+Código de salida (psql exportación): 0
+META filas=9
+META fechas=1
+META capturado_en=2026-11-07 15:51:24.499236+00
+META base=foodstore_u8
+META version_servidor=17.11 (Debian 17.11-1.pgdg13+2)
+CSV publicado: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/servidor_snapshot.csv
+META publicado: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/servidor_snapshot_meta.txt
+filas=9
+capturado_en=2026-11-07 15:51:24.499236+00
+sha256_csv=46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc
+Líneas CSV (con encabezado): 10
+Código de salida exportar: 0
+
+== Resultado publicado
+46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc  unidades/unidad-8/movil/servidor_snapshot.csv
+8451dcdff04efbe78960f96ed36cb86013345fb5db9fe8db2f8b78d24c92052d  unidades/unidad-8/movil/servidor_snapshot_meta.txt
+Líneas CSV: 10
+--- servidor_snapshot_meta.txt
+base=foodstore_u8
+version_servidor=17.11 (Debian 17.11-1.pgdg13+2)
+imagen=sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3
+contenedor=foodstore-u8-postgres
+capturado_en=2026-11-07 15:51:24.499236+00
+filas=9
+sha256_csv=46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc
+origen=foodstore_baseII u6-cierre 8f7877c8a1ff25c1be28b29c46c38cd7c9663e86
+blob_schema_sql=9047b6fefcd5fa9a3e98f0b0354555e9ac322100
+blob_datos_iniciales_sql=ee9bb62cd6295976a73f02027560090bb95b3e0c
+blob_objetos_programables_sql=668b48c1f8c4ec20b29f9eea23679d314e0500f3
+generado_por=laboratorio_u8.sh exportar; Bash 5.3.9(1)-release; 2026-11-07T12:51:24-0300
+--- servidor_snapshot.csv
+producto_id,nombre,precio_centavos,stock,disponible,eliminado,capturado_en
+1,Muzzarella,105000,50,t,f,2026-11-07 15:51:24.499236+00
+2,Napolitana,150000,40,t,f,2026-11-07 15:51:24.499236+00
+3,Coca 1.5L,80000,100,t,f,2026-11-07 15:51:24.499236+00
+4,[U8 prueba] Base C2 precio,120000,20,t,f,2026-11-07 15:51:24.499236+00
+5,[U8 prueba] Base C3 stock,90000,10,t,f,2026-11-07 15:51:24.499236+00
+6,[U8 prueba] Base C4 baja,70000,15,t,f,2026-11-07 15:51:24.499236+00
+7,[U8 prueba] Base C5 sin cambios,50000,30,t,f,2026-11-07 15:51:24.499236+00
+8,[U8 prueba] No disponible inicial,65000,8,f,f,2026-11-07 15:51:24.499236+00
+9,[U8 prueba] Baja inicial,45000,5,t,t,2026-11-07 15:51:24.499236+00
+--- fin
+
+== Contenedor
+foodstore-u8-postgres Up 3 seconds

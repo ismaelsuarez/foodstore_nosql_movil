@@ -1,0 +1,12 @@
+base=foodstore_u8
+version_servidor=17.11 (Debian 17.11-1.pgdg13+2)
+imagen=sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3
+contenedor=foodstore-u8-postgres
+capturado_en=2026-11-07 22:53:59.411185+00
+filas=9
+sha256_csv=d8526133b3646e53e7f5ca515deae9f6f6fab6f990dc86b9f074ee19666942a9
+origen=foodstore_baseII u6-cierre 8f7877c8a1ff25c1be28b29c46c38cd7c9663e86
+blob_schema_sql=9047b6fefcd5fa9a3e98f0b0354555e9ac322100
+blob_datos_iniciales_sql=ee9bb62cd6295976a73f02027560090bb95b3e0c
+blob_objetos_programables_sql=668b48c1f8c4ec20b29f9eea23679d314e0500f3
+generado_por=laboratorio_u8.sh exportar; Bash 5.3.9(1)-release; 2026-11-07T19:53:59-0300

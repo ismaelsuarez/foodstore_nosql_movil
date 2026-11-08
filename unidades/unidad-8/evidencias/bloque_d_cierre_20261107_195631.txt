@@ -1,0 +1,181 @@
+Food Store U8 — Bloque D — Cierre: huellas, base, servidor, contenedor y Git
+Ejecución: Claude (sesión principal). Fecha: 2026-11-07T19:56:31-0300
+
+== Scripts D
+2635767318a7b5369f27496a8d4b5a9f3c585159907811cd25059f4348c3efbd  unidades/unidad-8/movil/semaforo.sql
+fddeeff81783cdbb2bb0a79743a0493d4b001df59ac75252ad48974c02db814d  unidades/unidad-8/movil/crear_borrador.sql
+108014394fac77869d9035a23db35325137a33040783c5e679cd40ddac5b3b33  unidades/unidad-8/movil/aceptar_precio.sql
+22306717bf5efd65817a5672f1c8ea7a79b9b4bc22435a7c2d370ae84b0b7083  unidades/unidad-8/movil/insertar_solicitud.sql
+5a23749d09a683cc42e90a5135f6c894c1d7979a2b1e5d23aee73d69aa164591  unidades/unidad-8/movil/comprobar_caso_d.sql
+c607185e9bccc1cf398c5239e1b3fc9bed96ff52b7299bc31ea5ee0b2bee4780  unidades/unidad-8/movil/estado_bloque_d.sql
+7c952fc5d8bfd3b54bd2a9477a0342f8b172f84606412652be0947aabe02ea04  unidades/unidad-8/movil/simular_producto_ausente.sql
+b301aa8c97ce0ba32bf7bd6f5fcdacff595d3311f53c4a251b7b787a4b06392b  unidades/unidad-8/movil/bloque_d.sh
+90f075bd2ccf25c1a6e5087f2768f5ce93a997d3558c9f05749638523629f524  unidades/unidad-8/movil/ejecutar_bloque_d.sh
+52cdd7a6847538e67f264b1404fdd0dd423caab37f5df86ef89aee6a523f2cbf  unidades/unidad-8/movil/controles_d.sh
+2693c27a2337a61352b4872f4cd6a450ad3a092d5086c0a49f47af1b9adbf2d8  unidades/unidad-8/postgresql/preparar_c2_precio.sql
+d8b3ba75aad8143533109bc2cd334d6983181fc7605864f907c9785915b883d3  unidades/unidad-8/postgresql/preparar_c3_stock.sql
+3f89d5538689e11c2359f66b1764ee711f3ec749f1932deff3da29e4e44c4c49  unidades/unidad-8/postgresql/preparar_c4_baja.sql
+1427f34394a96a92914a34744e3d7c7d57322d881b7b8523158fa47928d7a668  unidades/unidad-8/postgresql/control_invariancia.sql
+
+== Scripts B/C e instantánea inicial (sin cambios)
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  unidades/unidad-8/movil/schema_sqlite.sql
+2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7  unidades/unidad-8/movil/pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  unidades/unidad-8/movil/verificar_bloque_b.sh
+523f31b84af57ecc73cbc14ee1fa851096759c35f62af92a623e32d43570c0b7  unidades/unidad-8/movil/snapshot_servidor.sql
+1273c01344352d0e7f624da99aaaa2327d252e46e059737a814c2c0a210e0b86  unidades/unidad-8/movil/renovar_snapshot.sql
+be699c02dd35f1399c22a45ebf08470b0241750ac62352dc320d6bfa3324444b  unidades/unidad-8/movil/consultas_bloque_c.sql
+d806311f1cb4832e3c6370ff697d2bc727e654bdf36546757a0baa029d6744c4  unidades/unidad-8/movil/preparar_foodstore_movil.sh
+b063dec075798eb7cf322c3859be829b822902425cebdeab941b3a33047eb10e  unidades/unidad-8/movil/verificar_bloque_c.sh
+46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc  unidades/unidad-8/movil/servidor_snapshot.csv
+8451dcdff04efbe78960f96ed36cb86013345fb5db9fe8db2f8b78d24c92052d  unidades/unidad-8/movil/servidor_snapshot_meta.txt
+a2fbec88c044bc51d7755660ad83d6923c70c145712ed8252df1b421360654b8  unidades/unidad-8/postgresql/laboratorio_u8.sh
+97afca557a47f438f134009983233b7502c8c42d7e506d3c428254bd4a12d610  unidades/unidad-8/postgresql/datos_auxiliares_u8.sql
+b5aceb77cc63dd7ff5536b049eb9859141a7675ba44f539471b0dc57548a0ae9  unidades/unidad-8/postgresql/snapshot_movil.sql
+6bb56060f2c7315773740665465f2446dad99a6576f4e29e411e8bf7457c06dc  unidades/unidad-8/postgresql/exportar_snapshot.sql
+e9e0f37c79fc491bece64cf0c5c4a82a460b7915f36515cb2df0dd6bf175f120  unidades/unidad-8/postgresql/verificar_instalacion_u8.sql
+
+== Instantáneas D
+f489d5d3b19e98ee49ed7c2e8665f9bbcf943c197275f8d0111f6fdee8de3821  unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv
+f9c0be2987bf3a710b4b058d272f82505bb76a2c30160a34ec0a916942c7a225  unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt
+d8526133b3646e53e7f5ca515deae9f6f6fab6f990dc86b9f074ee19666942a9  unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv
+e42c3243e468b60fe92d93f842d3910647d667a5e9b2911eedb34b46d25bc6a5  unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt
+6f3ea4350019c04871b35fc1e94415e88355f8faba68513e84cda00d733496a6  unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv
+259ab3fb124ecb7b4d81dc46eaa430d072031a3ec5f6c40f6f279ed4190c8c01  unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt
+
+== Evidencias anteriores (sin cambios)
+ff2acc1de7379ebbbb40c3a77fa8cf0ae4454408ef7fe64f7100e3faf9ddf2cf  unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt
+dd743f377996df9e1b881611457e433b5b603ca794219288108d73d5382064f3  unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+ebc7cf6a98ea4bc33bae7634b2d69b5cb01bd0603720a471d2c62f0fac9f9396  unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt
+9576617527f61577088fb91f361d4fc05a21e32260575be499c52bef6d5c47c7  unidades/unidad-8/evidencias/bloque_b_verificacion_registro_20261107_121806.txt
+aa49c58d7a5567d3f258604cea91fe1f13ceeb530c2461ef80d8b4debaab991d  unidades/unidad-8/evidencias/bloque_c_cierre_20261107_130545.txt
+97ee9f9b3557a86bb6fe57d60f3a8f502bef4292da9c48c3d3d30f7e400c0b41  unidades/unidad-8/evidencias/bloque_c_cierre_complemento_20261107_130601.txt
+60be4e10dd2ea3903a22b37b8bca31a72537df4e3e2bf97cceb1ef5606fcc814  unidades/unidad-8/evidencias/bloque_c_postgresql_20261107_125121.txt
+186a868e7a8efcd5a11a591346e8326e386af41e116fdb50a810a5279bcef182  unidades/unidad-8/evidencias/bloque_c_sqlite_20261107_130343.txt
+b377f1d43534c0856f71d1d3612779b002ad29ea97b2fb1e0ef0c37deef95a93  unidades/unidad-8/evidencias/bloque_d_entregable_20261107_195358.txt
+52f94d6aa73aedfd6a5d21769dc2ccbb271d46015bedec4321a219c6b750155a  unidades/unidad-8/evidencias/bloque_d_entregable_continuacion_c6_20261107_195500.txt
+290421d1aeef0fd9e8fda006c7b67d39022cc13ac6394ddf62e38a6044132352  unidades/unidad-8/evidencias/bloque_d_controles_copias_20261107_195510.txt
+
+== Copia inicial de C conservada
+-r-------- 1 devops devops 40960 Nov  7 13:03 /tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  /tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db
+
+== Base entregable (cerrada)
+fuser=1 (1 = ningún proceso la tiene abierta)
+-rw------- 1 devops devops 40960 Nov  7 19:54 unidades/unidad-8/movil/foodstore_movil.db
+cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace  unidades/unidad-8/movil/foodstore_movil.db
+--- estado de /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db ---
+-- cola_sync: solicitud_uuid | id_local | estado | motivo | creada_en
+d2000000-0000-4000-8000-0000000000c1 | d2000000-0000-4000-8000-0000000000b1 | CONFLICTO | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos | 2026-11-07T22:53:58Z
+d2000000-0000-4000-8000-0000000000c2 | d2000000-0000-4000-8000-0000000000b1 | SIMULADO_APROBADO | todo coincide con snapshot de 2026-11-07 22:53:58.569903+00 | 2026-11-07T22:53:58Z
+d3000000-0000-4000-8000-0000000000c1 | d3000000-0000-4000-8000-0000000000b1 | RECHAZADO | producto_id=5: stock disponible=2, cantidad solicitada=3 | 2026-11-07T22:53:59Z
+d4000000-0000-4000-8000-0000000000c1 | d4000000-0000-4000-8000-0000000000b1 | RECHAZADO | producto_id=6: eliminado=t | 2026-11-07T22:53:59Z
+d5000000-0000-4000-8000-0000000000c1 | d5000000-0000-4000-8000-0000000000b1 | SIMULADO_APROBADO | todo coincide con snapshot de 2026-11-07 22:53:59.938648+00 | 2026-11-07T22:54:00Z
+-- pedido_borrador: id_local | usuario_id_servidor | forma_pago
+d2000000-0000-4000-8000-0000000000b1 | 1 | EFECTIVO
+d3000000-0000-4000-8000-0000000000b1 | 1 | TARJETA
+d4000000-0000-4000-8000-0000000000b1 | 1 | TRANSFERENCIA
+d5000000-0000-4000-8000-0000000000b1 | 1 | EFECTIVO
+-- item_borrador: id_local | producto_id | cantidad | precio_centavos_visto
+d2000000-0000-4000-8000-0000000000b1 | 4 | 1 | 132000
+d3000000-0000-4000-8000-0000000000b1 | 5 | 3 | 90000
+d4000000-0000-4000-8000-0000000000b1 | 6 | 1 | 70000
+d5000000-0000-4000-8000-0000000000b1 | 7 | 2 | 50000
+-- producto_cache: id | nombre | centavos | stock_visto | disponible | eliminado | capturado_en
+1 | Muzzarella | 105000 | 50 | 1 | 0 | 2026-11-07 22:53:59.938648+00
+2 | Napolitana | 150000 | 40 | 1 | 0 | 2026-11-07 22:53:59.938648+00
+3 | Coca 1.5L | 80000 | 100 | 1 | 0 | 2026-11-07 22:53:59.938648+00
+4 | [U8 prueba] Base C2 precio | 132000 | 20 | 1 | 0 | 2026-11-07 22:53:59.938648+00
+5 | [U8 prueba] Base C3 stock | 90000 | 2 | 1 | 0 | 2026-11-07 22:53:59.938648+00
+6 | [U8 prueba] Base C4 baja | 70000 | 15 | 1 | 1 | 2026-11-07 22:53:59.938648+00
+7 | [U8 prueba] Base C5 sin cambios | 50000 | 30 | 1 | 0 | 2026-11-07 22:53:59.938648+00
+8 | [U8 prueba] No disponible inicial | 65000 | 8 | 0 | 0 | 2026-11-07 22:53:59.938648+00
+9 | [U8 prueba] Baja inicial | 45000 | 5 | 1 | 1 | 2026-11-07 22:53:59.938648+00
+-- v_catalogo_disponible: producto_id
+1,2,3,4,5,7
+-- snapshot_servidor: capturado_en | filas
+2026-11-07 22:53:59.938648+00 | 9
+-- integridad: integrity_check | foreign_key_check
+ok | 0
+--- fin estado de /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db ---
+
+== PostgreSQL de pruebas (lectura final)
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | t
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+rc=0
+
+== Contenedor y volumen U8
+Name=/foodstore-u8-postgres Image=sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3 Net=none Ports={} Privileged=false Status=running
+foodstore_u8_pg_data
+Otros contenedores (solo nombre y estado):
+foodstore-u7-mongo9 Exited (0) 26 hours ago
+foodstore-u7-mongo Exited (1) 32 hours ago
+foodstore-u6-evaluacion Exited (0) 26 hours ago
+foodstore-u6-lab Exited (0) 45 hours ago
+taller-db-1 Exited (0) 10 days ago
+libreria-pg Exited (0) 3 weeks ago
+
+== Git
+## feat/u7-migracion
+?? unidades/unidad-8/docs/kiro/design.md
+?? unidades/unidad-8/docs/kiro/requirements.md
+?? unidades/unidad-8/docs/kiro/tasks.md
+?? unidades/unidad-8/docs/laboratorio_u8.md
+?? unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt
+?? unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+?? unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt
+?? unidades/unidad-8/evidencias/bloque_b_verificacion_registro_20261107_121806.txt
+?? unidades/unidad-8/evidencias/bloque_c_cierre_20261107_130545.txt
+?? unidades/unidad-8/evidencias/bloque_c_cierre_complemento_20261107_130601.txt
+?? unidades/unidad-8/evidencias/bloque_c_postgresql_20261107_125121.txt
+?? unidades/unidad-8/evidencias/bloque_c_sqlite_20261107_130343.txt
+?? unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt
+?? unidades/unidad-8/evidencias/bloque_d_controles_copias_20261107_195510.txt
+?? unidades/unidad-8/evidencias/bloque_d_entregable_20261107_195358.txt
+?? unidades/unidad-8/evidencias/bloque_d_entregable_continuacion_c6_20261107_195500.txt
+?? unidades/unidad-8/movil/aceptar_precio.sql
+?? unidades/unidad-8/movil/bloque_d.sh
+?? unidades/unidad-8/movil/comprobar_caso_d.sql
+?? unidades/unidad-8/movil/consultas_bloque_c.sql
+?? unidades/unidad-8/movil/controles_d.sh
+?? unidades/unidad-8/movil/crear_borrador.sql
+?? unidades/unidad-8/movil/ejecutar_bloque_d.sh
+?? unidades/unidad-8/movil/estado_bloque_d.sql
+?? unidades/unidad-8/movil/foodstore_movil.db
+?? unidades/unidad-8/movil/insertar_solicitud.sql
+?? unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot.csv
+?? unidades/unidad-8/movil/instantaneas/20261107_195358/c2_precio/servidor_snapshot_meta.txt
+?? unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv
+?? unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot_meta.txt
+?? unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv
+?? unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot_meta.txt
+?? unidades/unidad-8/movil/preparar_foodstore_movil.sh
+?? unidades/unidad-8/movil/pruebas_sqlite.sql
+?? unidades/unidad-8/movil/renovar_snapshot.sql
+?? unidades/unidad-8/movil/schema_sqlite.sql
+?? unidades/unidad-8/movil/semaforo.sql
+?? unidades/unidad-8/movil/servidor_snapshot.csv
+?? unidades/unidad-8/movil/servidor_snapshot_meta.txt
+?? unidades/unidad-8/movil/simular_producto_ausente.sql
+?? unidades/unidad-8/movil/snapshot_servidor.sql
+?? unidades/unidad-8/movil/verificar_bloque_b.sh
+?? unidades/unidad-8/movil/verificar_bloque_c.sh
+?? unidades/unidad-8/postgresql/control_invariancia.sql
+?? unidades/unidad-8/postgresql/datos_auxiliares_u8.sql
+?? unidades/unidad-8/postgresql/exportar_snapshot.sql
+?? unidades/unidad-8/postgresql/laboratorio_u8.sh
+?? unidades/unidad-8/postgresql/preparar_c2_precio.sql
+?? unidades/unidad-8/postgresql/preparar_c3_stock.sql
+?? unidades/unidad-8/postgresql/preparar_c4_baja.sql
+?? unidades/unidad-8/postgresql/snapshot_movil.sql
+?? unidades/unidad-8/postgresql/verificar_instalacion_u8.sql
+703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4
+703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4

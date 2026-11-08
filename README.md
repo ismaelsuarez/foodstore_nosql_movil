@@ -20,7 +20,7 @@ de los datos y no se copia ni se modifica desde aquí.
 | Unidad | Tema | Estado |
 |---|---|---|
 | [Unidad 7](unidades/unidad-7/README.md) | NoSQL y nuevas formas de almacenamiento: pedidos de Food Store en MongoDB, comparados con PostgreSQL | Implementada y documentada |
-| Unidad 8 | — | Prevista, no iniciada |
+| [Unidad 8](unidades/unidad-8/README.md) | Base de datos móvil y sincronización (TP8) | Informe aprobado por el equipo; versionado autorizado, en preparación |
 
 ## Accesos directos (Unidad 7)
 
@@ -33,6 +33,15 @@ de los datos y no se copia ni se modifica desde aquí.
 - Consultas entregables:
   [consultas_mongodb.js](unidades/unidad-7/mongodb/consultas_mongodb.js) y
   [consultas_postgresql.sql](unidades/unidad-7/postgresql/consultas_postgresql.sql).
+
+## Unidad 8 (TP8)
+
+- [Presentación y estado de la Unidad 8](unidades/unidad-8/README.md).
+- [Informe TP8 (PDF)](unidades/unidad-8/docs/informe.pdf).
+
+Ismael autorizó versionar y publicar el TP8 en `main` del repositorio
+`ismaelsuarez/foodstore_nosql_movil`, con etiqueta `tp8`; está en preparación,
+sin comprobación de publicación. No consta ensayo humano ni aprobación docente.
 
 ## Estructura
 
@@ -68,3 +77,7 @@ archivos versionados. Quedan fuera `.git/`, `.atl/` (registro local de
 herramientas del asistente), las credenciales y las salidas completas del
 laboratorio, que nunca estuvieron en el repositorio, y el material interno de
 revisión.
+
+Para TP8, la consigna admite ZIP o repositorio con etiqueta `tp8`. El equipo
+eligió versionar en `main` con esa etiqueta para su publicación en GitHub;
+esto no reemplaza la entrega en el campus, que no consta realizada.

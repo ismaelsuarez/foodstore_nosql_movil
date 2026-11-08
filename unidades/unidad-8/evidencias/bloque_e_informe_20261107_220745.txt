@@ -1,0 +1,90 @@
+Food Store U8 — Bloque E — Informe HTML/PDF, borrador documental
+Fecha real de registro y huellas: 2026-11-07T22:07:45-0300
+Encargo exclusivamente documental. TDD desactivado por decisión explícita del padre (opción A).
+No constituye revisión humana ni aprobación del equipo o del docente. E sigue abierto.
+
+1. Alcance y archivos
+Generados:
+- unidades/unidad-8/docs/informe.html (autónomo, CSS embebido, lang=es).
+- unidades/unidad-8/docs/informe.pdf (BORRADOR para revisión del equipo — no aprobado).
+Actualizaciones documentales asociadas: unidades/unidad-8/README.md y docs/kiro/tasks.md.
+Consigna oficial leída con pdftotext -layout sobre el PDF autorizado fuera del repositorio; no se copió al árbol.
+Se contrastaron fuentes y evidencias existentes; no se rehízo el inventario ni la revisión de scripts.
+No se ejecutaron Docker, motores, clientes de bases, scripts de la cursada, B/C/D, C7, E-1 ni restauraciones.
+La base se leyó únicamente como archivo para SHA-256; no se abrió con un cliente SQLite.
+U6/U7, scripts, instantáneas y evidencias anteriores no se modificaron. No hubo operaciones Git modificadoras.
+
+2. Herramienta observada y conversión
+Comando: google-chrome --version
+Salida: Google Chrome 157.0.8103.38
+Temporales: creados con mktemp -d /tmp/foodstore_u8_informe.XXXXXX
+Directorio observado: /tmp/foodstore_u8_informe.tDvVeo
+Perfil y PNG quedan solo en ese directorio externo al repositorio; no se borraron.
+
+Comando final exacto ejecutado (desde la raíz del repositorio):
+repo="$PWD"; tmp=/tmp/foodstore_u8_informe.tDvVeo; google-chrome --headless=new --disable-gpu --no-sandbox --disable-background-networking --disable-extensions --no-first-run --user-data-dir="$tmp/perfil" --no-pdf-header-footer --print-to-pdf="$repo/unidades/unidad-8/docs/informe.pdf" "file://$repo/unidades/unidad-8/docs/informe.html"; pdfinfo unidades/unidad-8/docs/informe.pdf; pdftoppm -r 90 -png unidades/unidad-8/docs/informe.pdf "$tmp/entrega"
+repo resuelto: /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil
+Salida de Chrome final: 149443 bytes written to file .../unidades/unidad-8/docs/informe.pdf
+Resultado del comando de conversión/verificación/render final: código 0.
+
+3. Salida observada de pdfinfo final
+Title:           Food Store · TP8 Unidad 8 · Borrador para revisión del equipo
+Creator:         Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36
+Producer:        Skia/PDF m157
+CreationDate:    Sat Nov  7 22:07:20 2026 -03
+ModDate:         Sat Nov  7 22:07:20 2026 -03
+Custom Metadata: no
+Metadata Stream: no
+Tagged:          yes
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           6
+Encrypted:       no
+Page size:       594.96 x 841.92 pts (A4)
+Page rot:        0
+File size:       149443 bytes
+Optimized:       no
+PDF version:     1.4
+El aviso automático del harness «.pdf unconfirmed — no analyzer handles this file type» indica ausencia de analizador de esa herramienta, no fallo de Chrome. pdfinfo, pdftotext y los PNG sí permitieron verificar el PDF.
+
+4. Iteraciones y revisión visual
+Iteración 1: 8 páginas, 154218 bytes. pdftotext reveló tabla de referencias de la página lógica 2 desplazada y pie de página 5 aislado. Se compactó la clave de referencias, se acortó texto repetido de mantenimiento y se organizó 3.c en una tabla de hallazgo/decisión/comprobación/límites.
+Iteración 2: 7 páginas, 150243 bytes. El pie de la página lógica 2 seguía aislado. Se recortó texto redundante del semáforo y de presentación de comandos; no se redujo tipografía.
+Durante esa edición una tercera sustitución dependiente de una anterior no coincidió: la herramienta aplicó las otras dos. Se leyó el fragmento y se aplicó la sustitución restante de forma independiente; no quedó pendiente.
+Iteración 3: 6 páginas, 149203 bytes. Se renderizaron y abrieron con read las seis imágenes revision-1.png a revision-6.png. Se detectó solo un quiebre incómodo del nombre idx_usuario_mail_lower en la columna estrecha; se movió el identificador a la columna ancha.
+Iteración final: 6 páginas, 149443 bytes. Se renderizaron con pdftoppm -r 90 -png y se abrieron con read TODAS las imágenes entrega-1.png a entrega-6.png después de la última modificación.
+
+Resultado visual final por página:
+1. Identificación, equipo, fecha y marca de borrador visibles; tabla de datos dentro del margen; flechas y tildes legibles. Sin cortes ni superposiciones.
+2. Tabla del esquema, transacciones y referencias completas en una página; variables/comandos y nombres de evidencias legibles; pie incluido, sin página huérfana.
+3. C2 y C3: bloques de comandos completos; resultados y citas legibles; controles sobre copias separados de la base final. Sin desbordes.
+4. C4/C5/C6 y consulta de invariancia completos; comandos, comillas, guillemets y flechas legibles; incidencia D y continuación dentro del margen. Sin solapamientos.
+5. Tabla de tres motores dentro del margen; commits, propuestas de mantenimiento y límites legibles; pie ya no aislado. Sin cortes.
+6. Tabla H1/H3/H6 completa; índice legible en columna ancha; cifras 7,6655, 14,7085 y +91,88 % visibles; SHA y referencias dentro del margen. Sin cortes.
+Tipografía conservada: cuerpo 10 pt, tablas 9 pt, código/referencias 8,2 pt; márgenes A4 de 15 mm. No se usó letra menor para resolver exceso. No aparece el símbolo ≤ en el documento; los símbolos efectivamente usados se revisaron.
+Esta inspección visual fue hecha por el agente, no por el equipo humano, y no reemplaza esa revisión pendiente.
+
+5. Comprobaciones documentales finales
+- pdftotext -layout unidades/unidad-8/docs/informe.pdf - : código 0; extracción leída completa. Tildes, «», →, referencias, seis pies correlativos y datos numéricos se extrajeron de forma legible.
+- grep -E 'https?://|src=|@import' unidades/unidad-8/docs/informe.html : sin salida, código 1 esperado por ausencia de coincidencias; no se necesitan recursos externos.
+- HTML: lang=es, @page A4/15 mm, CSS y fuentes del sistema; sin scripts ni imágenes externas.
+- Cobertura: 1.a en página 1; esquema/instantánea y clave de fuentes en 2; 2.c C2/C3 en 3, C4/C5/C6 e invariancia en 4; 3.a y 3.b en 5; 3.c y cierre en 6.
+- No se afirmaron: ejecución integral desde cero de D corregido; PostgreSQL completo comparado byte a byte; nueva exportación propia de C5; restauración nueva en E; costo universal del índice H3; idempotencia real del servidor; comportamiento original de .import probado por H5; aprobación humana/docente, DUIA definitiva, ensayo humano realizado o publicación.
+- Las pruebas U3/U6 son históricas; H1 distingue versión ensayada de cierre y H6 limita su descarte al filtro/versión/C6-2. Las 33 comprobaciones B no se presentan como 33 casos. El resguardo no se presenta como restauración.
+
+6. Huellas SHA-256 finales (después de la última conversión)
+Comando: sha256sum unidades/unidad-8/docs/informe.html unidades/unidad-8/docs/informe.pdf unidades/unidad-8/movil/foodstore_movil.db
+Salida:
+e9886b0db311bb7148a66585e3d778f9858860625bfdf900de1158d8594cdda3  unidades/unidad-8/docs/informe.html
+a2881fa53ab17d6fc7cfdc6966943a74d5a6139d776b0c3d17df473f28629531  unidades/unidad-8/docs/informe.pdf
+cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace  unidades/unidad-8/movil/foodstore_movil.db
+La huella final de la base coincide exactamente con la esperada suministrada y con el control previo de esta tarea: sin cambios.
+
+7. Control final del árbol
+La inspección de git status --porcelain=v1 -uall, excluyendo las entradas ?? odd/, registró 0 cambios rastreados y 67 no rastreados, todos bajo unidades/unidad-8/. Son los 64 previos más HTML, PDF y esta evidencia nueva. README.md y tasks.md ya eran no rastreados; se conservaron y solo se actualizaron los puntos autorizados.
+Tras actualizar README/tasks se repitieron pdfinfo y sha256sum: seis páginas y las mismas tres huellas.
+El analizador automático de edición de Markdown advirtió «marksman silent — diagnostics are incomplete» en tareas/README; no se presenta como lint limpio. Se leyeron los fragmentos finales y se comprobó la existencia de los destinos enlazados. No se ejecutó un linter adicional.
+
+Pendientes: revisión humana del informe/hallazgos; contraste de DUIA con formato oficial; elección y ensayo humano de defensa; modalidad ZIP o repositorio con etiqueta tp8; operaciones Git. E no se marca completo.

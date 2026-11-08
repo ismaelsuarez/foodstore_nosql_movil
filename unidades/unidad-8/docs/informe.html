@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food Store · TP8 Unidad 8 · Informe revisado y aprobado por el equipo</title>
+<style>
+@page { size: A4; margin: 15mm; }
+* { box-sizing: border-box; }
+body { margin: 0; color: #18242d; font: 10pt/1.38 "DejaVu Sans", "Liberation Sans", sans-serif; }
+h1 { font-size: 22pt; line-height: 1.15; margin: 9mm 0 4mm; color: #163f4b; }
+h2 { font-size: 16pt; line-height: 1.2; margin: 3mm 0 4mm; color: #163f4b; }
+h3 { font-size: 11pt; margin: 4mm 0 2mm; color: #163f4b; }
+p { margin: 2mm 0 3mm; }
+.page { break-after: page; }
+.page:last-child { break-after: auto; }
+.kicker { color: #47616b; font-size: 9pt; letter-spacing: .05em; text-transform: uppercase; border-bottom: 1pt solid #adc1c7; padding-bottom: 2mm; }
+.draft { border: 1pt solid #805b1d; padding: 2.5mm; color: #62430e; background: #fff8e9; font-weight: bold; margin: 3mm 0; }
+.callout { border-left: 3pt solid #287080; padding: 2mm 3mm; background: #eff5f6; }
+table { border-collapse: collapse; width: 100%; table-layout: fixed; font-size: 9pt; margin: 3mm 0; break-inside: avoid; }
+th, td { border: .6pt solid #b8c8cd; padding: 2mm; vertical-align: top; overflow-wrap: anywhere; }
+th { background: #eaf1f3; text-align: left; }
+pre, code { font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 8.2pt; white-space: pre-wrap; overflow-wrap: anywhere; }
+pre { background: #f2f5f6; border: .5pt solid #c6d3d7; padding: 2.3mm; margin: 2mm 0; line-height: 1.35; break-inside: avoid; }
+.ref { font-size: 8.2pt; line-height: 1.35; color: #3c535d; overflow-wrap: anywhere; }
+.refs td, .refs th { font-size: 8.2pt; padding: 1.4mm; }
+.case { break-inside: avoid; }
+ul, ol { margin: 2mm 0 3mm; padding-left: 5mm; }
+li { margin-bottom: 1.5mm; }
+.footer { margin-top: 4mm; padding-top: 2mm; border-top: .6pt solid #b8c8cd; font-size: 8pt; color: #47616b; text-align: right; }
+</style>
+</head>
+<body>
+<section class="page">
+<div class="kicker">UTN · Tecnicatura Universitaria en Programación · Base de Datos II</div>
+<h1>Food Store en la feria</h1>
+<h2>TP8 · Unidad 8 — La base de la tablet</h2>
+<p><strong>Equipo:</strong> Avalos Pablo · Blangetti Sofia · Suarez Ismael<br><strong>Fecha:</strong> 7 de noviembre de 2026</p>
+<div class="draft">Informe revisado y aprobado por el equipo</div>
+<p>Implementamos una base SQLite para consultar el catálogo sin conexión, guardar borradores y simular su evaluación contra una instantánea de PostgreSQL. El trabajo integra el modelo relacional de U1–U6 y la representación documental de U7, sin construir una aplicación ni una sincronización comercial real.</p>
+<p class="callout"><strong>El móvil propone, el servidor dispone.</strong> PostgreSQL es la fuente de verdad de precios, stock, usuarios y ventas. <code>SIMULADO_APROBADO</code> no es una venta ni una reserva: no crea pedidos ni descuenta stock.</p>
+<h3>1.a · Qué viaja a la tablet</h3>
+<table>
+<thead><tr><th style="width:35%">Origen</th><th>Dato recibido / uso local</th></tr></thead>
+<tbody>
+<tr><td><code>producto.id, nombre</code></td><td><code>producto_id, nombre</code>: identificar y mostrar el catálogo.</td></tr>
+<tr><td><code>producto.precio</code></td><td><code>(precio * 100)::BIGINT</code> → <code>precio_centavos</code>; entero, sin aritmética monetaria flotante al guardar.</td></tr>
+<tr><td><code>stock, disponible</code></td><td><code>stock_visto, disponible_visto</code>; información observada, no autorización para vender.</td></tr>
+<tr><td>Baja de producto o categoría</td><td><code>producto.eliminado OR categoria.eliminado</code> → <code>eliminado</code>; conserva la fila como lápida.</td></tr>
+<tr><td><code>now()</code> de la exportación</td><td><code>capturado_en</code>: fecha de la copia, no hora histórica de evaluación de cada solicitud.</td></tr>
+</tbody></table>
+<p><strong>No viajan:</strong> descripción, imagen, <code>categoria_id</code> ni <code>created_at</code> de producto; la tabla categoría (salvo su baja combinada), perfiles de usuario, mails, celulares, contraseñas, pedidos, detalles ni objetos programables. Solo se lleva lo necesario para consultar y proponer, evitando copiar datos personales.</p>
+<p>Los UUID, cantidades, forma de pago, precios vistos y estados nacen localmente. <code>usuario_id_servidor</code> es una referencia numérica: no copia el perfil ni tiene FK local a usuarios; su validez le correspondería al servidor. En D se usó el id 1 leído del seed de pruebas.</p>
+<p class="ref">Fuentes: U8/docs/integracion_motores.md §§1–3; U8/postgresql/snapshot_movil.sql:6–15; U8/movil/schema_sqlite.sql:21–63. «U8» significa unidades/unidad-8/ desde la raíz del repositorio.</p>
+<div class="footer">Food Store · TP8 · Informe revisado y aprobado por el equipo · 1 / 6</div>
+</section>
+
+<section class="page">
+<div class="kicker">Diseño y alcance de la evidencia</div>
+<h2>Esquema, transacciones e instantánea</h2>
+<table>
+<tr><th style="width:34%">Objeto SQLite</th><th>Responsabilidad y reglas</th></tr>
+<tr><td><code>producto_cache</code></td><td>PK de producto, centavos y stock no negativos; banderas 0/1; fecha de captura.</td></tr>
+<tr><td><code>pedido_borrador</code></td><td>UUID local, referencia numérica de usuario, fecha y pago limitado a EFECTIVO, TARJETA o TRANSFERENCIA.</td></tr>
+<tr><td><code>item_borrador</code></td><td>FK a borrador y catálogo; PK compuesta; cantidad &gt; 0 y precio visto no negativo.</td></tr>
+<tr><td><code>cola_sync</code></td><td>PK <code>solicitud_uuid</code>, FK al borrador; cuatro estados; índice parcial: una sola PENDIENTE por borrador.</td></tr>
+</table>
+<p>Las cuatro tablas son <code>STRICT</code> y cada conexión activa <code>PRAGMA foreign_keys = ON</code>. <code>snapshot_servidor</code> es la quinta tabla, agregada en C. El borrador completo se guarda con <code>BEGIN … COMMIT</code>; los fallos no deben dejar encabezados o ítems parciales.</p>
+<p><strong>Pruebas B históricas:</strong> COMMIT, ROLLBACK, C1 sin conexión y C7 con errores de CHECK/FK terminaron según lo esperado. Las <strong>33 comprobaciones SQL</strong> no son 33 casos de la consigna [B:25–93]. No se repitieron en esta redacción.</p>
+<p><strong>Flujo:</strong> PostgreSQL → vista <code>v_snapshot_movil</code> → CSV y metadatos → <code>snapshot_servidor</code> → UPSERT de <code>producto_cache</code>. La exportación usa una transacción de lectura; la renovación agrupa DELETE, importación, validaciones y UPSERT en una sola transacción. Convierte <code>t/f</code> a <code>1/0</code> y conserva precios vistos e historial de cola. El CSV admitido tiene siete campos simples, sin entrecomillado ni comas o saltos internos.</p>
+<p><strong>Semáforo:</strong> solo PENDIENTE. Rojo: ausencia, baja, no disponibilidad o stock insuficiente; sin rojo, amarillo por precio distinto; si todo coincide, verde. Guarda estado y motivo solo en SQLite. Las filas ausentes de la instantánea y las lápidas se distinguen en la página 5.</p>
+<h3>Cómo leer los casos y sus referencias</h3>
+<p>Comandos de <code>ejecutar_bloque_d.sh</code> y <code>bloque_d.sh</code>, con estas variables. <strong>No se ejecutaron al redactar; no repetir sobre la base entregada.</strong></p>
+<pre>U8=unidades/unidad-8
+D="$U8/movil/bloque_d.sh"
+DB="$U8/movil/foodstore_movil.db"
+RUN=20261107_195358</pre>
+<p class="ref">Las referencias [código:líneas] remiten a estos archivos, relativos a U8/evidencias/. Son registros históricos; no una nueva ejecución ni una revisión humana.</p>
+<pre>B  = bloque_b_20261107_121805.txt
+C  = bloque_c_sqlite_20261107_130343.txt
+D  = bloque_d_entregable_20261107_195358.txt (detenido)
+DC = bloque_d_entregable_continuacion_c6_20261107_195500.txt
+T  = bloque_d_controles_copias_20261107_195510.txt
+E  = bloque_e_lectura_base_final_20261107_203411.txt</pre>
+<div class="footer">Food Store · TP8 · Informe revisado y aprobado por el equipo · 2 / 6</div>
+</section>
+
+<section class="page">
+<div class="kicker">Consigna 2.c · Precio y stock</div>
+<h2>C2 y C3: preparar no es simular</h2>
+<p>Los cambios de escenario se hicieron en PostgreSQL de <strong>pruebas</strong>, reconstruido desde U6 más datos auxiliares sintéticos. Los ids 4–7 fueron devueltos al instalar esos datos; no se suponen ids universales. Cada simulación lee el control del servidor antes y después de evaluar en SQLite.</p>
+<div class="case">
+<h3>C2 · Precio cambiado y aceptación posterior</h3>
+<pre>bash "$D" borrador "$DB" c2
+bash "$D" preparar c2
+bash "$D" instantanea c2 "$RUN" "$DB"
+bash "$D" simular "$DB"
+bash "$D" aceptar "$DB" c2
+bash "$D" simular "$DB"</pre>
+<p><strong>Preparación:</strong> primero se creó el borrador (producto 4, una unidad a 120000 centavos); luego <code>preparar_c2_precio.sql</code> subió 1200,00 → 1320,00 en el servidor de pruebas. <code>instantanea</code> exportó <code>c2_precio</code> y renovó el catálogo; el ítem conservó 120000 [D:60–169].</p>
+<p><strong>Resultado:</strong> la primera solicitud quedó en <code>CONFLICTO</code>, con motivo «precio_visto=120000 centavos, precio_actual=132000 centavos» [D:171–246]. El precio que vio el cliente no se sustituye silenciosamente al renovar el catálogo.</p>
+<p><strong>Aceptación simulada:</strong> <code>aceptar_precio.sql</code> actualizó el ítem a 132000 y creó una solicitud con UUID nuevo dentro de la misma transacción. La nueva quedó <code>SIMULADO_APROBADO</code>; la original siguió en CONFLICTO con su motivo histórico [D:252–393]. No se registró una venta.</p>
+</div>
+<div class="case">
+<h3>C3 · Stock insuficiente</h3>
+<pre>bash "$D" borrador "$DB" c3
+bash "$D" preparar c3
+bash "$D" instantanea c3 "$RUN" "$DB"
+bash "$D" simular "$DB"</pre>
+<p><strong>Preparación:</strong> el borrador pidió tres unidades del producto 5 a 90000 centavos. <code>preparar_c3_stock.sql</code> redujo el stock del servidor de 10 a 2 y se exportó/renovó <code>c3_stock</code> [D:395–479].</p>
+<p><strong>Resultado:</strong> <code>RECHAZADO</code>, motivo «producto_id=5: stock disponible=2, cantidad solicitada=3» [D:481–556]. El stock visto no reserva unidades: la cantidad propuesta supera la instantánea actual aunque el producto siga visible.</p>
+</div>
+<h3>Controles que protegen la explicación</h3>
+<p>En copias descartables se comprobó que un rechazo por stock tiene prioridad sobre otro ítem con cambio de precio; también se rechazó una segunda PENDIENTE por borrador. La aceptación con producto ausente se detuvo antes del UPDATE y un INSERT fallido revirtió el UPDATE previo [T:120,142,171,191–195]. Son pruebas sobre copias, no resultados adicionales de la base final.</p>
+<p class="ref">Trazabilidad de comandos: U8/movil/ejecutar_bloque_d.sh, funciones casos_c2_c5; U8/movil/bloque_d.sh, operaciones borrador/preparar/instantanea/simular/aceptar. La instalación e ids constan en bloque_c_postgresql_20261107_125121.txt:125–148.</p>
+<div class="footer">Food Store · TP8 · Informe revisado y aprobado por el equipo · 3 / 6</div>
+</section>
+
+<section class="page">
+<div class="kicker">Consigna 2.c · Bajas, aprobación simulada e idempotencia</div>
+<h2>C4, C5, C6 e invariancia</h2>
+<div class="case">
+<h3>C4 · Baja lógica con lápida</h3>
+<pre>bash "$D" borrador "$DB" c4
+bash "$D" preparar c4
+bash "$D" instantanea c4 "$RUN" "$DB"
+bash "$D" simular "$DB"</pre>
+<p>Se creó el borrador antes de la baja del producto 6. <code>preparar_c4_baja.sql</code> cambió <code>eliminado</code> a true y se renovó <code>c4_baja</code>. Resultado: <code>RECHAZADO</code>, «producto_id=6: eliminado=t». La fila quedó con <code>eliminado=1</code>, fuera del catálogo visible; el precio visto siguió en 70000 [D:558–740].</p>
+</div>
+<div class="case">
+<h3>C5 · Sin discrepancias</h3>
+<pre>bash "$D" borrador "$DB" c5
+bash "$D" simular "$DB"</pre>
+<p>Dos unidades del producto 7 a 50000 centavos dieron <code>SIMULADO_APROBADO</code> [D:742–838]. No hubo mutación ni nueva exportación propia de C5: se usó la instantánea vigente <code>c4_baja</code>, sin discrepancias para ese producto. No es venta ni reserva de stock.</p>
+</div>
+<div class="case">
+<h3>C6 · Reenvío del UUID y repetición del semáforo</h3>
+<pre>bash "$D" reinsertar "$DB" c6_uuid
+bash "$D" simular "$DB"</pre>
+<p><strong>C6-1:</strong> reinsertar el UUID original de C2 produjo <code>UNIQUE constraint failed: cola_sync.solicitud_uuid</code>; SQLite devolvió 1 (esperado), el auxiliar validó el error y las cinco filas permanecieron iguales [D:843–862; DC:118–120]. <strong>C6-2:</strong> repetir el semáforo procesó 0 y no alteró el estado consultado ni el CONFLICTO original [DC:147–209]. En producción la protección debería estar también en el servidor: registrar el UUID recibido de forma única y transaccional para impedir un doble procesamiento; eso no está implementado.</p>
+</div>
+<h3>Consulta de control en PostgreSQL</h3>
+<pre>SELECT 'producto', id, precio, stock, disponible, eliminado
+FROM producto ORDER BY id;
+SELECT 'pedidos', count(*), coalesce(sum(total), 0) FROM pedido;
+SELECT 'detalle_pedido', count(*), coalesce(sum(cantidad), 0) FROM detalle_pedido;</pre>
+<p>Son las consultas de <code>postgresql/control_invariancia.sql</code>, leídas en REPEATABLE READ READ ONLY por <code>simular</code>. Las salidas antes/después coincidieron en las seis simulaciones: 9 productos controlados, 5 pedidos (total 14700,00), 7 líneas (14 unidades) [D:171–225,318–372,481–535,665–719,763–817; DC:128–179]. <strong>Se compararon esas salidas, no PostgreSQL completo byte a byte.</strong> La preparación sí cambió precio, stock y baja deliberadamente antes de cada control.</p>
+<p class="ref"><strong>Incidencia conservada:</strong> D se detuvo en el paso 32 por ubicar mal archivos de control [D:867–872]. La continuación comparó las capturas de C6-1 y ejecutó C6-2 [DC:3–9,118–254]. No existe una ejecución íntegra desde cero de la secuencia corregida.</p>
+<div class="footer">Food Store · TP8 · Informe revisado y aprobado por el equipo · 4 / 6</div>
+</section>
+
+<section class="page">
+<div class="kicker">Consignas 3.a y 3.b · Integración y mantenimiento</div>
+<h2>Tres motores, una autoridad comercial</h2>
+<table>
+<tr><th style="width:21%">Motor</th><th style="width:45%">Qué guarda</th><th>Quién manda / límite</th></tr>
+<tr><td>PostgreSQL<br>U1–U6 / copia U8</td><td><code>categoria, usuario, producto, pedido, detalle_pedido</code> y objetos programables. U8 agrega productos de prueba y la vista de instantánea.</td><td>Fuente de verdad de catálogo, precios, stock, usuarios y ventas. El laboratorio U8 no es producción.</td></tr>
+<tr><td>MongoDB · U7</td><td>Colección <code>pedidos</code>, subconjunto documental con líneas embebidas y precio histórico de <code>detalle_pedido.precio_unitario</code>.</td><td>Representación de consulta cargada desde PostgreSQL. No lo reemplaza ni se sincroniza permanentemente; no participa en U8.</td></tr>
+<tr><td>SQLite · U8</td><td>Catálogo e instantánea; borradores, ítems y cola locales.</td><td>Solo sus propuestas e historial local. No confirma ventas, precios ni stock del servidor.</td></tr>
+</table>
+<p class="ref">Fuente: U8/docs/integracion_motores.md §§1–3. Referencias fijas: U6 <code>u6-cierre = 8f7877c8a1ff25c1be28b29c46c38cd7c9663e86</code> en ../foodstore_baseII; U7 <code>u7-cierre = 703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4</code> en este repositorio.</p>
+<h3>Qué respaldar y cómo comprobar la recuperación</h3>
+<p><strong>PostgreSQL:</strong> procedimiento U6, dump completo <code>pg_dump -Fc</code> con línea base; <code>restore_test.sh</code> restaura en una base nueva y compara controles. En U8 se propone agregar la validación de existencia de <code>v_snapshot_movil</code> y una fila por producto. El ensayo histórico de H1 validó datos en modo <code>sin-propietarios</code>; no acreditó recuperación de propietarios, ACL, roles ni seguridad de U5. No hubo restauración nueva en E.</p>
+<p><strong>MongoDB:</strong> reconstruible desde <code>unidades/unidad-7/datos/pedidos_origen.json</code> y scripts U7; no se ensayó aquí. <strong>SQLite:</strong> propuesta de copia completa cerrada al cierre de turno y antes de renovar, con SHA-256 y control de integridad. Probar una copia aparte: huella coincidente, <code>integrity_check=ok</code>, <code>foreign_key_check</code> sin filas y estado igual al registrado. La instantánea no recupera borradores ni cola perdidos.</p>
+<h3>Si PostgreSQL vuelve a un respaldo antiguo</h3>
+<p>Propuesta: descargar y renovar la instantánea antes de evaluar PENDIENTE. El UPSERT deja sin cambios filas del cache ausentes de la instantánea: pueden seguir visibles, aunque el semáforo rechace un ítem ausente. No modifica precios vistos ni reevalúa solicitudes resueltas. Revisar manualmente las potencialmente afectadas y conservar su historial; cualquier solicitud nueva requiere decisión explícita y UUID nuevo. <code>creada_en</code> no es fecha de evaluación, por lo que no se promete una selección automática histórica precisa.</p>
+<h3>Quién revisaría la cola y cuándo (propuesta, no acordada)</h3>
+<p><strong>CONFLICTO:</strong> vendedor con el cliente, en el momento o al cierre del turno. <strong>RECHAZADO:</strong> responsable comercial, diariamente al cierre y después de restaurar PostgreSQL. Conteos por tablet: revisión semanal del responsable comercial. La consulta de revisión no cambia estados evaluados.</p>
+<p class="ref">Fuente: U8/docs/mantenimiento_u8.md §§1–5. El resguardo local y las nueve capturas C6 conservadas <strong>no son un ensayo de restauración</strong>; el complemento registra 48 huellas coincidentes (rc=0), no una recuperación [U8/evidencias/bloque_e_complemento_20261107_212101.txt:170–200].</p>
+<div class="footer">Food Store · TP8 · Informe revisado y aprobado por el equipo · 5 / 6</div>
+</section>
+
+<section class="page">
+<div class="kicker">Consigna 3.c · Hallazgos con decisión y límites</div>
+<h2>Revisión asistida por IA</h2>
+<p>Inventario: <strong>115 lecturas completas + 5 correspondencias históricas U7 = 120 scripts</strong>, sin lecturas pendientes; no son 120 ejecuciones nuevas. Incluye una lectura comunicada de ChatGPT/Mila con blob cotejado. H1/H3/H6: selección aprobada por el equipo para el informe. La consigna pide OpenCode Plan; el equipo informó sustitución por Claude, no aprobación docente del informe.</p>
+<table>
+<tr><th style="width:23%">Hallazgo / decisión</th><th>Comprobación, motivo y límites</th></tr>
+<tr><td><strong>H1 · U6</strong><br>«Restaurar requiere el origen».<br><strong>Descartado</strong> en el caso ensayado.</td><td>El 05/11/2026 se renombró el origen: <code>pg_database</code> mostró «u6_fix_origen|ausente»; restauración <code>RESTAURACION_VALIDADA</code>, exit=0 [R1:122–130,158–172]. <code>restore_test.sh</code> ensayado: SHA <code>68031b1f…</code>, commit <code>451718f</code>; cierre: <code>973223df…</code>. El diff <code>451718f..u6-cierre</code> solo cambia cuatro líneas de comentarios/mensajes, no conexión ni restauración. Límite: caso y modo sin-propietarios ensayados; el cierre se sostiene por el diff, no por otra ejecución.</td></tr>
+<tr><td><strong>H3 · U3</strong><br>Índice por <code>lower(mail)</code>.<br><strong>Aceptado</strong> como costo observado, no defecto.</td><td><code>idx_usuario_mail_lower</code>, PostgreSQL 17.11, 20/09/2026; <code>EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)</code>: tres corridas, primera de calentamiento, media de 2 y 3. INSERT de 1000 usuarios con BEGIN/ROLLBACK: <strong>7,6655 → 14,7085 ms; +91,88 % observado</strong>. Lectura: 10,8865 → 0,136 ms [R3:97–104,207–208,258,288–302]. Script/evidencia: <code>da5f3e4</code>. Se recrearon tres candidatos; solo uno sobre usuario. Dos corridas válidas, cachés y otros efectos no aíslan un costo universal. No se propone eliminarlo: depende de la carga.</td></tr>
+<tr><td><strong>H6 · U8</strong><br>«Reevalúa resueltas».<br><strong>Descartado</strong> para el filtro y C6-2 documentados.</td><td><code>semaforo.sql</code>, SHA <code>2635767318a7…</code>, filtra PENDIENTE al calcular/actualizar (56,103–109) y controla evaluadas (125–129). C6-2: 0 procesadas, estado consultado idéntico y CONFLICTO original conservado [DC:147–154,177–209]. No es volcado íntegro: omite <code>pedido_borrador.creado_en</code> y resume la instantánea. No prueba idempotencia del servidor ni otros casos/versiones.</td></tr>
+</table>
+<h3>Conclusión y pendientes</h3>
+<p>La base entregable es la <strong>posterior a D</strong>: 4 borradores y 5 solicitudes (2 SIMULADO_APROBADO, 1 CONFLICTO, 2 RECHAZADO, 0 PENDIENTE), con integridad y correspondencia de siete campos con <code>c4_baja</code> comprobadas en la lectura histórica [E:41–48]. Su SHA-256 es:</p>
+<pre>cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace</pre>
+<p><strong>E sigue abierto:</strong> revisión humana individual de los scripts, DUIA contra formato oficial, elección y ensayo de defensa de 10 minutos, modalidad ZIP o repositorio con etiqueta tp8 y operaciones Git. Ismael comunicó la aprobación del equipo al informe. No se declara aprobación docente, DUIA definitiva, ensayo realizado ni entrega publicada.</p>
+<p class="ref"><strong>Referencias de 3.c:</strong> R1 = ../foodstore_baseII/unidades/unidad-6/evidencias/correccion_restauracion_20261105.txt (huella ensayada:17); R3 = ../foodstore_baseII/unidades/unidad-3/informes/evidencia_modelo_oficial.md. Desarrollo y límites: U8/docs/revision_scripts_ia.md §§3–4; totales: U8/docs/revision_inventario_scripts.md, «Totales». Las pruebas U3/U6 son históricas, no ejecuciones nuevas de E. H5 no se usa como prueba del .import original: C:219–227 solo acredita el rechazo previo del auxiliar, sin abrir la base para renovar. Marco: consigna oficial TP8 (Unidad 8, ciclo 2026), §§1–4 y «Qué se entrega»; especificación: U8/docs/kiro/; uso de IA: U8/docs/bitacora_ia.md y DUIA.md (borrador).</p>
+<div class="footer">Food Store · TP8 · Informe revisado y aprobado por el equipo · 6 / 6</div>
+</section>
+</body>
+</html>

@@ -1,0 +1,90 @@
+Food Store U8 — Bloque C — Cierre: huellas, base, contenedor y Git
+Ejecución: Claude (sesión principal). Fecha: 2026-11-07T13:05:45-0300
+
+Corrección del registro anterior: en bloque_c_sqlite_20261107_130343.txt el listado final del esquema falló por un error de comillas en el comando de la sesión ("table" interpretado como columna). No afectó a las pruebas, que habían terminado. El listado se repite aquí con el comando corregido.
+
+== Esquema de foodstore_movil.db (sqlite3 -readonly)
+Parse error in 3rd command line argument: unrecognized token: "\"
+   " || name FROM sqlite_schema WHERE name NOT LIKE \x27sqlite_%\x27 ORDER BY ty
+                                      error here ---^
+rc=1
+Parse error in 3rd command line argument: unrecognized token: "\"
+  SELECT \x27pedido_borrador=\x27 || (SELECT count(*) FROM pedido_borrador) || \
+         ^--- error here
+rc=1
+-rw------- 1 devops devops 40960 Nov  7 13:03 unidades/unidad-8/movil/foodstore_movil.db
+
+== Huellas finales
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  unidades/unidad-8/movil/schema_sqlite.sql
+2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7  unidades/unidad-8/movil/pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  unidades/unidad-8/movil/verificar_bloque_b.sh
+523f31b84af57ecc73cbc14ee1fa851096759c35f62af92a623e32d43570c0b7  unidades/unidad-8/movil/snapshot_servidor.sql
+1273c01344352d0e7f624da99aaaa2327d252e46e059737a814c2c0a210e0b86  unidades/unidad-8/movil/renovar_snapshot.sql
+be699c02dd35f1399c22a45ebf08470b0241750ac62352dc320d6bfa3324444b  unidades/unidad-8/movil/consultas_bloque_c.sql
+d806311f1cb4832e3c6370ff697d2bc727e654bdf36546757a0baa029d6744c4  unidades/unidad-8/movil/preparar_foodstore_movil.sh
+b063dec075798eb7cf322c3859be829b822902425cebdeab941b3a33047eb10e  unidades/unidad-8/movil/verificar_bloque_c.sh
+46bc4b6727d8e907c9113fd2aa3da16b350583b5e7625800a9403531b994bbfc  unidades/unidad-8/movil/servidor_snapshot.csv
+8451dcdff04efbe78960f96ed36cb86013345fb5db9fe8db2f8b78d24c92052d  unidades/unidad-8/movil/servidor_snapshot_meta.txt
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  unidades/unidad-8/movil/foodstore_movil.db
+97afca557a47f438f134009983233b7502c8c42d7e506d3c428254bd4a12d610  unidades/unidad-8/postgresql/datos_auxiliares_u8.sql
+6bb56060f2c7315773740665465f2446dad99a6576f4e29e411e8bf7457c06dc  unidades/unidad-8/postgresql/exportar_snapshot.sql
+a2fbec88c044bc51d7755660ad83d6923c70c145712ed8252df1b421360654b8  unidades/unidad-8/postgresql/laboratorio_u8.sh
+b5aceb77cc63dd7ff5536b049eb9859141a7675ba44f539471b0dc57548a0ae9  unidades/unidad-8/postgresql/snapshot_movil.sql
+e9e0f37c79fc491bece64cf0c5c4a82a460b7915f36515cb2df0dd6bf175f120  unidades/unidad-8/postgresql/verificar_instalacion_u8.sql
+
+== Evidencias anteriores (sin cambios)
+ff2acc1de7379ebbbb40c3a77fa8cf0ae4454408ef7fe64f7100e3faf9ddf2cf  unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt
+dd743f377996df9e1b881611457e433b5b603ca794219288108d73d5382064f3  unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+ebc7cf6a98ea4bc33bae7634b2d69b5cb01bd0603720a471d2c62f0fac9f9396  unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt
+9576617527f61577088fb91f361d4fc05a21e32260575be499c52bef6d5c47c7  unidades/unidad-8/evidencias/bloque_b_verificacion_registro_20261107_121806.txt
+60be4e10dd2ea3903a22b37b8bca31a72537df4e3e2bf97cceb1ef5606fcc814  unidades/unidad-8/evidencias/bloque_c_postgresql_20261107_125121.txt
+186a868e7a8efcd5a11a591346e8326e386af41e116fdb50a810a5279bcef182  unidades/unidad-8/evidencias/bloque_c_sqlite_20261107_130343.txt
+
+== Contenedor y volumen U8
+foodstore-u8-postgres Up 14 minutes 2d2b8998d310
+foodstore_u8_pg_data
+NetworkMode=none PortBindings={} Privileged=false
+Otros contenedores (solo nombre y estado, sin tocarlos):
+foodstore-u7-mongo9 Exited (0) 19 hours ago
+foodstore-u7-mongo Exited (1) 25 hours ago
+foodstore-u6-evaluacion Exited (0) 19 hours ago
+foodstore-u6-lab Exited (0) 38 hours ago
+taller-db-1 Exited (0) 10 days ago
+libreria-pg Exited (0) 3 weeks ago
+
+== Git U8
+## feat/u7-migracion
+?? unidades/unidad-8/docs/kiro/design.md
+?? unidades/unidad-8/docs/kiro/requirements.md
+?? unidades/unidad-8/docs/kiro/tasks.md
+?? unidades/unidad-8/docs/laboratorio_u8.md
+?? unidades/unidad-8/evidencias/bloque_b_20261107_104530.txt
+?? unidades/unidad-8/evidencias/bloque_b_20261107_121805.txt
+?? unidades/unidad-8/evidencias/bloque_b_control_negativo_20261107_104542.txt
+?? unidades/unidad-8/evidencias/bloque_b_verificacion_registro_20261107_121806.txt
+?? unidades/unidad-8/evidencias/bloque_c_cierre_20261107_130545.txt
+?? unidades/unidad-8/evidencias/bloque_c_postgresql_20261107_125121.txt
+?? unidades/unidad-8/evidencias/bloque_c_sqlite_20261107_130343.txt
+?? unidades/unidad-8/movil/consultas_bloque_c.sql
+?? unidades/unidad-8/movil/foodstore_movil.db
+?? unidades/unidad-8/movil/preparar_foodstore_movil.sh
+?? unidades/unidad-8/movil/pruebas_sqlite.sql
+?? unidades/unidad-8/movil/renovar_snapshot.sql
+?? unidades/unidad-8/movil/schema_sqlite.sql
+?? unidades/unidad-8/movil/servidor_snapshot.csv
+?? unidades/unidad-8/movil/servidor_snapshot_meta.txt
+?? unidades/unidad-8/movil/snapshot_servidor.sql
+?? unidades/unidad-8/movil/verificar_bloque_b.sh
+?? unidades/unidad-8/movil/verificar_bloque_c.sh
+?? unidades/unidad-8/postgresql/datos_auxiliares_u8.sql
+?? unidades/unidad-8/postgresql/exportar_snapshot.sql
+?? unidades/unidad-8/postgresql/laboratorio_u8.sh
+?? unidades/unidad-8/postgresql/snapshot_movil.sql
+?? unidades/unidad-8/postgresql/verificar_instalacion_u8.sql
+703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4
+703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4
+
+== Git foodstore_baseII (solo lectura)
+## main...origin/main
+8f7877c8a1ff25c1be28b29c46c38cd7c9663e86
+8f7877c8a1ff25c1be28b29c46c38cd7c9663e86

@@ -1,0 +1,61 @@
+Food Store U8 — Bloque E — Lectura de solo lectura de la base final posterior a D
+Ejecución: Claude (sesión principal). Fecha: 2026-11-07T20:34:11-0300. sqlite3 3.54.1. Sin Docker ni PostgreSQL.
+Huella antes: cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace (esperada cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace)
+6f3ea4350019c04871b35fc1e94415e88355f8faba68513e84cda00d733496a6  /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja/servidor_snapshot.csv
+--- consulta (/tmp/foodstore_u8_e_lectura.sql)
+.headers off
+.mode list
+.separator ' | '
+PRAGMA foreign_keys = ON;
+CREATE TEMP TABLE csv_c4 (
+    producto_id TEXT NOT NULL, nombre TEXT NOT NULL, precio_centavos TEXT NOT NULL,
+    stock TEXT NOT NULL, disponible TEXT NOT NULL, eliminado TEXT NOT NULL,
+    capturado_en TEXT NOT NULL) STRICT;
+.import --csv --skip 1 --schema temp servidor_snapshot.csv csv_c4
+CREATE TEMP VIEW snap_txt AS SELECT CAST(producto_id AS TEXT), nombre, CAST(precio_centavos AS TEXT),
+    CAST(stock AS TEXT), disponible, eliminado, capturado_en FROM snapshot_servidor;
+CREATE TEMP VIEW cache_txt AS SELECT CAST(producto_id AS TEXT), nombre, CAST(precio_centavos AS TEXT),
+    CAST(stock_visto AS TEXT), CASE disponible_visto WHEN 1 THEN 't' WHEN 0 THEN 'f' END,
+    CASE eliminado WHEN 1 THEN 't' WHEN 0 THEN 'f' END, capturado_en FROM producto_cache;
+SELECT 'E-01', 'pedido_borrador', 4, n, iif(n = 4, 'OK', 'FALLA') FROM (SELECT count(*) n FROM pedido_borrador);
+SELECT 'E-02', 'cola_sync', 5, n, iif(n = 5, 'OK', 'FALLA') FROM (SELECT count(*) n FROM cola_sync);
+SELECT 'E-03', 'estados SIMULADO_APROBADO|CONFLICTO|RECHAZADO|PENDIENTE', '2|1|2|0', r, iif(r = '2|1|2|0', 'OK', 'FALLA')
+FROM (SELECT (SELECT count(*) FROM cola_sync WHERE estado = 'SIMULADO_APROBADO') || '|' ||
+             (SELECT count(*) FROM cola_sync WHERE estado = 'CONFLICTO') || '|' ||
+             (SELECT count(*) FROM cola_sync WHERE estado = 'RECHAZADO') || '|' ||
+             (SELECT count(*) FROM cola_sync WHERE estado = 'PENDIENTE') AS r);
+SELECT 'E-04', 'integrity_check', 'ok', r, iif(r = 'ok', 'OK', 'FALLA') FROM (SELECT group_concat(integrity_check, ';') r FROM pragma_integrity_check);
+SELECT 'E-05', 'foreign_key_check', 0, n, iif(n = 0, 'OK', 'FALLA') FROM (SELECT count(*) n FROM pragma_foreign_key_check);
+SELECT 'E-06', 'filas CSV c4_baja | snapshot | cache', '9|9|9', r, iif(r = '9|9|9', 'OK', 'FALLA')
+FROM (SELECT (SELECT count(*) FROM csv_c4) || '|' || (SELECT count(*) FROM snapshot_servidor) || '|' || (SELECT count(*) FROM producto_cache) AS r);
+SELECT 'E-07', 'diferencias CSV c4_baja / snapshot_servidor (7 columnas, ambas direcciones)', 0, n, iif(n = 0, 'OK', 'FALLA')
+FROM (SELECT (SELECT count(*) FROM (SELECT * FROM csv_c4 EXCEPT SELECT * FROM snap_txt)) +
+             (SELECT count(*) FROM (SELECT * FROM snap_txt EXCEPT SELECT * FROM csv_c4)) AS n);
+SELECT 'E-08', 'diferencias CSV c4_baja / producto_cache reconvertido (7 columnas, ambas direcciones)', 0, n, iif(n = 0, 'OK', 'FALLA')
+FROM (SELECT (SELECT count(*) FROM (SELECT * FROM csv_c4 EXCEPT SELECT * FROM cache_txt)) +
+             (SELECT count(*) FROM (SELECT * FROM cache_txt EXCEPT SELECT * FROM csv_c4)) AS n);
+.print '-- cola_sync'
+SELECT solicitud_uuid, id_local, estado, motivo FROM cola_sync ORDER BY creada_en, solicitud_uuid;
+--- fin
+Comando: (cd /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/instantaneas/20261107_195358/c4_baja && sqlite3 -readonly -batch /home/devops/Documentos/utn/BasesDatosII/unidad_5/tpi/foodstore_nosql_movil/unidades/unidad-8/movil/foodstore_movil.db < /tmp/foodstore_u8_e_lectura.sql)
+E-01 | pedido_borrador | 4 | 4 | OK
+E-02 | cola_sync | 5 | 5 | OK
+E-03 | estados SIMULADO_APROBADO|CONFLICTO|RECHAZADO|PENDIENTE | 2|1|2|0 | 2|1|2|0 | OK
+E-04 | integrity_check | ok | ok | OK
+E-05 | foreign_key_check | 0 | 0 | OK
+E-06 | filas CSV c4_baja | snapshot | cache | 9|9|9 | 9|9|9 | OK
+E-07 | diferencias CSV c4_baja / snapshot_servidor (7 columnas, ambas direcciones) | 0 | 0 | OK
+E-08 | diferencias CSV c4_baja / producto_cache reconvertido (7 columnas, ambas direcciones) | 0 | 0 | OK
+-- cola_sync
+d2000000-0000-4000-8000-0000000000c1 | d2000000-0000-4000-8000-0000000000b1 | CONFLICTO | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos
+d2000000-0000-4000-8000-0000000000c2 | d2000000-0000-4000-8000-0000000000b1 | SIMULADO_APROBADO | todo coincide con snapshot de 2026-11-07 22:53:58.569903+00
+d3000000-0000-4000-8000-0000000000c1 | d3000000-0000-4000-8000-0000000000b1 | RECHAZADO | producto_id=5: stock disponible=2, cantidad solicitada=3
+d4000000-0000-4000-8000-0000000000c1 | d4000000-0000-4000-8000-0000000000b1 | RECHAZADO | producto_id=6: eliminado=t
+d5000000-0000-4000-8000-0000000000c1 | d5000000-0000-4000-8000-0000000000b1 | SIMULADO_APROBADO | todo coincide con snapshot de 2026-11-07 22:53:59.938648+00
+--- stderr
+--- fin stderr
+Código: 0 (esperado 0)
+Comprobaciones: esperadas=8 OK=8 FALLA=0
+Huella después: cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace
+0
+RESULTADO: OK

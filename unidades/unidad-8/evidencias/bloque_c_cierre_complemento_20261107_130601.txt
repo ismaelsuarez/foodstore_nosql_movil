@@ -1,0 +1,25 @@
+Food Store U8 — Bloque C — Complemento del cierre
+Fecha: 2026-11-07T13:06:01-0300. Ejecución: Claude (sesión principal).
+Motivo: en bloque_c_cierre_20261107_130545.txt el listado del esquema y los conteos fallaron otra vez (rc=1) por las comillas del comando de la sesión. Aquí se repite leyendo la consulta desde un archivo temporal fuera del repositorio:
+--- /tmp/foodstore_u8_cierre_consulta.sql
+SELECT type || ' ' || name FROM sqlite_schema WHERE name NOT LIKE 'sqlite_%' ORDER BY type, name;
+SELECT 'pedido_borrador=' || (SELECT count(*) FROM pedido_borrador)
+    || ' item_borrador=' || (SELECT count(*) FROM item_borrador)
+    || ' cola_sync=' || (SELECT count(*) FROM cola_sync)
+    || ' producto_cache=' || (SELECT count(*) FROM producto_cache)
+    || ' snapshot_servidor=' || (SELECT count(*) FROM snapshot_servidor);
+PRAGMA integrity_check;
+--- fin
+Comando: sqlite3 -readonly -batch unidades/unidad-8/movil/foodstore_movil.db < /tmp/foodstore_u8_cierre_consulta.sql
+index ux_cola_una_pendiente
+table cola_sync
+table item_borrador
+table pedido_borrador
+table producto_cache
+table snapshot_servidor
+view v_catalogo_disponible
+pedido_borrador=0 item_borrador=0 cola_sync=0 producto_cache=9 snapshot_servidor=9
+ok
+rc=0
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  unidades/unidad-8/movil/foodstore_movil.db
+0

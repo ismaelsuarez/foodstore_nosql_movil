@@ -1,0 +1,94 @@
+
+=== Entorno ===
+Fecha:          2026-11-07T12:18:05-0300
+Bash:           5.3.9(1)-release
+sqlite3:        /home/linuxbrew/.linuxbrew/bin/sqlite3
+Versión:        3.54.1 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76 (64-bit)
+Base temporal:  /tmp/gpcCwx2O/gapTxciz/foodstore_u8_bloque_b.KoQFUG/prueba_bloque_b_descartable.db (descartable; no se borra al terminar)
+Huellas SHA-256 de los scripts:
+cd3371dfa2597eca0739315272b0e123a4fa9fc08c5eddb57fe0e978650452a9  schema_sqlite.sql
+2616f7ac88b491081402c58b384f472eb009e56630fc364c7168ac142cfce8c7  pruebas_sqlite.sql
+cf0cecca075735026b66cf3fb11f73fcbe89a8f975b06bd5483c0a748f5511fb  verificar_bloque_b.sh
+
+=== Paso 1: esquema ===
+Comando: sqlite3 -batch "/tmp/gpcCwx2O/gapTxciz/foodstore_u8_bloque_b.KoQFUG/prueba_bloque_b_descartable.db" < schema_sqlite.sql
+Código de salida: 0 (esperado 0)
+--- stdout esquema (0 líneas) ---
+--- fin stdout esquema ---
+--- stderr esquema (0 líneas) ---
+--- fin stderr esquema ---
+
+=== Paso 2: pruebas ===
+Comando: sqlite3 -batch "/tmp/gpcCwx2O/gapTxciz/foodstore_u8_bloque_b.KoQFUG/prueba_bloque_b_descartable.db" < pruebas_sqlite.sql
+Código de salida: 1 (esperado 1: dos errores de restricción provocados)
+--- stdout pruebas (44 líneas) ---
+== Conexion: foreign_keys
+B-01 | PRAGMA foreign_keys activo | 1 | 1 | OK
+== Esquema
+B-02 | tablas STRICT del esquema | 4 | 4 | OK
+B-03 | indice ux_cola_una_pendiente y vista v_catalogo_disponible | 2 | 2 | OK
+B-04 | base sin datos previos (4 tablas) | 0 | 0 | OK
+== Fixture sintetica
+FIX-01 | productos de la fixture en producto_cache | 4 | 4 | OK
+== COMMIT: borrador completo
+COMMIT-01 | pedido_borrador del borrador confirmado | 1 | 1 | OK
+COMMIT-02 | item_borrador del borrador confirmado | 2 | 2 | OK
+COMMIT-03 | cola_sync PENDIENTE con motivo NULL | 1 | 1 | OK
+COMMIT-04 | total visto del borrador en centavos | 300000 | 300000 | OK
+== ROLLBACK: operacion deshecha
+ROLLBACK-01 | filas de la operacion antes de ROLLBACK (3 tablas) | 3 | 3 | OK
+ROLLBACK-02 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+ROLLBACK-03 | item_borrador tras ROLLBACK | 0 | 0 | OK
+ROLLBACK-04 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== C1: v_catalogo_disponible (producto_id | nombre | precio | stock_visto)
+9101 | Muzzarella (fixture) | 1050.00 | 10
+9102 | Empanada de carne (fixture) | 150.00 | 40
+C1-01 | productos en v_catalogo_disponible | 2 | 2 | OK
+C1-02 | ids visibles en el catalogo | 9101,9102 | 9101,9102 | OK
+C1-03 | lapida 9104 conservada en producto_cache y oculta en la vista | 1 | 1 | OK
+C1-04 | no disponible 9103 oculto en la vista | 0 | 0 | OK
+== C7-a: cantidad = 0 (se espera CHECK constraint failed: cantidad > 0)
+C7A-01 | foreign_keys activo antes de BEGIN | 1 | 1 | OK
+C7A-02 | preparacion valida: encabezado dentro de la transaccion | 1 | 1 | OK
+C7A-03 | item invalido no grabado (dentro de la transaccion) | 0 | 0 | OK
+C7A-04 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+C7A-05 | item_borrador tras ROLLBACK | 0 | 0 | OK
+C7A-06 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== C7-b: producto inexistente (se espera FOREIGN KEY constraint failed)
+C7B-01 | foreign_keys activo antes de BEGIN | 1 | 1 | OK
+C7B-02 | producto 9999 ausente de producto_cache | 0 | 0 | OK
+C7B-03 | preparacion valida: encabezado dentro de la transaccion | 1 | 1 | OK
+C7B-04 | item invalido no grabado (dentro de la transaccion) | 0 | 0 | OK
+C7B-05 | pedido_borrador tras ROLLBACK | 0 | 0 | OK
+C7B-06 | item_borrador tras ROLLBACK | 0 | 0 | OK
+C7B-07 | cola_sync tras ROLLBACK | 0 | 0 | OK
+== Estado final
+FIN-01 | filas finales pedido_borrador | item_borrador | cola_sync | 1|2|1 | 1|2|1 | OK
+FIN-02 | violaciones de claves foraneas (foreign_key_check) | 0 | 0 | OK
+FIN-03 | integrity_check | ok | ok | OK
+--- fin stdout pruebas ---
+--- stderr pruebas (2 líneas) ---
+Error near line 201: CHECK constraint failed: cantidad > 0
+Error near line 243: FOREIGN KEY constraint failed
+--- fin stderr pruebas ---
+
+=== Paso 3: verificación ===
+stderr esperado:
+  Error near line 201: CHECK constraint failed: cantidad > 0
+  Error near line 243: FOREIGN KEY constraint failed
+Comprobaciones SQL: esperadas=33 OK=33 FALLA=0
+
+=== Resumen ===
+Prueba     | Esperado                                                       | Resultado
+Esquema    | código 0, sin errores                                         | OK
+COMMIT     | 1 encabezado, 2 ítems, 1 PENDIENTE con motivo NULL            | OK
+ROLLBACK   | 3 filas antes, 0 en las tres tablas después                   | OK
+C1         | vista con 9101 y 9102; lápida 9104 conservada                 | OK
+C7-a       | CHECK cantidad > 0 en línea 201; 0 filas tras ROLLBACK        | OK
+C7-b       | FOREIGN KEY en línea 243; 0 filas tras ROLLBACK               | OK
+stderr     | exactamente los dos diagnósticos esperados                    | OK
+Código    | salida de pruebas = 1 (observado 1)                            | OK
+SQL        | 33 comprobaciones en OK (observado 33 OK, 0 FALLA)             | OK
+
+RESULTADO GLOBAL: OK
+Base temporal conservada: /tmp/gpcCwx2O/gapTxciz/foodstore_u8_bloque_b.KoQFUG/prueba_bloque_b_descartable.db

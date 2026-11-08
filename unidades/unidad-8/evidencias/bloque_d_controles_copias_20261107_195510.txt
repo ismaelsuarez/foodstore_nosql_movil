@@ -1,0 +1,195 @@
+Food Store U8 — Bloque D — Controles del diseño sobre COPIAS descartables
+Ejecución: Claude (sesión principal). Fecha: 2026-11-07T19:55:10-0300
+Estos resultados son de copias en /tmp, NO de la base entregable, que no se abre.
+52cdd7a6847538e67f264b1404fdd0dd423caab37f5df86ef89aee6a523f2cbf  unidades/unidad-8/movil/controles_d.sh
+a291c4bf5c06b44b1992a8e0edc340dc1a67956b594fbd4bfa66493236bec70d  /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_borrador.db
+377933807c4b054fcfd57c2ae7943a7a7a590236b2935ef0c00439321a5841e3  /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_conflicto.db
+d8526133b3646e53e7f5ca515deae9f6f6fab6f990dc86b9f074ee19666942a9  unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock/servidor_snapshot.csv
+Comando: bash unidades/unidad-8/movil/controles_d.sh /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_borrador.db /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_conflicto.db unidades/unidad-8/movil/instantaneas/20261107_195358/c3_stock
+=== T1 — prioridad del rechazo sobre el conflicto (CA-03c) ===
+Copia descartable: /tmp/foodstore_u8_d_control.FrEV96/copia.db (desde /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_borrador.db)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.eZKv1F
+Borrador prioridad: id_local=d9000000-0000-4000-8000-0000000000b1 solicitud=d9000000-0000-4000-8000-0000000000c1 usuario=1 forma_pago=TARJETA items=[[4,1,120000],[5,3,90000]]
+Comando: sqlite3 -batch -cmd .parameter\ set\ @id_local\ \"\'d9000000-0000-4000-8000-0000000000b1\'\" -cmd .parameter\ set\ @solicitud\ \"\'d9000000-0000-4000-8000-0000000000c1\'\" -cmd .parameter\ set\ @usuario\ 1 -cmd .parameter\ set\ @forma_pago\ \"\'TARJETA\'\" -cmd .parameter\ set\ @items\ \"\'\[\[4\,1\,120000\]\,\[5\,3\,90000\]\]\'\" /tmp/foodstore_u8_d_control.FrEV96/copia.db < crear_borrador.sql
+--- stdout ---
+control | foreign_keys | OK
+control | items_recibidos | OK
+control | identificadores_nuevos | OK
+control | items_del_catalogo_con_precio_vigente | OK
+control | borrador_items_y_solicitud_pendiente | OK
+borrador | d9000000-0000-4000-8000-0000000000b1 | 1 | TARJETA
+item | 4 | 1 | 120000
+item | 5 | 3 | 90000
+solicitud | d9000000-0000-4000-8000-0000000000c1 | PENDIENTE | <NULL>
+BORRADOR CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: BORRADOR CONFIRMADO
+Resultado crear_borrador: OK
+Renovación: código esperado=0 observado=0
+--- stdout ---
+foreign_keys | OK
+filas_esperadas | OK
+filas_importadas | OK
+sin_nulos | OK
+tipos_enteros | OK
+captura_unica | OK
+correspondencia_cache | OK
+lapidas_conservadas | OK
+items_conservados | OK
+cola_conservada | OK
+RENOVACION CONFIRMADA
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Resultado renovación: OK
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.6ooQm1
+Lectura PostgreSQL (servidor_antes): código 0
+--- lectura servidor_antes ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | t
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_antes ---
+--- diagnóstico servidor_antes ---
+--- fin diagnóstico servidor_antes ---
+>> Simulación únicamente en SQLite (semaforo.sql no contiene operaciones sobre PostgreSQL)
+Comando: sqlite3 -batch /tmp/foodstore_u8_d_control.FrEV96/copia.db < semaforo.sql
+--- stdout ---
+control | foreign_keys | OK
+control | captura_unica | OK
+control | filas_actualizadas_igual_a_procesadas | OK
+control | procesadas_con_estado_y_motivo | OK
+control | evaluadas_previas_sin_cambios | OK
+control | precios_de_items_sin_cambios | OK
+control | producto_cache_sin_cambios | OK
+procesada | d2000000-0000-4000-8000-0000000000c1 | d2000000-0000-4000-8000-0000000000b1 | CONFLICTO | producto_id=4: precio_visto=120000 centavos, precio_actual=132000 centavos
+procesada | d9000000-0000-4000-8000-0000000000c1 | d9000000-0000-4000-8000-0000000000b1 | RECHAZADO | producto_id=5: stock disponible=2, cantidad solicitada=3
+procesadas | 2
+SEMAFORO CONFIRMADO
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: SEMAFORO CONFIRMADO
+Resultado semaforo: OK
+Lectura PostgreSQL (servidor_despues): código 0
+--- lectura servidor_despues ---
+producto | 1 | 1050.00 | 50 | t | f
+producto | 2 | 1500.00 | 40 | t | f
+producto | 3 | 800.00 | 100 | t | f
+producto | 4 | 1320.00 | 20 | t | f
+producto | 5 | 900.00 | 2 | t | f
+producto | 6 | 700.00 | 15 | t | t
+producto | 7 | 500.00 | 30 | t | f
+producto | 8 | 650.00 | 8 | f | f
+producto | 9 | 450.00 | 5 | t | t
+pedidos | 5 | 14700.00
+detalle_pedido | 7 | 14
+--- fin lectura servidor_despues ---
+--- diagnóstico servidor_despues ---
+--- fin diagnóstico servidor_despues ---
+PostgreSQL antes/después: idéntico byte a byte (precio, stock y estado por producto; pedidos y líneas)
+Resultado simulación: OK
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.EZQiAp
+Comprobación prioridad: solicitud=d9000000-0000-4000-8000-0000000000c1 producto=5 precio_visto=90000 estado=RECHAZADO motivo=producto_id=5: stock disponible=2, cantidad solicitada=3 lapida=0
+--- stdout ---
+K-01 | foreign_keys activo | 1 | 1 | OK
+K-02 | precio visto del item (centavos) | 90000 | 90000 | OK
+K-03 | estado de la solicitud | RECHAZADO | RECHAZADO | OK
+K-04 | motivo de la solicitud | producto_id=5: stock disponible=2, cantidad solicitada=3 | producto_id=5: stock disponible=2, cantidad solicitada=3 | OK
+K-05 | fila del producto en producto_cache | 1 | 1 | OK
+K-06 | eliminado en producto_cache | 0 | 0 | OK
+K-07 | visible en v_catalogo_disponible | 1 | 1 | OK
+K-08 | integrity_check y foreign_key_check | ok|0 | ok|0 | OK
+dato | producto_cache | 5 | [U8 prueba] Base C3 stock | 90000 | 2 | 1 | 0 | 2026-11-07 22:53:59.411185+00
+dato | snapshot_servidor | 5 | 90000 | 2 | t | f | 2026-11-07 22:53:59.411185+00
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código: 0 (esperado 0); comprobaciones esperadas=8 OK=8 FALLA=0
+Resultado comprobación prioridad: OK
+Códigos: borrador=0 renovar=0 simular=0 comprobar=0 (esperados 0)
+T1 prioridad: RECHAZADO con motivo de stock aunque el producto 4 cambió de precio: OK
+
+=== T2 — una sola solicitud PENDIENTE por borrador (CA-04d) ===
+Copia descartable: /tmp/foodstore_u8_d_control.cyte2b/copia.db (desde /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_borrador.db)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.XWq6bX
+Intento pendiente_doble: solicitud=d9000000-0000-4000-8000-0000000000c9 id_local=d2000000-0000-4000-8000-0000000000b1
+Comando: sqlite3 -batch -cmd ... /tmp/foodstore_u8_d_control.cyte2b/copia.db < insertar_solicitud.sql
+--- stdout ---
+I-01 | foreign_keys activo | 1 | 1 | OK
+I-02 | filas de cola_sync antes del intento | >0 | 1 | OK
+I-03 | filas de cola_sync despues del intento | 1 | 1 | OK
+I-04 | cola_sync identica a la anterior (ambas direcciones) | 0 | 0 | OK
+I-05 | violaciones de claves foraneas | 0 | 0 | OK
+solicitud | d2000000-0000-4000-8000-0000000000c1 | PENDIENTE | <NULL>
+--- fin stdout ---
+--- stderr ---
+Error near line 27: UNIQUE constraint failed: cola_sync.id_local
+--- fin stderr ---
+Código: 1 (esperado 1); stderr esperado: Error near line 27: UNIQUE constraint failed: cola_sync.id_local
+Comprobaciones SQL: esperadas=5 OK=5 FALLA=0
+Resultado pendiente_doble: OK (error esperado y cola_sync sin cambios)
+Código reinsertar=0 (0 = se observó UNIQUE constraint failed: cola_sync.id_local); estado idéntico=sí
+T2 segunda PENDIENTE rechazada por ux_cola_una_pendiente, sin cambios: OK
+
+=== T3 — aceptación imposible: producto ausente de snapshot_servidor (design.md §7.2) ===
+Copia descartable: /tmp/foodstore_u8_d_control.s7zu10/copia.db (desde /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_conflicto.db)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.fkPThg
+Comando: sqlite3 -batch -cmd .parameter\ set\ @producto_id\ 4 /tmp/foodstore_u8_d_control.s7zu10/copia.db < simular_producto_ausente.sql
+--- stdout ---
+control | una_fila_quitada_de_snapshot | OK
+COPIA PREPARADA
+--- fin stdout ---
+--- stderr ---
+--- fin stderr ---
+Código de salida: 0 (esperado 0); última línea: COPIA PREPARADA
+Resultado simular_producto_ausente: OK
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.oOp81H
+ACEPTACIÓN SIMULADA DEL CLIENTE: el cliente del borrador d2000000-0000-4000-8000-0000000000b1 acepta el precio actual de la instantánea.
+Solicitud anterior=d2000000-0000-4000-8000-0000000000c1; solicitud nueva=d2000000-0000-4000-8000-0000000000c2
+Comando: sqlite3 -batch -cmd .parameter\ set\ @id_local\ \"\'d2000000-0000-4000-8000-0000000000b1\'\" -cmd .parameter\ set\ @solicitud_anterior\ \"\'d2000000-0000-4000-8000-0000000000c1\'\" -cmd .parameter\ set\ @solicitud_nueva\ \"\'d2000000-0000-4000-8000-0000000000c2\'\" /tmp/foodstore_u8_d_control.s7zu10/copia.db < aceptar_precio.sql
+--- stdout ---
+control | foreign_keys | OK
+control | solicitud_anterior_en_conflicto | OK
+control | items_en_snapshot | FALLA
+--- fin stdout ---
+--- stderr ---
+Error near line 48: CHECK constraint failed: ok = 1
+--- fin stderr ---
+Código de salida: 1 (esperado 0); última línea: control | items_en_snapshot | FALLA
+Resultado aceptar_precio: FALLA (transacción revertida al cerrar el cliente)
+Códigos: ausente=0 (esperado 0) aceptar=1 (esperado 1); diagnósticos=1 (esperado 1)
+T3 detenida antes del UPDATE; precios, solicitudes y catálogo idénticos: OK
+
+=== T4 — falla el INSERT de la solicitud nueva después del UPDATE (design.md §7.2) ===
+Copia descartable: /tmp/foodstore_u8_d_control.aWX5yW/copia.db (desde /tmp/foodstore_u8_d_puntos_20261107_195358/punto_c2_conflicto.db)
+Directorio de capturas conservado: /tmp/gpcCwx2O/foodstore_u8_d.sY4jVQ
+ACEPTACIÓN SIMULADA DEL CLIENTE: el cliente del borrador d2000000-0000-4000-8000-0000000000b1 acepta el precio actual de la instantánea.
+Solicitud anterior=d2000000-0000-4000-8000-0000000000c1; solicitud nueva=d2000000-0000-4000-8000-0000000000c1
+Comando: sqlite3 -batch -cmd .parameter\ set\ @id_local\ \"\'d2000000-0000-4000-8000-0000000000b1\'\" -cmd .parameter\ set\ @solicitud_anterior\ \"\'d2000000-0000-4000-8000-0000000000c1\'\" -cmd .parameter\ set\ @solicitud_nueva\ \"\'d2000000-0000-4000-8000-0000000000c1\'\" /tmp/foodstore_u8_d_control.aWX5yW/copia.db < aceptar_precio.sql
+--- stdout ---
+control | foreign_keys | OK
+control | solicitud_anterior_en_conflicto | OK
+control | items_en_snapshot | OK
+paso | precios_actualizados_en_la_transaccion | 1
+--- fin stdout ---
+--- stderr ---
+Error near line 60: UNIQUE constraint failed: cola_sync.solicitud_uuid
+--- fin stderr ---
+Código de salida: 1 (esperado 0); última línea: paso | precios_actualizados_en_la_transaccion | 1
+Resultado aceptar_precio: FALLA (transacción revertida al cerrar el cliente)
+Código aceptar=1 (esperado 1); diagnósticos=1 (esperado 1); UPDATE ejecutado antes del error=sí
+T4 UPDATE revertido con el INSERT fallido; estado idéntico: OK
+
+RESULTADO GLOBAL CONTROLES D: OK
+Código de salida: 0
+Huella de la base entregable antes y después de los controles: cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace / cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace

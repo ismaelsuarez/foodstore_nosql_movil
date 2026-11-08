@@ -1,0 +1,32 @@
+Food Store U8 — Bloque E — Cierre de la intervención documental
+Ejecución: Claude (sesión principal). Fecha: 2026-11-07T20:45:19-0300. Sin Docker ni PostgreSQL.
+
+== Comparación de huellas con unidades/unidad-8/evidencias/bloque_d_cierre_20261107_195631.txt (scripts, CSV, instantáneas, evidencias anteriores)
+Archivos comprobados: 47; no coincidentes: 0; código sha256sum -c: 0
+
+== Base final
+cf541fa5974d16f884c0d897916b7c72964b5171d7f89329f531d818a3a12ace  unidades/unidad-8/movil/foodstore_movil.db
+0
+
+== Copia inicial de C (temporal)
+81ca51202c748b14d5d9b90657938c3e1574b8a9e47b2ded1bbf7d9a6998e5e9  /tmp/foodstore_u8_copia_inicial_c.7CuDfN/foodstore_movil_inicial_c.db
+
+== Documentos de E
+cbfd5f5d025407136ce6ef2562f096317aebe4f10ac67969a5772cc6f5ef9c4d  unidades/unidad-8/README.md
+8523c6891d3938cbd839eabe1b768f6e07d3e9d51a0359e8130e5e891655261b  unidades/unidad-8/docs/bitacora_ia.md
+903ffa785da4baadd933006590bf45fa860f23c520df8236bc977f2155d029fa  unidades/unidad-8/docs/DUIA.md
+58764b5552443b7d9c7da51797c4779d1a419116b6f6b522c54ad37732f316fd  unidades/unidad-8/docs/guia_defensa.md
+f4dcaaf1c11cfb31f46db3a87ca09201ef0667614cd2ec29e3769f1603cc916b  unidades/unidad-8/docs/integracion_motores.md
+6e5b1c9b8d7427c04b742b9ae84d3197b465a4aa7fe7a1ec80fcbe94b28ed3c0  unidades/unidad-8/docs/laboratorio_u8.md
+4aec5f020ab66537a5a69dd8924afacef4ee6df18ac15aacc96c22bf112a7e27  unidades/unidad-8/docs/mantenimiento_u8.md
+969ac73815d6a245b0996fab5ee2672fd3eaedbbb95380bfb1ba9f94cb9a9392  unidades/unidad-8/docs/revision_scripts_ia.md
+2543b6d3589fba09c7b3c3f1bc88e690c1b8f7119f839cce9fbf2e646e7a11d1  unidades/unidad-8/docs/kiro/design.md
+ae140fded7806e76a604ce05cb6ed521bb97e5c940cc4eee0077ec71c8c980ae  unidades/unidad-8/docs/kiro/requirements.md
+03f03b84aad9bf05613006d2f26382842c96c8286e5e80d6d2e8f6b12c1994fc  unidades/unidad-8/docs/kiro/tasks.md
+
+== Git
+## feat/u7-migracion
+archivos U8 sin seguimiento: 61
+staging: 0
+703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4
+703583e25ca9ca6ad0ab6be147d4c3b42f41c4e4
